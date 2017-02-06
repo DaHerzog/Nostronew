@@ -12,6 +12,10 @@ ResourceManager::ResourceManager() {
     this->modelsToDraw = new std::vector<Model*>();
 }
 
+/*
+ * Diese Methode is für das Laden aller gewünschten Modelle zuständig.
+ *
+ */
 bool ResourceManager::loadModels() {
     Model* tmp = new Model();
     char fullPathVertexShader[256];
