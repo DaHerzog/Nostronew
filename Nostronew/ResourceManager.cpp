@@ -31,7 +31,14 @@ bool ResourceManager::loadModels() {
         std::cout << "Fehler in loadModels() beim Laden der Sibenik" << std::endl;
     }*/
     
-    Model* sphere = new Model();
+    /*Model* sphere = new Model();
+    if (MyWavefrontParser::loadModel(sphere, "coonball/coonball.obj", true) && sphere->getModelShader().load(fullPathVertexShader, fullPathFragmentShader) && sphere->getModelShader().compile()) {
+        this->modelsToDraw->push_back(sphere);
+    } else {
+        std::cout << "Error in loadModels() while loading..." << std::endl;
+    }*/
+    
+    PlayerShip* sphere = new PlayerShip();
     if (MyWavefrontParser::loadModel(sphere, "coonball/coonball.obj", true) && sphere->getModelShader().load(fullPathVertexShader, fullPathFragmentShader) && sphere->getModelShader().compile()) {
         this->modelsToDraw->push_back(sphere);
     } else {

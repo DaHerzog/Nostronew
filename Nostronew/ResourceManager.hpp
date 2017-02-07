@@ -11,7 +11,8 @@
 
 #include <stdio.h>
 
-#include "Model.h"
+//#include "Model.h"
+#include "PlayerShip.hpp"
 #include "MyWavefrontParser.hpp"
 
 class ResourceManager {
