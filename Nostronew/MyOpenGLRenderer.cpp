@@ -185,7 +185,7 @@ void MyOpenGLRenderer::drawScene() {
     
     for (Model* currModel : *(m_ResManager->getModelsToDraw())) {
         //Das C++ Äquivalent zu dem "instanceof" Operator
-        //Ist das Model keine Instanz vom prüfenden Objekt, wird
+        //Ist das Model keine Instanz vom zu prüfenden Objekt, wird
         //ein nullptr zurückgegeben.
         if (PlayerShip* plShip = dynamic_cast<PlayerShip*>(currModel)) {
             //std::cout << "Ist playership" << std::endl;
@@ -193,6 +193,9 @@ void MyOpenGLRenderer::drawScene() {
             plShip->applyMatrices();
         }
         drawModel(currModel);
+        if (PlayerShip* plShip = dynamic_cast<PlayerShip*>(currModel)) {
+            plShip->discardMatrix();
+        }
     }
     
     GLfloat lpos[4];

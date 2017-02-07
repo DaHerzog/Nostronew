@@ -66,6 +66,9 @@ void PlayerShip::updatePosition(float deltaTime) {
 void PlayerShip::applyMatrices() {
     glPushMatrix();
     glMultMatrixf(this->m_Matrix);
+}
+
+void PlayerShip::discardMatrix() {
     glPopMatrix();
 }
 
