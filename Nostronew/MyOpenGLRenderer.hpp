@@ -42,6 +42,8 @@ private:
     static void drawScene();
     static void mouseCallback(int p_Button, int p_State, int p_X, int p_Y);
     static void keyboardCallback(unsigned char p_Key, int p_X, int p_Y);
+    static void specialKeyboardCallback(int key, int x, int y);
+    static void specialKeyboardUpCallback(int key, int x, int y);
     static void mouseMoveCallback(int p_X, int p_Y);
     static void drawGroundGrid();
     static void setupDefaultOpenGLSettings();

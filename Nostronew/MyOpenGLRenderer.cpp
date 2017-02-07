@@ -159,7 +159,8 @@ void MyOpenGLRenderer::initialize(int argc, char* argv[]) {
     glutMouseFunc(mouseCallback);
     glutKeyboardFunc(keyboardCallback);
     glutMotionFunc(mouseMoveCallback);
-    
+    glutSpecialFunc(specialKeyboardCallback);
+    glutSpecialUpFunc(specialKeyboardUpCallback);
     
     
 }
@@ -205,6 +206,59 @@ void MyOpenGLRenderer::mouseCallback(int p_Button, int p_State, int p_X, int p_Y
 void MyOpenGLRenderer::keyboardCallback(unsigned char p_Key, int p_X, int p_Y) {
     
     
+    
+}
+
+void MyOpenGLRenderer::specialKeyboardCallback(int key, int x, int y)
+{
+    // function is called if a special keyboard button is pressed (e. g. Up-arrow-Key)
+    
+    switch (key) {
+        case GLUT_KEY_UP:
+            std::cout << "Up Key Pressed" << std::endl;
+            break;
+            
+        case GLUT_KEY_DOWN:
+            std::cout << "Down Key Pressed" << std::endl;
+            break;
+            
+        case GLUT_KEY_LEFT:
+            std::cout << "Left Key Pressed" << std::endl;
+            break;
+            
+        case GLUT_KEY_RIGHT:
+            std::cout << "Right Key Pressed" << std::endl;
+            break;
+            
+        default:
+            break;
+    }
+}
+
+void MyOpenGLRenderer::specialKeyboardUpCallback(int key, int x, int y)
+{
+    // function is called if a special keyboard button is released
+    
+    switch (key) {
+        case GLUT_KEY_UP:
+            std::cout << "Up Key Released" << std::endl;
+            break;
+            
+        case GLUT_KEY_DOWN:
+            std::cout << "Down Key Released" << std::endl;
+            break;
+            
+        case GLUT_KEY_LEFT:
+            std::cout << "Left Key Released" << std::endl;
+            break;
+            
+        case GLUT_KEY_RIGHT:
+            std::cout << "Right Key Releaed" << std::endl;
+            break;
+            
+        default:
+            break;
+    }
     
 }
 
