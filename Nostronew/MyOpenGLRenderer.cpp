@@ -15,8 +15,10 @@ double MyOpenGLRenderer::m_WindowHeight = 768;
 Vector* MyOpenGLRenderer::m_LightPos = new Vector(0,10,0);
 Camera* MyOpenGLRenderer::m_Camera = new Camera();
 ResourceManager* MyOpenGLRenderer::m_ResManager = nullptr;
+GameManager* MyOpenGLRenderer::m_GameManager = nullptr;
 int MyOpenGLRenderer::m_MouseState = 0;
 int MyOpenGLRenderer::m_MouseButton = 0;
+int MyOpenGLRenderer::m_LastFrameTime = 0;
 
 
 MyOpenGLRenderer::MyOpenGLRenderer(){
@@ -177,7 +179,19 @@ void MyOpenGLRenderer::drawScene() {
     
     drawGroundGrid();
     
+    int deltaTimeInt = glutGet(GLUT_ELAPSED_TIME) - m_LastFrameTime;
+    m_LastFrameTime = glutGet(GLUT_ELAPSED_TIME);
+    float deltaTime = (float)deltaTimeInt / 1000.0f;
+    
     for (Model* currModel : *(m_ResManager->getModelsToDraw())) {
+        //Das C++ Äquivalent zu dem "instanceof" Operator
+        //Ist das Model keine Instanz vom prüfenden Objekt, wird
+        //ein nullptr zurückgegeben.
+        if (PlayerShip* plShip = dynamic_cast<PlayerShip*>(currModel)) {
+            //std::cout << "Ist playership" << std::endl;
+            plShip->updatePosition(deltaTime);
+            plShip->applyMatrices();
+        }
         drawModel(currModel);
     }
     
@@ -305,4 +319,8 @@ void MyOpenGLRenderer::checkForErrors() {
 
 void MyOpenGLRenderer::setResourceManager(ResourceManager* p_ResManager) {
     m_ResManager = p_ResManager;
+}
+
+void MyOpenGLRenderer::setGameManager(GameManager *p_GameManager) {
+    m_GameManager = p_GameManager;
 }

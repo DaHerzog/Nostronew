@@ -14,6 +14,8 @@
 //#include "Model.h"
 #include "PlayerShip.hpp"
 #include "MyWavefrontParser.hpp"
+#include "GameManager.hpp"
+#include "MyOpenGLRenderer.hpp"
 
 class ResourceManager {
 

@@ -18,10 +18,21 @@
 class PlayerShip : public Model {
 public:
     PlayerShip();
-    PlayerShip(Vector* pos);
+    PlayerShip(Vector* startPos);
+    virtual ~PlayerShip();
     
     void setPos(Vector* newPos);
     Vector* getPos();
+    void setDir(Vector* newDir);
+    Vector* getDir();
+    void updatePosition(float deltaTime);
+    void applyMatrices();
 protected:
     Vector* m_Pos;
+    Vector* m_Dir;
+    Matrix m_Matrix;
+    float m_RollLeftRight;
+    float m_RollAngle;
+    float m_PitchUpDown;
+    float m_ForwardBackward;
 };

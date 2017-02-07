@@ -64,7 +64,7 @@ class Model
 {
 public:
     Model();
-    ~Model();
+    virtual ~Model();
     const BoundingBox& boundingBox() const;
     void drawLines() const;
     void drawTriangles();

@@ -38,9 +38,11 @@ bool ResourceManager::loadModels() {
         std::cout << "Error in loadModels() while loading..." << std::endl;
     }*/
     
+    
     PlayerShip* sphere = new PlayerShip();
     if (MyWavefrontParser::loadModel(sphere, "coonball/coonball.obj", true) && sphere->getModelShader().load(fullPathVertexShader, fullPathFragmentShader) && sphere->getModelShader().compile()) {
         this->modelsToDraw->push_back(sphere);
+        MyOpenGLRenderer::setGameManager(new GameManager(sphere));
     } else {
         std::cout << "Error in loadModels() while loading..." << std::endl;
     }
