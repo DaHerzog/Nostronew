@@ -14,18 +14,20 @@
 //#include "Model.h"
 #include "PlayerShip.hpp"
 #include "MyWavefrontParser.hpp"
-#include "GameManager.hpp"
-#include "MyOpenGLRenderer.hpp"
 
 class ResourceManager {
 
 private:
-    std::vector<Model*>* modelsToDraw;
     const char* m_PathToShader = "/Users/davidherzog/Documents/XCode/Nostronew/Shader/";
+    std::vector<Model*>* modelsToDraw;
+    std::vector<Model*>* loadedModels;
+    PlayerShip* playerShip;
 public:
     ResourceManager();
     bool loadModels();
     std::vector<Model*>* getModelsToDraw();
+    std::vector<Model*>* getLoadedModels();
+    PlayerShip* getPlayerShip();
 };
 
 #endif /* ResourceManager_hpp */

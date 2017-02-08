@@ -10,6 +10,7 @@
 
 ResourceManager::ResourceManager() {
     this->modelsToDraw = new std::vector<Model*>();
+    this->loadedModels = new std::vector<Model*>();
 }
 
 /*
@@ -39,10 +40,10 @@ bool ResourceManager::loadModels() {
     }*/
     
     
-    PlayerShip* sphere = new PlayerShip();
-    if (MyWavefrontParser::loadModel(sphere, "coonball/coonball.obj", true) && sphere->getModelShader().load(fullPathVertexShader, fullPathFragmentShader) && sphere->getModelShader().compile()) {
-        this->modelsToDraw->push_back(sphere);
-        MyOpenGLRenderer::setGameManager(new GameManager(sphere));
+    this->playerShip = new PlayerShip();
+    if (MyWavefrontParser::loadModel(this->playerShip, "coonball/coonball.obj", true) && this->playerShip->getModelShader().load(fullPathVertexShader, fullPathFragmentShader) && this->playerShip->getModelShader().compile()) {
+        this->modelsToDraw->push_back(this->playerShip);
+        
     } else {
         std::cout << "Error in loadModels() while loading..." << std::endl;
     }
@@ -52,4 +53,12 @@ bool ResourceManager::loadModels() {
 
 std::vector<Model*>* ResourceManager::getModelsToDraw() {
     return this->modelsToDraw;
+}
+
+std::vector<Model*>* ResourceManager::getLoadedModels() {
+    return this->loadedModels;
+}
+
+PlayerShip* ResourceManager::getPlayerShip() {
+    return this->playerShip;
 }

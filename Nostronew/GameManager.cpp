@@ -17,6 +17,3 @@ GameManager::GameManager(PlayerShip* pShip) {
     this->playerShip = pShip;
 }
 
-void GameManager::steerPlayerShip(float p_RollLeftRight, float p_PitchUpDown, float p_ForwardBackward) {
-    
-}
