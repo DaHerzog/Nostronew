@@ -25,6 +25,7 @@ public:
     Vector* getPos();
     void setDir(Vector* newDir);
     Vector* getDir();
+    Matrix& getMatrix();
     void updatePosition(float deltaTime);
     void applyMatrices();
     void discardMatrix();

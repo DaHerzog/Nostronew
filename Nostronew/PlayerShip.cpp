@@ -110,3 +110,6 @@ void PlayerShip::setForwardBackward(float p_ForwardBackward) {
     this->m_ForwardBackward = p_ForwardBackward;
 }
 
+Matrix& PlayerShip::getMatrix() {
+    return this->m_Matrix;
+}

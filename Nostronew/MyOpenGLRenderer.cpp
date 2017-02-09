@@ -188,22 +188,26 @@ void MyOpenGLRenderer::drawScene() {
         //Ist das Model keine Instanz vom zu prüfenden Objekt, wird
         //ein nullptr zurückgegeben.
         if (PlayerShip* plShip = dynamic_cast<PlayerShip*>(currModel)) {
-            //std::cout << "Ist playership" << std::endl;
             plShip->updatePosition(deltaTime);
             plShip->applyMatrices();
         }
         drawModel(currModel);
         if (PlayerShip* plShip = dynamic_cast<PlayerShip*>(currModel)) {
             plShip->discardMatrix();
-            //richtungsvektor anzeigen lassen
+            //right, up, forward Vektoren der Transformationsmatrix anzeigen lassen
             glDisable(GL_LIGHTING);
             glBegin(GL_LINES);
             glColor3f(1.0f, 0.0f, 0.0f);
             glVertex3f(plShip->getPos()->X, plShip->getPos()->Y, plShip->getPos()->Z);
-            glVertex3f(plShip->getPos()->X+plShip->getDir()->X, plShip->getPos()->Y+plShip->getDir()->Y, plShip->getPos()->Z+plShip->getDir()->Z);
+            glVertex3f(plShip->getPos()->X+plShip->getMatrix().right().X, plShip->getPos()->Y+plShip->getMatrix().right().Y, plShip->getPos()->Z+plShip->getMatrix().right().Z);
+            glColor3f(0.0f, 1.0f, 0.0f);
+            glVertex3f(plShip->getPos()->X, plShip->getPos()->Y, plShip->getPos()->Z);
+            glVertex3f(plShip->getPos()->X+plShip->getMatrix().up().X, plShip->getPos()->Y+plShip->getMatrix().up().Y, plShip->getPos()->Z+plShip->getMatrix().up().Z);
+            glColor3f(0.0f, 0.0f, 1.0f);
+            glVertex3f(plShip->getPos()->X, plShip->getPos()->Y, plShip->getPos()->Z);
+            glVertex3f(plShip->getPos()->X+plShip->getMatrix().forward().X, plShip->getPos()->Y+plShip->getMatrix().forward().Y, plShip->getPos()->Z+plShip->getMatrix().forward().Z);
             glEnd();
             glEnable(GL_LIGHTING);
-            //m_Camera->setPosition(*(plShip->getPos())-Vector(0.0f,0.0f,-3.0f));
             
         }
     }

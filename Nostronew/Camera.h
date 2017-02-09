@@ -12,6 +12,7 @@
 #include <iostream>
 
 #include "Vector.hpp"
+#include "PlayerShip.hpp"
 
 //extern const unsigned int g_WindowWidth;
 //extern const unsigned int g_WindowHeight;
@@ -29,6 +30,7 @@ public:
     void setPosition( const Vector& Pos);
     void setTarget( const Vector& Target);
     void setUp( const Vector& Up);
+    Matrix& setThirdPerson(const Vector& Target, const Vector& Up, const Vector& Position);
 
     void mouseInput( int x, int y, int Button, int State);
     

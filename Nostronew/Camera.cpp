@@ -210,3 +210,22 @@ void Camera::setWindowWidthHeight(unsigned int p_Width, unsigned int p_Height) {
     m_WindowWidth = p_Width;
     
 }
+
+Matrix& Camera::setThirdPerson(const Vector& Target, const Vector& Up, const Vector& Position) {
+    Matrix thirdView;
+    
+    Vector f = Target-Position;
+    f.normalize();
+    Vector u = Up;
+    u.normalize();
+    Vector r = f.cross(u);
+    r.normalize();
+    u = r.cross(f);
+    thirdView.m00 = r.X;   thirdView.m01 = r.Y;   thirdView.m02 = r.Z;   thirdView.m03 = -(r.dot(Position));
+    thirdView.m10 = u.X;   thirdView.m11 = u.Y;   thirdView.m12 = u.Z;   thirdView.m13 = -(u.dot(Position));
+    thirdView.m20 = -f.X;  thirdView.m21 = -f.Y;  thirdView.m22 = -f.Z;  thirdView.m23 = (f.dot(Position));
+    thirdView.m30 = 0;     thirdView.m31 = 0;     thirdView.m32 = 0;     thirdView.m33 = 1;
+    
+    return thirdView;
+    
+}
