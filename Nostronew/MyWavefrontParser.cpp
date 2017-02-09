@@ -249,9 +249,12 @@ bool MyWavefrontParser::loadFromCinema(Model *p_Model, const char* p_Filename, b
         
         
         
-        
+        std::cout << facesFromFile->size()*3 << std::endl;
+        std::cout << positionsFromFile->size() << std::endl;
         p_Model->setVertices(new Vertex[facesFromFile->size()*3]);
         p_Model->setVertexCount(facesFromFile->size()*3);
+        
+        
         int i = 0;
         for(i=0; i<facesFromFile->size(); i++ )
         {

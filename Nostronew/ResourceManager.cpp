@@ -41,7 +41,7 @@ bool ResourceManager::loadModels() {
     
     
     this->playerShip = new PlayerShip();
-    if (MyWavefrontParser::loadModel(this->playerShip, "coonball/coonball.obj", true) && this->playerShip->getModelShader().load(fullPathVertexShader, fullPathFragmentShader) && this->playerShip->getModelShader().compile()) {
+    if (MyWavefrontParser::loadModel(this->playerShip, "test/zylinderpoly.obj", true) && this->playerShip->getModelShader().load(fullPathVertexShader, fullPathFragmentShader) && this->playerShip->getModelShader().compile()) {
         this->modelsToDraw->push_back(this->playerShip);
         
     } else {

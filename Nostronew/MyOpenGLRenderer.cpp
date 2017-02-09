@@ -195,6 +195,16 @@ void MyOpenGLRenderer::drawScene() {
         drawModel(currModel);
         if (PlayerShip* plShip = dynamic_cast<PlayerShip*>(currModel)) {
             plShip->discardMatrix();
+            //richtungsvektor anzeigen lassen
+            glDisable(GL_LIGHTING);
+            glBegin(GL_LINES);
+            glColor3f(1.0f, 0.0f, 0.0f);
+            glVertex3f(plShip->getPos()->X, plShip->getPos()->Y, plShip->getPos()->Z);
+            glVertex3f(plShip->getPos()->X+plShip->getDir()->X, plShip->getPos()->Y+plShip->getDir()->Y, plShip->getPos()->Z+plShip->getDir()->Z);
+            glEnd();
+            glEnable(GL_LIGHTING);
+            //m_Camera->setPosition(*(plShip->getPos())-Vector(0.0f,0.0f,-3.0f));
+            
         }
     }
     
@@ -224,11 +234,11 @@ void MyOpenGLRenderer::keyboardCallback(unsigned char p_Key, int p_X, int p_Y) {
     
     switch (p_Key) {
         case 'a':
-            std::cout << "a pressed" << std::endl;
+            //std::cout << "a pressed" << std::endl;
             m_ResManager->getPlayerShip()->setForwardBackward(1.0f);
             break;
         case 'y':
-            std::cout << "y pressed" << std::endl;
+            //std::cout << "y pressed" << std::endl;
             m_ResManager->getPlayerShip()->setForwardBackward(-1.0f);
             break;
         default:
@@ -241,11 +251,11 @@ void MyOpenGLRenderer::keyboardUpCallback(unsigned char p_Key, int p_X, int p_Y)
     
     switch (p_Key) {
         case 'a':
-            std::cout << "a up" << std::endl;
+            //std::cout << "a up" << std::endl;
             m_ResManager->getPlayerShip()->setForwardBackward(0.0f);
             break;
         case 'y':
-            std::cout << "y up" << std::endl;
+            //std::cout << "y up" << std::endl;
             m_ResManager->getPlayerShip()->setForwardBackward(0.0f);
             break;
         default:
@@ -260,22 +270,22 @@ void MyOpenGLRenderer::specialKeyboardCallback(int key, int x, int y)
     
     switch (key) {
         case GLUT_KEY_UP:
-            std::cout << "Up Key Pressed" << std::endl;
+            //std::cout << "Up Key Pressed" << std::endl;
             m_ResManager->getPlayerShip()->setPitchUpDown(1.0f);
             break;
             
         case GLUT_KEY_DOWN:
-            std::cout << "Down Key Pressed" << std::endl;
+            //std::cout << "Down Key Pressed" << std::endl;
             m_ResManager->getPlayerShip()->setPitchUpDown(-1.0f);
             break;
             
         case GLUT_KEY_LEFT:
-            std::cout << "Left Key Pressed" << std::endl;
+            //std::cout << "Left Key Pressed" << std::endl;
             m_ResManager->getPlayerShip()->setRollLeftRight(-1.0f);
             break;
             
         case GLUT_KEY_RIGHT:
-            std::cout << "Right Key Pressed" << std::endl;
+            //std::cout << "Right Key Pressed" << std::endl;
             m_ResManager->getPlayerShip()->setRollLeftRight(1.0f);
             break;
             
@@ -290,22 +300,22 @@ void MyOpenGLRenderer::specialKeyboardUpCallback(int key, int x, int y)
     
     switch (key) {
         case GLUT_KEY_UP:
-            std::cout << "Up Key Released" << std::endl;
+            //std::cout << "Up Key Released" << std::endl;
             m_ResManager->getPlayerShip()->setPitchUpDown(0.0f);
             break;
             
         case GLUT_KEY_DOWN:
-            std::cout << "Down Key Released" << std::endl;
+            //std::cout << "Down Key Released" << std::endl;
             m_ResManager->getPlayerShip()->setPitchUpDown(0.0f);
             break;
             
         case GLUT_KEY_LEFT:
-            std::cout << "Left Key Released" << std::endl;
+            //std::cout << "Left Key Released" << std::endl;
             m_ResManager->getPlayerShip()->setRollLeftRight(0.0f);
             break;
             
         case GLUT_KEY_RIGHT:
-            std::cout << "Right Key Releaed" << std::endl;
+            //std::cout << "Right Key Releaed" << std::endl;
             m_ResManager->getPlayerShip()->setRollLeftRight(0.0f);
             break;
             
@@ -338,6 +348,7 @@ void MyOpenGLRenderer::drawGroundGrid() {
         glVertex3f(GridOrigin+GridSize, 0, itpos);
         
     }
+    
     glEnd();
     glEnable( GL_LIGHTING);
 }

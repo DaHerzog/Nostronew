@@ -15,6 +15,7 @@ PlayerShip::PlayerShip(): Model() {
     this->m_PitchUpDown = 0.0f;
     this->m_PitchAngle = 0.0f;
     this->m_RollAngle = 0.0f;
+    this->m_ForwardBackward = 0.0f;
 }
 
 PlayerShip::PlayerShip(Vector* startPos): Model() {
@@ -24,6 +25,7 @@ PlayerShip::PlayerShip(Vector* startPos): Model() {
     this->m_PitchUpDown = 0.0f;
     this->m_PitchAngle = 0.0f;
     this->m_RollAngle = 0.0f;
+    this->m_ForwardBackward = 0.0f;
 }
 
 PlayerShip::~PlayerShip() {
@@ -53,26 +55,32 @@ Vector* PlayerShip::getDir() {
 
 void PlayerShip::updatePosition(float deltaTime) {
     Matrix TM, RMz, RMx;
-    
+    Matrix RMDir;
     
     
     *(this->m_Pos) = *(this->m_Pos) + ((*(this->m_Dir) * (float)(1/deltaTime)) * (this->m_ForwardBackward));
     
-    std::cout << deltaTime << std::endl;
-    std::cout << "m_Pos: " << this->m_Pos->X << ", " << this->m_Pos->Y << ", " << this->m_Pos->Z << ", " << std::endl;
-    std::cout << "m_Dir: " << this->m_Dir->X << ", " << this->m_Dir->Y << ", " << this->m_Dir->Z << ", " << std::endl;
+    //std::cout << deltaTime << std::endl;
+    //std::cout << "m_Pos: " << this->m_Pos->X << ", " << this->m_Pos->Y << ", " << this->m_Pos->Z << ", " << std::endl;
+    //std::cout << "m_Dir: " << this->m_Dir->X << ", " << this->m_Dir->Y << ", " << this->m_Dir->Z << ", " << std::endl;
     
     this->m_RollAngle += this->m_RollLeftRight * (2*M_PI)/90;
     this->m_PitchAngle += this->m_PitchUpDown * (2*M_PI)/90;
     
-    this->m_Dir->X = sinf(-this->m_PitchAngle);
-    
-    this->m_Dir->Z = sinf(-this->m_RollAngle);
+    //this->m_Dir->Y = sinf(this->m_RollAngle);
+    //this->m_Dir->Y = sinf(-this->m_PitchAngle);
     
     
     
     RMz.rotationZ(this->m_RollAngle);
     RMx.rotationX(this->m_PitchAngle);
+    
+    RMDir = RMz * RMx;
+    this->m_Dir->X = RMDir.forward().X;
+    this->m_Dir->Y = RMDir.forward().Y;
+    this->m_Dir->Z = RMDir.forward().Z;
+    
+    this->m_Dir->normalize();
     
     //Multiplikationsreihenfolge einheiltlich beachten!
     //R = Rz * Ry * Rx (Rotation um die y-Achse haben wir nicht aktuell)
