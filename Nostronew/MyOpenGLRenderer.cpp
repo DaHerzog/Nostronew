@@ -239,11 +239,11 @@ void MyOpenGLRenderer::keyboardCallback(unsigned char p_Key, int p_X, int p_Y) {
     switch (p_Key) {
         case 'a':
             //std::cout << "a pressed" << std::endl;
-            m_ResManager->getPlayerShip()->setForwardBackward(1.0f);
+            m_ResManager->getPlayerShip()->setForwardBackward(-1.0f);
             break;
         case 'y':
             //std::cout << "y pressed" << std::endl;
-            m_ResManager->getPlayerShip()->setForwardBackward(-1.0f);
+            m_ResManager->getPlayerShip()->setForwardBackward(1.0f);
             break;
         default:
             break;
@@ -275,22 +275,22 @@ void MyOpenGLRenderer::specialKeyboardCallback(int key, int x, int y)
     switch (key) {
         case GLUT_KEY_UP:
             //std::cout << "Up Key Pressed" << std::endl;
-            m_ResManager->getPlayerShip()->setPitchUpDown(1.0f);
+            m_ResManager->getPlayerShip()->setPitchUpDown(-1.0f);
             break;
             
         case GLUT_KEY_DOWN:
             //std::cout << "Down Key Pressed" << std::endl;
-            m_ResManager->getPlayerShip()->setPitchUpDown(-1.0f);
+            m_ResManager->getPlayerShip()->setPitchUpDown(1.0f);
             break;
             
         case GLUT_KEY_LEFT:
             //std::cout << "Left Key Pressed" << std::endl;
-            m_ResManager->getPlayerShip()->setRollLeftRight(-1.0f);
+            m_ResManager->getPlayerShip()->setRollLeftRight(1.0f);
             break;
             
         case GLUT_KEY_RIGHT:
             //std::cout << "Right Key Pressed" << std::endl;
-            m_ResManager->getPlayerShip()->setRollLeftRight(1.0f);
+            m_ResManager->getPlayerShip()->setRollLeftRight(-1.0f);
             break;
             
         default:
