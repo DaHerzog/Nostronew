@@ -16,6 +16,8 @@ Drawable::Drawable() {
     this->m_PitchAngle = 0.0f;
     this->m_RollAngle = 0.0f;
     this->m_ForwardBackward = 0.0f;
+    this->m_Matrix = Matrix();
+    this->m_Matrix.translation(*(this->m_Pos));
 }
 
 Drawable::Drawable(Model* pModel) {
@@ -27,6 +29,8 @@ Drawable::Drawable(Model* pModel) {
     this->m_PitchAngle = 0.0f;
     this->m_RollAngle = 0.0f;
     this->m_ForwardBackward = 0.0f;
+    this->m_Matrix = Matrix();
+    this->m_Matrix.translation(*(this->m_Pos));
 }
 
 Drawable::Drawable(Vector* pStartPos, Model* pModel) {
@@ -38,6 +42,8 @@ Drawable::Drawable(Vector* pStartPos, Model* pModel) {
     this->m_PitchAngle = 0.0f;
     this->m_RollAngle = 0.0f;
     this->m_ForwardBackward = 0.0f;
+    this->m_Matrix = Matrix();
+    this->m_Matrix.translation(*(this->m_Pos));
 }
 
 Drawable::~Drawable() {
@@ -69,8 +75,8 @@ void Drawable::updatePosition(float deltaTime) {
     Matrix TM, RMz, RMx;
     Matrix RMDir;
     
-    
     *(this->m_Pos) = *(this->m_Pos) + ((*(this->m_Dir) * (float)(1/deltaTime)) * (this->m_ForwardBackward));
+    
     
     //std::cout << deltaTime << std::endl;
     //std::cout << "m_Pos: " << this->m_Pos->X << ", " << this->m_Pos->Y << ", " << this->m_Pos->Z << ", " << std::endl;
@@ -78,12 +84,13 @@ void Drawable::updatePosition(float deltaTime) {
     
     this->m_RollAngle += this->m_RollLeftRight * (2*M_PI)/90;
     this->m_PitchAngle += this->m_PitchUpDown * (2*M_PI)/90;
-    
+
     
     RMz.rotationZ(this->m_RollAngle);
     RMx.rotationX(this->m_PitchAngle);
     
-    RMDir = RMz * RMx;
+    
+    RMDir =RMz * RMx;
     this->m_Dir->X = RMDir.forward().X;
     this->m_Dir->Y = RMDir.forward().Y;
     this->m_Dir->Z = RMDir.forward().Z;
@@ -97,9 +104,10 @@ void Drawable::updatePosition(float deltaTime) {
     this->m_Matrix = TM * RMz * RMx;
 }
 
-void Drawable::applyMatrices() {
+void Drawable::applyMatrices(Matrix* inverseView) {
+    Matrix forThirdPerson = *inverseView * this->m_Matrix;
     glPushMatrix();
-    glMultMatrixf(this->m_Matrix);
+    glMultMatrixf(forThirdPerson);
 }
 
 void Drawable::discardMatrix() {

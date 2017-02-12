@@ -12,6 +12,7 @@
 #include <stdio.h>
 
 #include "PlayerShip.hpp"
+#include "Terrain.hpp"
 #include "MyWavefrontParser.hpp"
 
 class ResourceManager {
@@ -21,12 +22,14 @@ private:
     std::vector<Drawable*>* modelsToDraw;
     std::vector<Drawable*>* loadedModels;
     PlayerShip* m_PlayerShip;
+    Terrain* m_Terrain;
 public:
     ResourceManager();
     bool loadModels();
     std::vector<Drawable*>* getModelsToDraw();
     std::vector<Drawable*>* getLoadedModels();
     PlayerShip* getPlayerShip();
+    Terrain* getTerrain();
 };
 
 #endif /* ResourceManager_hpp */

@@ -30,7 +30,7 @@ public:
     void setPosition( const Vector& Pos);
     void setTarget( const Vector& Target);
     void setUp( const Vector& Up);
-    Matrix* getViewMatrix(const Vector& Target, const Vector& Up, const Vector& Position);
+    Matrix* getInverseViewMatrix(const Vector& Target, const Vector& Up, const Vector& Position);
 
     void mouseInput( int x, int y, int Button, int State);
     

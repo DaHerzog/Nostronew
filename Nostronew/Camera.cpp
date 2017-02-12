@@ -211,7 +211,7 @@ void Camera::setWindowWidthHeight(unsigned int p_Width, unsigned int p_Height) {
     
 }
 
-Matrix* Camera::getViewMatrix(const Vector& Target, const Vector& Up, const Vector& Position) {
+Matrix* Camera::getInverseViewMatrix(const Vector& Target, const Vector& Up, const Vector& Position) {
     Matrix* thirdView = new Matrix();
     
     Vector f = Target-Position;
@@ -226,6 +226,7 @@ Matrix* Camera::getViewMatrix(const Vector& Target, const Vector& Up, const Vect
     thirdView->m20 = -f.X;  thirdView->m21 = -f.Y;  thirdView->m22 = -f.Z;  thirdView->m23 = (f.dot(Position));
     thirdView->m30 = 0;     thirdView->m31 = 0;     thirdView->m32 = 0;     thirdView->m33 = 1;
     
+    //std::cout << thirdView->m00 << " " << thirdView->m01 << " " << thirdView->m02 << " " << thirdView->m03 << std::endl;
     return thirdView;
     
 }

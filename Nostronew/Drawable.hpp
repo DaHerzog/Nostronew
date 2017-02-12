@@ -17,7 +17,7 @@ public:
     Drawable();
     Drawable(Model* pModel);
     Drawable(Vector* pStartPos, Model* pModel);
-    ~Drawable();
+    virtual ~Drawable();
     
     void setPos(Vector* newPos);
     Vector* getPos();
@@ -25,7 +25,7 @@ public:
     Vector* getDir();
     Matrix& getMatrix();
     void updatePosition(float deltaTime);
-    void applyMatrices();
+    void applyMatrices(Matrix* inverseView);
     void discardMatrix();
     void setRollLeftRight(float p_RollLeftRight);
     void setPitchUpDown(float p_PitchUpDown);

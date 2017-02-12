@@ -47,12 +47,13 @@ bool ResourceManager::loadModels() {
         std::cout << "Error in loadModels() while loading..." << std::endl;
     }
     
-    Drawable* landscape = new Drawable(new Model());
-     if (MyWavefrontParser::loadModel(landscape->getModel(), "landscape/landscape.obj", true) && landscape->getModel()->getModelShader().load(fullPathVertexShader, fullPathFragmentShader) && landscape->getModel()->getModelShader().compile()) {
-     this->modelsToDraw->push_back(landscape);
+    this->m_Terrain = new Terrain(new Model());
+     if (MyWavefrontParser::loadModel(this->m_Terrain->getModel(), "landscape/landscape.obj", true) && this->m_Terrain->getModel()->getModelShader().load(fullPathVertexShader, fullPathFragmentShader) && this->m_Terrain->getModel()->getModelShader().compile()) {
+     this->modelsToDraw->push_back(this->m_Terrain);
      } else {
      std::cout << "Error in loadModels() while loading..." << std::endl;
      }
+    
     
     return true;
 }
@@ -67,4 +68,8 @@ std::vector<Drawable*>* ResourceManager::getLoadedModels() {
 
 PlayerShip* ResourceManager::getPlayerShip() {
     return this->m_PlayerShip;
+}
+
+Terrain* ResourceManager::getTerrain() {
+    return this->m_Terrain;
 }
