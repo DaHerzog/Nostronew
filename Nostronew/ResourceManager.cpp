@@ -43,10 +43,16 @@ bool ResourceManager::loadModels() {
     this->playerShip = new PlayerShip();
     if (MyWavefrontParser::loadModel(this->playerShip, "test/zylinderpoly.obj", true) && this->playerShip->getModelShader().load(fullPathVertexShader, fullPathFragmentShader) && this->playerShip->getModelShader().compile()) {
         this->modelsToDraw->push_back(this->playerShip);
-        
     } else {
         std::cout << "Error in loadModels() while loading..." << std::endl;
     }
+    
+    Model* landscape = new Model();
+     if (MyWavefrontParser::loadModel(landscape, "landscape/landscape.obj", true) && landscape->getModelShader().load(fullPathVertexShader, fullPathFragmentShader) && landscape->getModelShader().compile()) {
+     this->modelsToDraw->push_back(landscape);
+     } else {
+     std::cout << "Error in loadModels() while loading..." << std::endl;
+     }
     
     return true;
 }

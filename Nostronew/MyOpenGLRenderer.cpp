@@ -83,6 +83,7 @@ void MyOpenGLRenderer::drawModel(Model *p_ModelToDraw) {
             
             
             p_ModelToDraw->getMatGroupsPerformance()[j].material->getTexture().apply();
+            
             p_ModelToDraw->getModelShader().setParameter(p_ModelToDraw->getModelShader().getParameterId("DiffuseTexture"), 0);
             
             /*std::cout << "DiffColor R: " << p_ModelToDraw->getMatGroupsPerformance()[j].material->getDiffuseColor().R << ", G: " << p_ModelToDraw->getMatGroupsPerformance()[j].material->getDiffuseColor().G << ", B: " << p_ModelToDraw->getMatGroupsPerformance()[j].material->getDiffuseColor().B << std::endl;
@@ -177,23 +178,26 @@ void MyOpenGLRenderer::drawScene() {
     glLoadIdentity();
     m_Camera->apply();
     
-    drawGroundGrid();
+    //drawGroundGrid();
     
     int deltaTimeInt = glutGet(GLUT_ELAPSED_TIME) - m_LastFrameTime;
     m_LastFrameTime = glutGet(GLUT_ELAPSED_TIME);
     float deltaTime = (float)deltaTimeInt;
     
+    m_ResManager->getPlayerShip()->updatePosition(deltaTime);
+    m_ResManager->getPlayerShip()->applyMatrices();
+    
     for (Model* currModel : *(m_ResManager->getModelsToDraw())) {
         //Das C++ Äquivalent zu dem "instanceof" Operator
         //Ist das Model keine Instanz vom zu prüfenden Objekt, wird
         //ein nullptr zurückgegeben.
-        if (PlayerShip* plShip = dynamic_cast<PlayerShip*>(currModel)) {
-            plShip->updatePosition(deltaTime);
-            plShip->applyMatrices();
-        }
+        //if (PlayerShip* plShip = dynamic_cast<PlayerShip*>(currModel)) {
+        //    plShip->updatePosition(deltaTime);
+            
+        //}
         drawModel(currModel);
         if (PlayerShip* plShip = dynamic_cast<PlayerShip*>(currModel)) {
-            plShip->discardMatrix();
+            //plShip->discardMatrix();
             //right, up, forward Vektoren der Transformationsmatrix anzeigen lassen
             glDisable(GL_LIGHTING);
             glBegin(GL_LINES);
@@ -211,6 +215,8 @@ void MyOpenGLRenderer::drawScene() {
             
         }
     }
+    
+    m_ResManager->getPlayerShip()->discardMatrix();
     
     GLfloat lpos[4];
     lpos[0]=m_LightPos->X;

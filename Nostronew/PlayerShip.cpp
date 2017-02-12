@@ -67,10 +67,6 @@ void PlayerShip::updatePosition(float deltaTime) {
     this->m_RollAngle += this->m_RollLeftRight * (2*M_PI)/90;
     this->m_PitchAngle += this->m_PitchUpDown * (2*M_PI)/90;
     
-    //this->m_Dir->Y = sinf(this->m_RollAngle);
-    //this->m_Dir->Y = sinf(-this->m_PitchAngle);
-    
-    
     
     RMz.rotationZ(this->m_RollAngle);
     RMx.rotationX(this->m_PitchAngle);
