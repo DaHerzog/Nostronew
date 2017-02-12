@@ -11,7 +11,6 @@
 
 #include <stdio.h>
 
-//#include "Model.h"
 #include "PlayerShip.hpp"
 #include "MyWavefrontParser.hpp"
 
@@ -19,14 +18,14 @@ class ResourceManager {
 
 private:
     const char* m_PathToShader = "/Users/davidherzog/Documents/XCode/Nostronew/Shader/";
-    std::vector<Model*>* modelsToDraw;
-    std::vector<Model*>* loadedModels;
-    PlayerShip* playerShip;
+    std::vector<Drawable*>* modelsToDraw;
+    std::vector<Drawable*>* loadedModels;
+    PlayerShip* m_PlayerShip;
 public:
     ResourceManager();
     bool loadModels();
-    std::vector<Model*>* getModelsToDraw();
-    std::vector<Model*>* getLoadedModels();
+    std::vector<Drawable*>* getModelsToDraw();
+    std::vector<Drawable*>* getLoadedModels();
     PlayerShip* getPlayerShip();
 };
 

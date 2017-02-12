@@ -9,8 +9,8 @@
 #include "ResourceManager.hpp"
 
 ResourceManager::ResourceManager() {
-    this->modelsToDraw = new std::vector<Model*>();
-    this->loadedModels = new std::vector<Model*>();
+    this->modelsToDraw = new std::vector<Drawable*>();
+    this->loadedModels = new std::vector<Drawable*>();
 }
 
 /*
@@ -40,15 +40,15 @@ bool ResourceManager::loadModels() {
     }*/
     
     
-    this->playerShip = new PlayerShip();
-    if (MyWavefrontParser::loadModel(this->playerShip, "test/zylinderpoly.obj", true) && this->playerShip->getModelShader().load(fullPathVertexShader, fullPathFragmentShader) && this->playerShip->getModelShader().compile()) {
-        this->modelsToDraw->push_back(this->playerShip);
+    this->m_PlayerShip = new PlayerShip(new Model());
+    if (MyWavefrontParser::loadModel(this->m_PlayerShip->getModel(), "test/zylinderpoly.obj", true) && m_PlayerShip->getModel()->getModelShader().load(fullPathVertexShader, fullPathFragmentShader) && this->m_PlayerShip->getModel()->getModelShader().compile()) {
+        this->modelsToDraw->push_back(this->m_PlayerShip);
     } else {
         std::cout << "Error in loadModels() while loading..." << std::endl;
     }
     
-    Model* landscape = new Model();
-     if (MyWavefrontParser::loadModel(landscape, "landscape/landscape.obj", true) && landscape->getModelShader().load(fullPathVertexShader, fullPathFragmentShader) && landscape->getModelShader().compile()) {
+    Drawable* landscape = new Drawable(new Model());
+     if (MyWavefrontParser::loadModel(landscape->getModel(), "landscape/landscape.obj", true) && landscape->getModel()->getModelShader().load(fullPathVertexShader, fullPathFragmentShader) && landscape->getModel()->getModelShader().compile()) {
      this->modelsToDraw->push_back(landscape);
      } else {
      std::cout << "Error in loadModels() while loading..." << std::endl;
@@ -57,14 +57,14 @@ bool ResourceManager::loadModels() {
     return true;
 }
 
-std::vector<Model*>* ResourceManager::getModelsToDraw() {
+std::vector<Drawable*>* ResourceManager::getModelsToDraw() {
     return this->modelsToDraw;
 }
 
-std::vector<Model*>* ResourceManager::getLoadedModels() {
+std::vector<Drawable*>* ResourceManager::getLoadedModels() {
     return this->loadedModels;
 }
 
 PlayerShip* ResourceManager::getPlayerShip() {
-    return this->playerShip;
+    return this->m_PlayerShip;
 }

@@ -20,7 +20,7 @@
 #include <GLUT/GLUT.h>
 
 
-#include "PlayerShip.hpp"
+//#include "PlayerShip.hpp"
 #include "Camera.h"
 #include "ResourceManager.hpp"
 

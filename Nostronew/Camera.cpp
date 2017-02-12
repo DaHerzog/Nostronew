@@ -211,7 +211,7 @@ void Camera::setWindowWidthHeight(unsigned int p_Width, unsigned int p_Height) {
     
 }
 
-Matrix* Camera::setThirdPerson(const Vector& Target, const Vector& Up, const Vector& Position) {
+Matrix* Camera::getViewMatrix(const Vector& Target, const Vector& Up, const Vector& Position) {
     Matrix* thirdView = new Matrix();
     
     Vector f = Target-Position;

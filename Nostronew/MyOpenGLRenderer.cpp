@@ -184,39 +184,20 @@ void MyOpenGLRenderer::drawScene() {
     m_LastFrameTime = glutGet(GLUT_ELAPSED_TIME);
     float deltaTime = (float)deltaTimeInt;
     
-    m_ResManager->getPlayerShip()->updatePosition(deltaTime);
-    m_ResManager->getPlayerShip()->applyMatrices();
+    //m_ResManager->getPlayerShip()->updatePosition(deltaTime);
+    //m_ResManager->getPlayerShip()->applyMatrices();
     
-    for (Model* currModel : *(m_ResManager->getModelsToDraw())) {
-        //Das C++ Äquivalent zu dem "instanceof" Operator
-        //Ist das Model keine Instanz vom zu prüfenden Objekt, wird
-        //ein nullptr zurückgegeben.
-        //if (PlayerShip* plShip = dynamic_cast<PlayerShip*>(currModel)) {
-        //    plShip->updatePosition(deltaTime);
-            
-        //}
-        drawModel(currModel);
-        if (PlayerShip* plShip = dynamic_cast<PlayerShip*>(currModel)) {
-            //plShip->discardMatrix();
-            //right, up, forward Vektoren der Transformationsmatrix anzeigen lassen
-            glDisable(GL_LIGHTING);
-            glBegin(GL_LINES);
-            glColor3f(1.0f, 0.0f, 0.0f);
-            glVertex3f(plShip->getPos()->X, plShip->getPos()->Y, plShip->getPos()->Z);
-            glVertex3f(plShip->getPos()->X+plShip->getMatrix().right().X, plShip->getPos()->Y+plShip->getMatrix().right().Y, plShip->getPos()->Z+plShip->getMatrix().right().Z);
-            glColor3f(0.0f, 1.0f, 0.0f);
-            glVertex3f(plShip->getPos()->X, plShip->getPos()->Y, plShip->getPos()->Z);
-            glVertex3f(plShip->getPos()->X+plShip->getMatrix().up().X, plShip->getPos()->Y+plShip->getMatrix().up().Y, plShip->getPos()->Z+plShip->getMatrix().up().Z);
-            glColor3f(0.0f, 0.0f, 1.0f);
-            glVertex3f(plShip->getPos()->X, plShip->getPos()->Y, plShip->getPos()->Z);
-            glVertex3f(plShip->getPos()->X+plShip->getMatrix().forward().X, plShip->getPos()->Y+plShip->getMatrix().forward().Y, plShip->getPos()->Z+plShip->getMatrix().forward().Z);
-            glEnd();
-            glEnable(GL_LIGHTING);
-            
-        }
+    for (Drawable* currDrawable : *(m_ResManager->getModelsToDraw())) {
+        
+        currDrawable->drawAxis();
+        currDrawable->updatePosition(deltaTime);
+        currDrawable->applyMatrices();
+        drawModel(currDrawable->getModel());
+        currDrawable->discardMatrix();
+        
     }
     
-    m_ResManager->getPlayerShip()->discardMatrix();
+    //m_ResManager->getPlayerShip()->discardMatrix();
     
     GLfloat lpos[4];
     lpos[0]=m_LightPos->X;

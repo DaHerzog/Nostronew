@@ -64,7 +64,7 @@ class Model
 {
 public:
     Model();
-    virtual ~Model();
+    ~Model();
     const BoundingBox& boundingBox() const;
     void drawLines() const;
     void drawTriangles();
@@ -91,6 +91,8 @@ public:
     unsigned int* getIndices();
     
 protected:
+    Vector* m_Pos;
+    Vector* m_Dir;
     void createCube();
     Material* m_pMaterials;
     unsigned int m_MaterialCount;
