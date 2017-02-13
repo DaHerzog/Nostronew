@@ -49,6 +49,21 @@ Drawable::Drawable(Vector* pStartPos, Model* pModel) {
     this->m_Matrix.translation(*(this->m_Pos));
 }
 
+Drawable::Drawable(Vector* p_StartPos, Vector* p_Dir, Model* p_Model) {
+    this->m_Dir = p_Dir;
+    this->m_Pos = p_StartPos;
+    this->m_Acceleration = new Vector(0.0f, 0.0f, 0.0f);
+    this->m_Model = p_Model;
+    this->m_RollLeftRight = 0.0f;
+    this->m_PitchUpDown = 0.0f;
+    this->m_PitchAngle = 0.0f;
+    this->m_RollAngle = 0.0f;
+    this->m_ForwardBackward = 0.0f;
+    this->m_Matrix = Matrix();
+    this->m_Matrix.translation(*(this->m_Pos));
+    
+}
+
 Drawable::~Drawable() {
     if (this->m_Pos)
         delete this->m_Pos;
@@ -164,7 +179,7 @@ void Drawable::updatePosition(float deltaTime, Vector* p_MinBoundary, Vector* p_
             this->m_PitchAngle -= M_PI/360;
         }
     }
-    std::cout << this->m_RollAngle << std::endl;
+    //std::cout << this->m_RollAngle << std::endl;
     //std::cout << deltaTime << std::endl;
     //std::cout << "m_Pos: " << this->m_Pos->X << ", " << this->m_Pos->Y << ", " << this->m_Pos->Z << ", " << std::endl;
     //std::cout << "m_Dir: " << this->m_Dir->X << ", " << this->m_Dir->Y << ", " << this->m_Dir->Z << ", " << std::endl;

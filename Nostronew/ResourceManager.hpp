@@ -12,6 +12,7 @@
 #include <stdio.h>
 
 #include "PlayerShip.hpp"
+#include "EnemyShip.hpp"
 #include "Terrain.hpp"
 #include "MyWavefrontParser.hpp"
 

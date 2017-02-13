@@ -116,8 +116,6 @@ void MyOpenGLRenderer::drawModel(Model *p_ModelToDraw) {
             
             p_ModelToDraw->getModelShader().deactivate();
             
-            p_ModelToDraw->getBoundingBox().drawLines();
-            
         }
     } else {
         // draw via Array Buffer
@@ -180,13 +178,13 @@ void MyOpenGLRenderer::drawScene() {
     glLoadIdentity();
     
     
-    m_Camera->setPosition(*(pShip->getPos()) + pShip->getMatrix().up() - *(pShip->getDir())*5.0f);
+    
+    m_Camera->setPosition(*(pShip->getPos()) + pShip->getMatrix().up()*3.0f - *(pShip->getDir())*5.0f);
     m_Camera->setTarget(*(pShip->getPos()) + *(pShip->getDir()));
     m_Camera->apply();
     
     
-    
-    drawGroundGrid();
+    //drawGroundGrid();
     
     int deltaTimeInt = glutGet(GLUT_ELAPSED_TIME) - m_LastFrameTime;
     m_LastFrameTime = glutGet(GLUT_ELAPSED_TIME);
@@ -208,8 +206,6 @@ void MyOpenGLRenderer::drawScene() {
             //Matrix* inverseViewMatrix = m_Camera->getInverseViewMatrix(pShip->getMatrix().translation() + pShip->getMatrix().forward(), pShip->getMatrix().up(), pShip->getMatrix().translation() + pShip->getMatrix().up()*1.5f - pShip->getMatrix().forward()*1.5f);
             //currDrawable->applyMatrices(inverseViewMatrix);
             pShip->updatePosition(deltaTime, m_GameManager->getMinBoundary(), m_GameManager->getMaxBoundary());
-            m_Camera->setPosition(*(pShip->getPos()) + pShip->getMatrix().up() - *(pShip->getDir())*5.0f);
-            m_Camera->setTarget(*(pShip->getPos()));
             
         } else if (Terrain* terrain = dynamic_cast<Terrain*>(currDrawable)) {
             //std::cout << "Terrain m_Pos: " << currDrawable->getPos()->X << ", " << currDrawable->getPos()->Y << ", " << currDrawable->getPos()->Z << ", " << std::endl;
@@ -217,14 +213,13 @@ void MyOpenGLRenderer::drawScene() {
             //terrain->updateTerrainMovement(deltaTime);
         }
         
-        
         currDrawable->applyMatrices();        
         drawModel(currDrawable->getModel());
+        //currDrawable->getModel()->getBoundingBox().drawLines();
         currDrawable->discardMatrix();
         currDrawable->drawAxis();
     }
-    
-    m_Camera->apply();
+
     GLfloat lpos[4];
     lpos[0]=m_LightPos->X;
     lpos[1]=m_LightPos->Y;

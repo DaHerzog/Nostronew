@@ -49,10 +49,17 @@ bool ResourceManager::loadModels() {
     
     this->m_Terrain = new Terrain(new Model());
      if (MyWavefrontParser::loadModel(this->m_Terrain->getModel(), "landscape/landscape.obj", true) && this->m_Terrain->getModel()->getModelShader().load(fullPathVertexShader, fullPathFragmentShader) && this->m_Terrain->getModel()->getModelShader().compile()) {
-     this->modelsToDraw->push_back(this->m_Terrain);
+         this->modelsToDraw->push_back(this->m_Terrain);
      } else {
-     std::cout << "Error in loadModels() while loading..." << std::endl;
+         std::cout << "Error in loadModels() while loading..." << std::endl;
      }
+    
+     EnemyShip* firstEnemy = new EnemyShip(new Vector(0.0f, 100.0f, 50.0f), new Model());
+        if (MyWavefrontParser::loadModel(firstEnemy->getModel(), "test/zylinderpoly.obj", true) && firstEnemy->getModel()->getModelShader().load(fullPathVertexShader, fullPathFragmentShader) && firstEnemy->getModel()->getModelShader().compile()) {
+            this->modelsToDraw->push_back(firstEnemy);
+        } else {
+            std::cout << "Error in loadModels() while loading..." << std::endl;
+    }
     
     
     return true;

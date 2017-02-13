@@ -17,6 +17,7 @@ public:
     Drawable();
     Drawable(Model* pModel);
     Drawable(Vector* pStartPos, Model* pModel);
+    Drawable(Vector* p_StartPos, Vector* p_Dir, Model* p_Model);
     virtual ~Drawable();
     
     void setPos(Vector* newPos);
