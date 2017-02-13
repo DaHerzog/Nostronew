@@ -16,6 +16,11 @@ PlayerShip::PlayerShip(Model* pModel): Drawable(pModel) {
     
 }
 
+PlayerShip::PlayerShip(Vector* pStartPos, Model* pModel) : Drawable(pStartPos, pModel) {
+    
+    
+}
+
 PlayerShip::~PlayerShip() {
     
 }

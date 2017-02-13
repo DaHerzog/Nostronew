@@ -15,6 +15,7 @@ double MyOpenGLRenderer::m_WindowHeight = 768;
 Vector* MyOpenGLRenderer::m_LightPos = new Vector(0,10,0);
 Camera* MyOpenGLRenderer::m_Camera = new Camera();
 ResourceManager* MyOpenGLRenderer::m_ResManager = nullptr;
+GameManager* MyOpenGLRenderer::m_GameManager = nullptr;
 int MyOpenGLRenderer::m_MouseState = 0;
 int MyOpenGLRenderer::m_MouseButton = 0;
 int MyOpenGLRenderer::m_LastFrameTime = 0;
@@ -240,7 +241,7 @@ void MyOpenGLRenderer::mouseCallback(int p_Button, int p_State, int p_X, int p_Y
 
 void MyOpenGLRenderer::keyboardCallback(unsigned char p_Key, int p_X, int p_Y) {
     
-    switch (p_Key) {
+    /*switch (p_Key) {
         case 'a':
             //std::cout << "a pressed" << std::endl;
             m_ResManager->getPlayerShip()->setForwardBackward(1.0f);
@@ -253,13 +254,13 @@ void MyOpenGLRenderer::keyboardCallback(unsigned char p_Key, int p_X, int p_Y) {
             break;
         default:
             break;
-    }
+    }*/
     
 }
 
 void MyOpenGLRenderer::keyboardUpCallback(unsigned char p_Key, int p_X, int p_Y) {
     
-    switch (p_Key) {
+    /*switch (p_Key) {
         case 'a':
             //std::cout << "a up" << std::endl;
             m_ResManager->getPlayerShip()->setForwardBackward(0.0f);
@@ -272,7 +273,7 @@ void MyOpenGLRenderer::keyboardUpCallback(unsigned char p_Key, int p_X, int p_Y)
             break;
         default:
             break;
-    }
+    }*/
     
 }
 
@@ -283,22 +284,23 @@ void MyOpenGLRenderer::specialKeyboardCallback(int key, int x, int y)
     switch (key) {
         case GLUT_KEY_UP:
             //std::cout << "Up Key Pressed" << std::endl;
-            m_ResManager->getPlayerShip()->setPitchUpDown(1.0f);
+            //m_ResManager->getPlayerShip()->setUpDown(1.0f);
+            m_GameManager->steerPlayerShip(GLUT_KEY_UP, 1.0f, 0.0f);
             break;
             
         case GLUT_KEY_DOWN:
             //std::cout << "Down Key Pressed" << std::endl;
-            m_ResManager->getPlayerShip()->setPitchUpDown(-1.0f);
+            m_GameManager->steerPlayerShip(GLUT_KEY_DOWN,-1.0f, 0.0f);
             break;
             
         case GLUT_KEY_LEFT:
             //std::cout << "Left Key Pressed" << std::endl;
-            m_ResManager->getPlayerShip()->setRollLeftRight(-1.0f);
+            m_GameManager->steerPlayerShip(GLUT_KEY_LEFT,0.0f, 1.0f);
             break;
             
         case GLUT_KEY_RIGHT:
             //std::cout << "Right Key Pressed" << std::endl;
-            m_ResManager->getPlayerShip()->setRollLeftRight(1.0f);
+            m_GameManager->steerPlayerShip(GLUT_KEY_RIGHT, 0.0f, -1.0f);
             break;
             
         default:
@@ -313,26 +315,27 @@ void MyOpenGLRenderer::specialKeyboardUpCallback(int key, int x, int y)
     switch (key) {
         case GLUT_KEY_UP:
             //std::cout << "Up Key Released" << std::endl;
-            m_ResManager->getPlayerShip()->setPitchUpDown(0.0f);
-            m_ResManager->getTerrain()->setPitchUpDown(0.0f);
+            //m_ResManager->getPlayerShip()->setUpDown(0.0f);
+            //m_GameManager->steerPlayerShip(GLUT_KEY_UP, 0.0f, 0.0f);
+            m_GameManager->stopShip(GLUT_KEY_UP);
             break;
             
         case GLUT_KEY_DOWN:
             //std::cout << "Down Key Released" << std::endl;
-            m_ResManager->getPlayerShip()->setPitchUpDown(0.0f);
-            m_ResManager->getTerrain()->setPitchUpDown(0.0f);
+            //m_GameManager->steerPlayerShip(GLUT_KEY_DOWN, 0.0f, 0.0f);
+            m_GameManager->stopShip(GLUT_KEY_DOWN);
             break;
             
         case GLUT_KEY_LEFT:
-            //std::cout << "Left Key Released" << std::endl;
-            m_ResManager->getPlayerShip()->setRollLeftRight(0.0f);
-            m_ResManager->getTerrain()->setRollLeftRight(0.0f);
+            //m_GameManager->steerPlayerShip(GLUT_KEY_LEFT, 0.0f, 0.0f);
+            m_GameManager->stopShip(GLUT_KEY_LEFT);
             break;
             
         case GLUT_KEY_RIGHT:
             //std::cout << "Right Key Releaed" << std::endl;
-            m_ResManager->getPlayerShip()->setRollLeftRight(0.0f);
-            m_ResManager->getTerrain()->setRollLeftRight(0.0f);
+            //m_GameManager->steerPlayerShip(GLUT_KEY_RIGHT, 0.0f, 0.0f);
+            m_GameManager->stopShip(GLUT_KEY_RIGHT);
+            
             break;
             
         default:
@@ -383,4 +386,8 @@ void MyOpenGLRenderer::checkForErrors() {
 
 void MyOpenGLRenderer::setResourceManager(ResourceManager* p_ResManager) {
     m_ResManager = p_ResManager;
+}
+
+void MyOpenGLRenderer::setGameManager(GameManager* p_GameManager) {
+    m_GameManager = p_GameManager;
 }

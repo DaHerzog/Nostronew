@@ -75,7 +75,10 @@ void Drawable::updatePosition(float deltaTime) {
     Matrix TM, RMz, RMx;
     Matrix RMDir;
     
-    *(this->m_Pos) = *(this->m_Pos) + ((*(this->m_Dir) * (float)(1/deltaTime)) * (this->m_ForwardBackward));
+    //*(this->m_Pos) = *(this->m_Pos) + ((*(this->m_Dir) * (float)(1/deltaTime)) * (this->m_ForwardBackward));
+    
+    *(this->m_Pos) = *(this->m_Pos) + Vector(0.0f, this->m_UpDown, 0.0f);
+    *(this->m_Pos) = *(this->m_Pos) + Vector(this->m_LeftRight, 0.0f, 0.0f);
     
     
     //std::cout << deltaTime << std::endl;
@@ -124,6 +127,14 @@ void Drawable::setPitchUpDown(float p_PitchUpDown) {
 
 void Drawable::setForwardBackward(float p_ForwardBackward) {
     this->m_ForwardBackward = p_ForwardBackward;
+}
+
+void Drawable::setLeftRight(float p_LeftRight) {
+    this->m_LeftRight = p_LeftRight;
+}
+
+void Drawable::setUpDown(float p_UpDown) {
+    this->m_UpDown = p_UpDown;
 }
 
 Matrix& Drawable::getMatrix() {

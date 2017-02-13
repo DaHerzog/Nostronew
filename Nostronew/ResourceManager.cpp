@@ -40,7 +40,7 @@ bool ResourceManager::loadModels() {
     }*/
     
     
-    this->m_PlayerShip = new PlayerShip(new Model());
+    this->m_PlayerShip = new PlayerShip(new Vector(0.0f, 100.0f, 0.0f), new Model());
     if (MyWavefrontParser::loadModel(this->m_PlayerShip->getModel(), "test/zylinderpoly.obj", true) && m_PlayerShip->getModel()->getModelShader().load(fullPathVertexShader, fullPathFragmentShader) && this->m_PlayerShip->getModel()->getModelShader().compile()) {
         this->modelsToDraw->push_back(this->m_PlayerShip);
     } else {

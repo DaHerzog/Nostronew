@@ -20,6 +20,7 @@ public:
     PlayerShip();
     PlayerShip(Vector* startPos);
     PlayerShip(Model* pModel);
+    PlayerShip(Vector* pStartPos, Model* pModel);
     virtual ~PlayerShip();
     
     

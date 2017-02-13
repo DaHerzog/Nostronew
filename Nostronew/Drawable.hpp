@@ -30,6 +30,8 @@ public:
     void setRollLeftRight(float p_RollLeftRight);
     void setPitchUpDown(float p_PitchUpDown);
     void setForwardBackward(float p_ForwardBackward);
+    void setLeftRight(float p_LeftRight);
+    void setUpDown(float p_UpDown);
     Model* getModel();
     void setModel(Model* pModel);
     void drawAxis();
@@ -43,6 +45,8 @@ protected:
     float m_RollLeftRight;
     float m_PitchUpDown;
     float m_ForwardBackward;
+    float m_LeftRight;
+    float m_UpDown;
 };
 
 #endif /* Drawable_hpp */
