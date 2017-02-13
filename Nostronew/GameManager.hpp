@@ -22,6 +22,8 @@ public:
     void steerPlayerShip(int key, float p_UpDown, float p_LeftRight);
     void stopShip(int key);
     void setBoundary(Vector* p_MinBoundary, Vector* p_MaxBoundary);
+    Vector* getMinBoundary();
+    Vector* getMaxBoundary();
 private:
     ResourceManager* m_ResManager;
     Vector* m_MinBoundary;

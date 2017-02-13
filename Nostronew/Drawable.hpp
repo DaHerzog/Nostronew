@@ -24,8 +24,8 @@ public:
     void setDir(Vector* newDir);
     Vector* getDir();
     Matrix& getMatrix();
-    void updatePosition(float deltaTime);
-    void applyMatrices(Matrix* inverseView);
+    void updatePosition(float deltaTime, Vector* p_MinBoundary, Vector* p_MaxBoundary);
+    void applyMatrices();
     void discardMatrix();
     void setRollLeftRight(float p_RollLeftRight);
     void setPitchUpDown(float p_PitchUpDown);
@@ -39,6 +39,7 @@ protected:
     Model* m_Model;
     Vector* m_Pos;
     Vector* m_Dir;
+    Vector* m_Acceleration;
     Matrix m_Matrix;
     float m_RollAngle;
     float m_PitchAngle;

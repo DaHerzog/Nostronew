@@ -14,7 +14,8 @@ GameManager::GameManager() {
 }
 
 GameManager::GameManager(Vector* p_MinBoundary, Vector* p_MaxBoundary) {
-    
+    this->m_MinBoundary = p_MinBoundary;
+    this->m_MaxBoundary = p_MaxBoundary;
 }
 
 GameManager::GameManager(ResourceManager* p_ResManager) {
@@ -28,8 +29,9 @@ void GameManager::steerPlayerShip(int key, float p_UpDown, float p_LeftRight) {
             //m_ResManager->getPlayerShip()->setUpDown(1.0f);
             if (this->m_ResManager->getPlayerShip()->getPos()->Y < this->m_MaxBoundary->Y) {
                 this->m_ResManager->getPlayerShip()->setUpDown(1.0f);
+                
             } else {
-                this->stopShip(GLUT_KEY_UP);
+                this->m_ResManager->getPlayerShip()->setUpDown(0.0f);
             }
             break;
             
@@ -37,8 +39,9 @@ void GameManager::steerPlayerShip(int key, float p_UpDown, float p_LeftRight) {
             //std::cout << "Down Key Pressed" << std::endl;
             if (this->m_ResManager->getPlayerShip()->getPos()->Y > this->m_MinBoundary->Y) {
                 this->m_ResManager->getPlayerShip()->setUpDown(-1.0f);
+                
             } else {
-                this->stopShip(GLUT_KEY_DOWN);
+                this->m_ResManager->getPlayerShip()->setUpDown(0.0f);
             }
             break;
             
@@ -46,8 +49,9 @@ void GameManager::steerPlayerShip(int key, float p_UpDown, float p_LeftRight) {
             //std::cout << "Left Key Pressed" << std::endl;
             if (this->m_ResManager->getPlayerShip()->getPos()->X < this->m_MaxBoundary->X) {
                 this->m_ResManager->getPlayerShip()->setLeftRight(1.0f);
+                
             } else {
-                this->stopShip(GLUT_KEY_LEFT);
+                this->m_ResManager->getPlayerShip()->setLeftRight(0.0f);
             }
             break;
             
@@ -56,7 +60,7 @@ void GameManager::steerPlayerShip(int key, float p_UpDown, float p_LeftRight) {
             if (this->m_ResManager->getPlayerShip()->getPos()->X > this->m_MinBoundary->X) {
                 this->m_ResManager->getPlayerShip()->setLeftRight(-1.0f);
             } else {
-                this->stopShip(GLUT_KEY_RIGHT);
+                this->m_ResManager->getPlayerShip()->setLeftRight(0.0f);
             }
             break;
             
@@ -85,9 +89,8 @@ void GameManager::stopShip(int key) {
         case GLUT_KEY_RIGHT:
             //std::cout << "Right Key Releaed" << std::endl;
             this->m_ResManager->getPlayerShip()->setLeftRight(0.0f);
-            
             break;
-            
+
         default:
             break;
     }
@@ -96,5 +99,13 @@ void GameManager::stopShip(int key) {
 void GameManager::setBoundary(Vector *p_MinBoundary, Vector *p_MaxBoundary) {
     this->m_MinBoundary = p_MinBoundary;
     this->m_MaxBoundary = p_MaxBoundary;
+}
+
+Vector* GameManager::getMinBoundary() {
+    return m_MinBoundary;
+}
+
+Vector* GameManager::getMaxBoundary() {
+    return this->m_MaxBoundary;
 }
 

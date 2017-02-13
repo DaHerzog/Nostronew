@@ -176,8 +176,15 @@ void MyOpenGLRenderer::startMainLoop() {
 void MyOpenGLRenderer::drawScene() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
+    PlayerShip* pShip = m_ResManager->getPlayerShip();
     glLoadIdentity();
-    //m_Camera->apply();
+    
+    
+    m_Camera->setPosition(*(pShip->getPos()) + pShip->getMatrix().up() - *(pShip->getDir())*5.0f);
+    m_Camera->setTarget(*(pShip->getPos()) + *(pShip->getDir()));
+    m_Camera->apply();
+    
+    
     
     drawGroundGrid();
     
@@ -185,38 +192,39 @@ void MyOpenGLRenderer::drawScene() {
     m_LastFrameTime = glutGet(GLUT_ELAPSED_TIME);
     float deltaTime = (float)deltaTimeInt;
     
-    PlayerShip* pShip = m_ResManager->getPlayerShip();
+    
     
     
     for (Drawable* currDrawable : *(m_ResManager->getModelsToDraw())) {
         
-        //currDrawable->updatePosition(deltaTime);
-        
         if (PlayerShip* pShipCast = dynamic_cast<PlayerShip*>(currDrawable)) {
-            std::cout << "PlayerShip m_Pos: " << pShip->getPos()->X << ", " << pShip->getPos()->Y << ", " << pShip->getPos()->Z << ", " << std::endl;
-            std::cout << "PlayerShip m_Dir: " << pShip->getDir()->X << ", " << pShip->getDir()->Y << ", " << pShip->getDir()->Z << ", " << std::endl;
-            std::cout << "Forward X: " << pShip->getMatrix().forward().X << " Y: " << pShip->getMatrix().forward().Y << " Z: " << pShip->getMatrix().forward().Z << std::endl;
+            //std::cout << "PlayerShip m_Pos: " << pShip->getPos()->X << ", " << pShip->getPos()->Y << ", " << pShip->getPos()->Z << ", " << std::endl;
+            //std::cout << "PlayerShip m_Dir: " << pShip->getDir()->X << ", " << pShip->getDir()->Y << ", " << pShip->getDir()->Z << ", " << std::endl;
+            //std::cout << "Forward X: " << pShip->getMatrix().forward().X << " Y: " << pShip->getMatrix().forward().Y << " Z: " << pShip->getMatrix().forward().Z << std::endl;
             //std::cout << "Right X: " << pShip->getMatrix().right().X << " Y: " << pShip->getMatrix().right().Y << " Z: " << pShip->getMatrix().right().Z << std::endl;
             //std::cout << "Up X: " << pShip->getMatrix().up().X << " Y: " << pShip->getMatrix().up().Y << " Z: " << pShip->getMatrix().up().Z << std::endl;
             //std::cout << "Translation X: " << pShip->getMatrix().translation().X << " Y: " << pShip->getMatrix().translation().Y << " Z: " << pShip->getMatrix().translation().Z << std::endl;
-            pShip->updatePosition(deltaTime);
-            Matrix* inverseViewMatrix = m_Camera->getInverseViewMatrix(pShip->getMatrix().translation() + pShip->getMatrix().forward(), pShip->getMatrix().up(), pShip->getMatrix().translation() + pShip->getMatrix().up()*1.5f - pShip->getMatrix().forward()*1.5f);
-            currDrawable->applyMatrices(inverseViewMatrix);
+            //pShip->updatePosition(deltaTime);
+            //Matrix* inverseViewMatrix = m_Camera->getInverseViewMatrix(pShip->getMatrix().translation() + pShip->getMatrix().forward(), pShip->getMatrix().up(), pShip->getMatrix().translation() + pShip->getMatrix().up()*1.5f - pShip->getMatrix().forward()*1.5f);
+            //currDrawable->applyMatrices(inverseViewMatrix);
+            pShip->updatePosition(deltaTime, m_GameManager->getMinBoundary(), m_GameManager->getMaxBoundary());
+            m_Camera->setPosition(*(pShip->getPos()) + pShip->getMatrix().up() - *(pShip->getDir())*5.0f);
+            m_Camera->setTarget(*(pShip->getPos()));
+            
         } else if (Terrain* terrain = dynamic_cast<Terrain*>(currDrawable)) {
             //std::cout << "Terrain m_Pos: " << currDrawable->getPos()->X << ", " << currDrawable->getPos()->Y << ", " << currDrawable->getPos()->Z << ", " << std::endl;
             //std::cout << "Terrain m_Dir: " << currDrawable->getDir()->X << ", " << currDrawable->getDir()->Y << ", " << currDrawable->getDir()->Z << ", " << std::endl;
             //terrain->updateTerrainMovement(deltaTime);
-            
-            Matrix* inverseViewMatrix = m_Camera->getInverseViewMatrix(pShip->getMatrix().translation() + pShip->getMatrix().forward(), pShip->getMatrix().up(), pShip->getMatrix().translation() + pShip->getMatrix().up()*1.5f - pShip->getMatrix().forward()*1.5f);
-            currDrawable->applyMatrices(inverseViewMatrix);
         }
         
-        currDrawable->drawAxis();
+        
+        currDrawable->applyMatrices();        
         drawModel(currDrawable->getModel());
         currDrawable->discardMatrix();
-        
+        currDrawable->drawAxis();
     }
     
+    m_Camera->apply();
     GLfloat lpos[4];
     lpos[0]=m_LightPos->X;
     lpos[1]=m_LightPos->Y;
