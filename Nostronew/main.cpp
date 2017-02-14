@@ -24,5 +24,8 @@ int main(int argc, char * argv[]) {
     } else {
         std::cout << "Initialisierungsfehler in der loadModels() Methode!" << std::endl;
     }
+    
+    delete gameManager;
+    delete resManager;
     return 0;
 }

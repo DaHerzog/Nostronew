@@ -12,7 +12,7 @@
 
 double MyOpenGLRenderer::m_WindowWidth = 1024;
 double MyOpenGLRenderer::m_WindowHeight = 768;
-Vector* MyOpenGLRenderer::m_LightPos = new Vector(0,10,0);
+Vector* MyOpenGLRenderer::m_LightPos = new Vector(0,110,0);
 Camera* MyOpenGLRenderer::m_Camera = new Camera();
 ResourceManager* MyOpenGLRenderer::m_ResManager = nullptr;
 GameManager* MyOpenGLRenderer::m_GameManager = nullptr;
@@ -177,7 +177,10 @@ void MyOpenGLRenderer::drawScene() {
     PlayerShip* pShip = m_ResManager->getPlayerShip();
     glLoadIdentity();
     
-    
+    std::cout << "Forward X: " << pShip->getMatrix().forward().X << " Y: " << pShip->getMatrix().forward().Y << " Z: " << pShip->getMatrix().forward().Z << std::endl;
+    std::cout << "Right X: " << pShip->getMatrix().right().X << " Y: " << pShip->getMatrix().right().Y << " Z: " << pShip->getMatrix().right().Z << std::endl;
+    std::cout << "Up X: " << pShip->getMatrix().up().X << " Y: " << pShip->getMatrix().up().Y << " Z: " << pShip->getMatrix().up().Z << std::endl;
+    std::cout << "Translation X: " << pShip->getMatrix().translation().X << " Y: " << pShip->getMatrix().translation().Y << " Z: " << pShip->getMatrix().translation().Z << std::endl;
     
     m_Camera->setPosition(*(pShip->getPos()) + pShip->getMatrix().up()*3.0f - *(pShip->getDir())*5.0f);
     m_Camera->setTarget(*(pShip->getPos()) + *(pShip->getDir()));
@@ -215,17 +218,17 @@ void MyOpenGLRenderer::drawScene() {
         
         currDrawable->applyMatrices();        
         drawModel(currDrawable->getModel());
-        //currDrawable->getModel()->getBoundingBox().drawLines();
+        currDrawable->getModel()->getBoundingBox().drawLines();
         currDrawable->discardMatrix();
         currDrawable->drawAxis();
     }
 
-    GLfloat lpos[4];
+    /*GLfloat lpos[4];
     lpos[0]=m_LightPos->X;
     lpos[1]=m_LightPos->Y;
     lpos[2]=m_LightPos->Z;
     lpos[3]=1;
-    glLightfv(GL_LIGHT0, GL_POSITION, lpos);
+    glLightfv(GL_LIGHT0, GL_POSITION, lpos);*/
     
     checkForErrors();
     
