@@ -55,7 +55,7 @@ bool ResourceManager::loadModels() {
      }
     
     
-    for (int i = 0; i < 1; i++) {
+    for (int i = 0; i < 5; i++) {
     
         EnemyShip* enemy = new EnemyShip(new Vector(((float)3*i), 90.0f+((float)2*i), 50.0f), new Model());
         if (MyWavefrontParser::loadModel(enemy->getModel(), "test/zylinderpoly.obj", true) && enemy->getModel()->getModelShader().load(fullPathVertexShader, fullPathFragmentShader) && enemy->getModel()->getModelShader().compile()) {

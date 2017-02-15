@@ -286,3 +286,11 @@ void Drawable::drawAxis() {
     glEnd();
     glEnable(GL_LIGHTING);
 }
+
+float Drawable::getLeftRight() {
+    return this->m_LeftRight;
+}
+
+float Drawable::getUpDown() {
+    return this->m_UpDown;
+}

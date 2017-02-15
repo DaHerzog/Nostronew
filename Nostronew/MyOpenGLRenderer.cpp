@@ -215,9 +215,10 @@ void MyOpenGLRenderer::drawScene() {
             //std::cout << "Terrain m_Dir: " << currDrawable->getDir()->X << ", " << currDrawable->getDir()->Y << ", " << currDrawable->getDir()->Z << ", " << std::endl;
             //terrain->updateTerrainMovement(deltaTime);
         } else if (EnemyShip* pEnemy = dynamic_cast<EnemyShip*>(currDrawable)) {
-            //std::cout << "enemy" << std::endl;
+            
+            //std::cout << "EnemyShip m_Pos: " << pEnemy->getPos()->X << ", " << pEnemy->getPos()->Y << ", " << pEnemy->getPos()->Z << ", " << std::endl;
             m_GameManager->moveEnemy(pEnemy);
-            currDrawable->updatePosition(deltaTime, m_GameManager->getMinBoundary(), m_GameManager->getMaxBoundary());
+            pEnemy->updatePosition(deltaTime, m_GameManager->getMinBoundary(), m_GameManager->getMaxBoundary());
         }
         
         

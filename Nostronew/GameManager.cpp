@@ -121,47 +121,51 @@ Vector* GameManager::getMaxBoundary() {
 }
 
 void GameManager::moveEnemy(EnemyShip* p_Enemy) {
-    if ( (p_Enemy->getPos()->X < this->m_MaxBoundary->X) && this->m_MoveEnemiesLeft) {
+    if ( (p_Enemy->getPos()->X < this->m_MaxBoundary->X) && p_Enemy->getMoveEnemiesLeft()) {
         p_Enemy->setLeftRight(1.0f);
-        std::cout << "Enemies Left" << std::endl;
-        if (p_Enemy->getPos()->X > (this->m_MaxBoundary->X-3.0f)) {
-            this->m_MoveEnemiesRight = false;
-            this->m_MoveEnemiesLeft = false;
-            this->m_MoveEnemiesDown = true;
-            this->m_MoveEnemiesUp = false;
+        //std::cout << "Enemies Left" << std::endl;
+        if (p_Enemy->getPos()->X > (this->m_MaxBoundary->X-10.0f)) {
+            p_Enemy->setLeftRight(0.0f);
+            p_Enemy->setMoveEnemiesRight(false);
+            p_Enemy->setMoveEnemiesLeft(false);
+            p_Enemy->setMoveEnemiesDown(true);
+            p_Enemy->setMoveEnemiesUp(false);
         }
     }
     
-    if ( (p_Enemy->getPos()->X > this->m_MinBoundary->X) && this->m_MoveEnemiesRight) {
+    if ( (p_Enemy->getPos()->X > this->m_MinBoundary->X) && p_Enemy->getMoveEnemiesRight()) {
         p_Enemy->setLeftRight(-1.0f);
-        std::cout << "Enemies Right" << std::endl;
-        if (p_Enemy->getPos()->X < (this->m_MinBoundary->X+3.0f)) {
-            this->m_MoveEnemiesLeft = false;
-            this->m_MoveEnemiesRight = false;
-            this->m_MoveEnemiesDown = false;
-            this->m_MoveEnemiesUp = true;
+        //std::cout << "Enemies Right" << std::endl;
+        if (p_Enemy->getPos()->X < (this->m_MinBoundary->X+10.0f)) {
+            p_Enemy->setLeftRight(0.0f);
+            p_Enemy->setMoveEnemiesRight(false);
+            p_Enemy->setMoveEnemiesLeft(false);
+            p_Enemy->setMoveEnemiesDown(false);
+            p_Enemy->setMoveEnemiesUp(true);
         }
     }
     
-    if ( (p_Enemy->getPos()->Y > this->m_MinBoundary->Y) && this->m_MoveEnemiesDown) {
+    if ( (p_Enemy->getPos()->Y > this->m_MinBoundary->Y) && p_Enemy->getMoveEnemiesDown()) {
         p_Enemy->setUpDown(-1.0f);
-        std::cout << "Enemies Down" << std::endl;
-        if (p_Enemy->getPos()->Y < (this->m_MinBoundary->Y+3.0f)) {
-            this->m_MoveEnemiesLeft = false;
-            this->m_MoveEnemiesRight = true;
-            this->m_MoveEnemiesDown = false;
-            this->m_MoveEnemiesUp = false;
+        //std::cout << "Enemies Down" << std::endl;
+        if (p_Enemy->getPos()->Y < (this->m_MinBoundary->Y+10.0f)) {
+            p_Enemy->setUpDown(0.0f);
+            p_Enemy->setMoveEnemiesRight(true);
+            p_Enemy->setMoveEnemiesLeft(false);
+            p_Enemy->setMoveEnemiesDown(false);
+            p_Enemy->setMoveEnemiesUp(false);
         }
     }
     
-    if ( (p_Enemy->getPos()->Y < this->m_MaxBoundary->Y) && this->m_MoveEnemiesUp) {
+    if ( (p_Enemy->getPos()->Y < this->m_MaxBoundary->Y) && p_Enemy->getMoveEnemiesUp()) {
         p_Enemy->setUpDown(1.0f);
-        std::cout << "Enemies Up" << std::endl;
-        if (p_Enemy->getPos()->Y > (this->m_MaxBoundary->Y-3.0f)) {
-            this->m_MoveEnemiesLeft = true;
-            this->m_MoveEnemiesRight = false;
-            this->m_MoveEnemiesDown = false;
-            this->m_MoveEnemiesUp = false;
+        //std::cout << "Enemies Up" << std::endl;
+        if (p_Enemy->getPos()->Y > (this->m_MaxBoundary->Y-10.0f)) {
+            p_Enemy->setUpDown(0.0f);
+            p_Enemy->setMoveEnemiesRight(false);
+            p_Enemy->setMoveEnemiesLeft(true);
+            p_Enemy->setMoveEnemiesDown(false);
+            p_Enemy->setMoveEnemiesUp(false);
         }
     }
 }

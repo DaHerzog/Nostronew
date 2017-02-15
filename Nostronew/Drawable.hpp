@@ -34,6 +34,8 @@ public:
     void setForwardBackward(float p_ForwardBackward);
     void setLeftRight(float p_LeftRight);
     void setUpDown(float p_UpDown);
+    float getLeftRight();
+    float getUpDown();
     Model* getModel();
     void setModel(Model* pModel);
     void drawAxis();
