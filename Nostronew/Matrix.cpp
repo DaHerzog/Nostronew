@@ -433,6 +433,14 @@ float Matrix::determinat()
     m02 * (m10 * m21 - m11 * m20);
 }
 
+void Matrix::toString() {
+    
+    std::cout << "m00: " << m00 << " m01: " << m01 << " m02: " << m02 << " m03: " << m03 << std::endl;
+    std::cout << "m10: " << m10 << " m11: " << m11 << " m12: " << m12 << " m13: " << m13 << std::endl;
+    std::cout << "m20: " << m20 << " m21: " << m21 << " m22: " << m22 << " m03: " << m23 << std::endl;
+    std::cout << "m30: " << m30 << " m31: " << m31 << " m32: " << m32 << " m33: " << m33 << std::endl;
+    
+}
 
 
 

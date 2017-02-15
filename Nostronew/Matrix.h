@@ -81,6 +81,8 @@ public:
     // projective matrix transformation methods
     Matrix& perspective(float Fovy, float AspectRatio, float NearPlane, float FarPlane ); //Fovy=Field of View Y, AspectRatio=WindowWidth/WindowHeight
     Matrix& orthographic(float Width, float Height, float Near, float Far );
+    
+    void toString();
 };
 
 

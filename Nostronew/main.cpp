@@ -15,7 +15,7 @@ int main(int argc, char * argv[]) {
     
     ResourceManager* resManager = new ResourceManager();
     GameManager* gameManager = new GameManager(resManager);
-    gameManager->setBoundary(new Vector(-50.0f, 50.0f,0.0f), new Vector(50.0f, 200.0f,0.0f));
+    gameManager->setBoundary(new Vector(-50.0f, 80.0f,0.0f), new Vector(50.0f, 110.0f,0.0f));
     MyOpenGLRenderer::initialize(argc, argv);
     if (resManager->loadModels()) {
         MyOpenGLRenderer::setResourceManager(resManager);

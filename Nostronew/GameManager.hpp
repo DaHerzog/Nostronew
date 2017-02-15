@@ -12,6 +12,7 @@
 #include <stdio.h>
 
 #include "PlayerShip.hpp"
+#include "EnemyShip.hpp"
 #include "ResourceManager.hpp"
 
 class GameManager {
@@ -24,10 +25,15 @@ public:
     void setBoundary(Vector* p_MinBoundary, Vector* p_MaxBoundary);
     Vector* getMinBoundary();
     Vector* getMaxBoundary();
+    void moveEnemy(EnemyShip* p_Enemy);
 private:
     ResourceManager* m_ResManager;
     Vector* m_MinBoundary;
     Vector* m_MaxBoundary;
+    bool m_MoveEnemiesLeft;
+    bool m_MoveEnemiesRight;
+    bool m_MoveEnemiesUp;
+    bool m_MoveEnemiesDown;
     
 };
 

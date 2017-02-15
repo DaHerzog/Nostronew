@@ -177,10 +177,10 @@ void MyOpenGLRenderer::drawScene() {
     PlayerShip* pShip = m_ResManager->getPlayerShip();
     glLoadIdentity();
     
-    std::cout << "Forward X: " << pShip->getMatrix().forward().X << " Y: " << pShip->getMatrix().forward().Y << " Z: " << pShip->getMatrix().forward().Z << std::endl;
-    std::cout << "Right X: " << pShip->getMatrix().right().X << " Y: " << pShip->getMatrix().right().Y << " Z: " << pShip->getMatrix().right().Z << std::endl;
-    std::cout << "Up X: " << pShip->getMatrix().up().X << " Y: " << pShip->getMatrix().up().Y << " Z: " << pShip->getMatrix().up().Z << std::endl;
-    std::cout << "Translation X: " << pShip->getMatrix().translation().X << " Y: " << pShip->getMatrix().translation().Y << " Z: " << pShip->getMatrix().translation().Z << std::endl;
+//    std::cout << "Forward X: " << pShip->getMatrix().forward().X << " Y: " << pShip->getMatrix().forward().Y << " Z: " << pShip->getMatrix().forward().Z << std::endl;
+//    std::cout << "Right X: " << pShip->getMatrix().right().X << " Y: " << pShip->getMatrix().right().Y << " Z: " << pShip->getMatrix().right().Z << std::endl;
+//    std::cout << "Up X: " << pShip->getMatrix().up().X << " Y: " << pShip->getMatrix().up().Y << " Z: " << pShip->getMatrix().up().Z << std::endl;
+//    std::cout << "Translation X: " << pShip->getMatrix().translation().X << " Y: " << pShip->getMatrix().translation().Y << " Z: " << pShip->getMatrix().translation().Z << std::endl;
     
     m_Camera->setPosition(*(pShip->getPos()) + pShip->getMatrix().up()*3.0f - *(pShip->getDir())*5.0f);
     m_Camera->setTarget(*(pShip->getPos()) + *(pShip->getDir()));
@@ -214,7 +214,12 @@ void MyOpenGLRenderer::drawScene() {
             //std::cout << "Terrain m_Pos: " << currDrawable->getPos()->X << ", " << currDrawable->getPos()->Y << ", " << currDrawable->getPos()->Z << ", " << std::endl;
             //std::cout << "Terrain m_Dir: " << currDrawable->getDir()->X << ", " << currDrawable->getDir()->Y << ", " << currDrawable->getDir()->Z << ", " << std::endl;
             //terrain->updateTerrainMovement(deltaTime);
+        } else if (EnemyShip* pEnemy = dynamic_cast<EnemyShip*>(currDrawable)) {
+            //std::cout << "enemy" << std::endl;
+            m_GameManager->moveEnemy(pEnemy);
+            currDrawable->updatePosition(deltaTime, m_GameManager->getMinBoundary(), m_GameManager->getMaxBoundary());
         }
+        
         
         currDrawable->applyMatrices();        
         drawModel(currDrawable->getModel());

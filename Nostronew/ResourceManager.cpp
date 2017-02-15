@@ -54,11 +54,15 @@ bool ResourceManager::loadModels() {
          std::cout << "Error in loadModels() while loading..." << std::endl;
      }
     
-     EnemyShip* firstEnemy = new EnemyShip(new Vector(0.0f, 100.0f, 50.0f), new Model());
-        if (MyWavefrontParser::loadModel(firstEnemy->getModel(), "test/zylinderpoly.obj", true) && firstEnemy->getModel()->getModelShader().load(fullPathVertexShader, fullPathFragmentShader) && firstEnemy->getModel()->getModelShader().compile()) {
-            this->modelsToDraw->push_back(firstEnemy);
+    
+    for (int i = 0; i < 1; i++) {
+    
+        EnemyShip* enemy = new EnemyShip(new Vector(((float)3*i), 90.0f+((float)2*i), 50.0f), new Model());
+        if (MyWavefrontParser::loadModel(enemy->getModel(), "test/zylinderpoly.obj", true) && enemy->getModel()->getModelShader().load(fullPathVertexShader, fullPathFragmentShader) && enemy->getModel()->getModelShader().compile()) {
+            this->modelsToDraw->push_back(enemy);
         } else {
             std::cout << "Error in loadModels() while loading..." << std::endl;
+        }
     }
     
     

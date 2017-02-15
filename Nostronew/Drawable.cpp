@@ -120,8 +120,8 @@ void Drawable::updatePosition(float deltaTime, Vector* p_MinBoundary, Vector* p_
         this->m_Acceleration->Y = -1.0f;
     }
     
-    std::cout << "m_LeftRight " << this->m_LeftRight << std::endl;
-    std::cout << "m_UpDown " << this->m_UpDown << std::endl;
+    //std::cout << "m_LeftRight " << this->m_LeftRight << std::endl;
+    //std::cout << "m_UpDown " << this->m_UpDown << std::endl;
     //std::cout << "m_Acc: X: " << this->m_Acceleration->X << " Y: " << this->m_Acceleration->Y << " Z: " << this->m_Acceleration->Z << std::endl;
     //std::cout << this->m_RollAngle << std::endl;
     //std::cout << deltaTime << std::endl;
@@ -145,8 +145,10 @@ void Drawable::updatePosition(float deltaTime, Vector* p_MinBoundary, Vector* p_
         }
     }
     
-    *(this->m_Acceleration) = *(this->m_Acceleration) + ((Vector(0.0f, this->m_UpDown, 0.0f) + Vector(this->m_LeftRight, 0.0f, 0.0f))*(float)(1/deltaTime));
-        
+    if (this->m_Pos->X > p_MinBoundary->X && this->m_Pos->X < p_MaxBoundary->X && this->m_Pos->Y > p_MinBoundary->Y && this->m_Pos->Y < p_MaxBoundary->Y) {
+        *(this->m_Acceleration) = *(this->m_Acceleration) + ((Vector(0.0f, this->m_UpDown, 0.0f) + Vector(this->m_LeftRight, 0.0f, 0.0f))*(float)(1/deltaTime));
+    }
+    
     if (this->m_Pos->X > p_MaxBoundary->X) {
         this->m_Acceleration->X -= 0.05f;
     } else if (this->m_Pos->X < p_MinBoundary->X) {
@@ -208,7 +210,7 @@ void Drawable::updatePosition(float deltaTime, Vector* p_MinBoundary, Vector* p_
     RMx.rotationX(this->m_PitchAngle);
     
     
-    RMDir =RMz * RMx;
+    RMDir = RMz * RMx;
     this->m_Dir->X = RMDir.forward().X;
     this->m_Dir->Y = RMDir.forward().Y;
     this->m_Dir->Z = RMDir.forward().Z;
@@ -253,6 +255,10 @@ void Drawable::setUpDown(float p_UpDown) {
 
 Matrix& Drawable::getMatrix() {
     return this->m_Matrix;
+}
+
+void Drawable::setMatrix(Matrix& p_Matrix) {
+    this->m_Matrix = p_Matrix;
 }
 
 Model* Drawable::getModel() {
