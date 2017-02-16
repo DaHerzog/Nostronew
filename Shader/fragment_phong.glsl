@@ -12,6 +12,7 @@ varying vec3 Normal;
 varying vec3 Position;
 varying vec2 Texcoord;
 
+varying vec3 CamRoomLightPos;
 
 float sat(float a) {
     return clamp(a, 0.0, 1.0);
@@ -20,12 +21,12 @@ float sat(float a) {
 void main() {
     
     vec3 N = normalize(Normal);
-    vec3 L = normalize(LightPos-Position);
-    vec3 E = normalize(EyePos-Position);
+    vec3 L = normalize(CamRoomLightPos-Position);
+    vec3 E = normalize(-Position);
     vec3 R = reflect(-L, N);
     
-    vec3 DiffuseComponent = DiffColor * sat(dot(N,L));
-    vec3 SpecularComponent = SpecColor * pow(sat(dot(E,R)), SpecExp);
+    vec3 DiffuseComponent = LightColor * DiffColor * sat(dot(N,L));
+    vec3 SpecularComponent = LightColor * SpecColor * pow(sat(dot(E,R)), SpecExp);
     
     vec3 DiffuseTexColor  = texture2D(DiffuseTexture, Texcoord).rgb;
     //vec3 DiffuseTexColor = vec3(1.0, 0.0, 0.0);

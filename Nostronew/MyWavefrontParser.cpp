@@ -168,6 +168,7 @@ bool MyWavefrontParser::loadFromCinema(Model *p_Model, const char* p_Filename, b
             } else if(buffer[0] == 'v' && buffer[1] == 'n') {
                 float tmpNormX, tmpNormY, tmpNormZ;
                 sscanf(tempLine.c_str(), "vn %f %f %f", &tmpNormX, &tmpNormY, &tmpNormZ);
+                //std::cout << "Normale X: " << tmpNormX << " Y: " << tmpNormY << " Z: " << tmpNormZ << std::endl;
                 Vector tmpNorm(tmpNormX, tmpNormY, tmpNormZ);
                 normalsFromFile->push_back(tmpNorm);
             } else if (buffer[0] == 'f') {

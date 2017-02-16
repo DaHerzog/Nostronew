@@ -12,7 +12,7 @@
 
 double MyOpenGLRenderer::m_WindowWidth = 1024;
 double MyOpenGLRenderer::m_WindowHeight = 768;
-Vector* MyOpenGLRenderer::m_LightPos = new Vector(0,110,0);
+Vector* MyOpenGLRenderer::m_LightPos = new Vector(0.0f ,105.0f ,0.0f);
 Camera* MyOpenGLRenderer::m_Camera = new Camera();
 ResourceManager* MyOpenGLRenderer::m_ResManager = nullptr;
 GameManager* MyOpenGLRenderer::m_GameManager = nullptr;
@@ -48,13 +48,13 @@ void MyOpenGLRenderer::setupDefaultOpenGLSettings() {
     glLightfv(GL_LIGHT0, GL_SPECULAR, specularLight);
     
     // Setup default material
-    float diff[4] = {1,1,1,1};
+    /*float diff[4] = {1,1,1,1};
     float amb[4]  = {0.2f,0.2f,0.2f,1};
     float spec[4] = {0.5f,0.5f,0.5f,1};
     glMaterialfv(GL_FRONT, GL_DIFFUSE, diff);
     glMaterialfv(GL_FRONT, GL_SPECULAR, spec);
     glMateriali(GL_FRONT, GL_SHININESS, 30);
-    glMaterialfv(GL_FRONT, GL_AMBIENT, amb);
+    glMaterialfv(GL_FRONT, GL_AMBIENT, amb);*/
     
     glShadeModel(GL_SMOOTH);
     glEnable(GL_LIGHTING);
@@ -89,22 +89,21 @@ void MyOpenGLRenderer::drawModel(Model *p_ModelToDraw) {
             
             p_ModelToDraw->getModelShader().setParameter(p_ModelToDraw->getModelShader().getParameterId("DiffuseTexture"), 0);
             
-            /*std::cout << "DiffColor R: " << p_ModelToDraw->getMatGroupsPerformance()[j].material->getDiffuseColor().R << ", G: " << p_ModelToDraw->getMatGroupsPerformance()[j].material->getDiffuseColor().G << ", B: " << p_ModelToDraw->getMatGroupsPerformance()[j].material->getDiffuseColor().B << std::endl;
-            std::cout << "SpecColor R: " << p_ModelToDraw->getMatGroupsPerformance()[j].material->getSpecularColor().R << ", G: " << p_ModelToDraw->getMatGroupsPerformance()[j].material->getSpecularColor().G << ", B: " << p_ModelToDraw->getMatGroupsPerformance()[j].material->getSpecularColor().B << std::endl;
-            std::cout << "AmbientColor R: " << p_ModelToDraw->getMatGroupsPerformance()[j].material->getAmbientColor().R << ", G: " << p_ModelToDraw->getMatGroupsPerformance()[j].material->getAmbientColor().G << ", B: " << p_ModelToDraw->getMatGroupsPerformance()[j].material->getAmbientColor().B << std::endl;
-            std::cout << "SpecExp: " << p_ModelToDraw->getMatGroupsPerformance()[j].material->getSpecularExponent() << std::endl;*/
+//            std::cout << "DiffColor R: " << p_ModelToDraw->getMatGroupsPerformance()[j].material->getDiffuseColor().R << ", G: " << p_ModelToDraw->getMatGroupsPerformance()[j].material->getDiffuseColor().G << ", B: " << p_ModelToDraw->getMatGroupsPerformance()[j].material->getDiffuseColor().B << std::endl;
+//            std::cout << "SpecColor R: " << p_ModelToDraw->getMatGroupsPerformance()[j].material->getSpecularColor().R << ", G: " << p_ModelToDraw->getMatGroupsPerformance()[j].material->getSpecularColor().G << ", B: " << p_ModelToDraw->getMatGroupsPerformance()[j].material->getSpecularColor().B << std::endl;
+//            std::cout << "AmbientColor R: " << p_ModelToDraw->getMatGroupsPerformance()[j].material->getAmbientColor().R << ", G: " << p_ModelToDraw->getMatGroupsPerformance()[j].material->getAmbientColor().G << ", B: " << p_ModelToDraw->getMatGroupsPerformance()[j].material->getAmbientColor().B << std::endl;
+//            std::cout << "SpecExp: " << p_ModelToDraw->getMatGroupsPerformance()[j].material->getSpecularExponent() << std::endl;
             
             //draw via Array Buffer
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, p_ModelToDraw->getIndexBuffer());
             glBindBuffer(GL_ARRAY_BUFFER, p_ModelToDraw->getVertexBuffer());
-            //glBindVertexArrayAPPLE(p_ModelToDraw->getVertexAttributeBuffer());
             
             glEnableClientState(GL_VERTEX_ARRAY);
             glEnableClientState(GL_NORMAL_ARRAY);
             glEnableClientState(GL_TEXTURE_COORD_ARRAY);
             
             glVertexPointer( 3, GL_FLOAT, sizeof(Vertex), BUFFER_OFFSET(0));
-            glNormalPointer( GL_FLOAT, sizeof(Vertex), BUFFER_OFFSET(12));
+            glNormalPointer(GL_FLOAT, sizeof(Vertex), BUFFER_OFFSET(12));
             glTexCoordPointer(2, GL_FLOAT, sizeof(Vertex), BUFFER_OFFSET(24));
             
             glDrawElements( GL_TRIANGLES, p_ModelToDraw->getMatGroupsPerformance()[j].last-p_ModelToDraw->getMatGroupsPerformance()[j].first+1, GL_UNSIGNED_INT, BUFFER_OFFSET(sizeof(unsigned int)*p_ModelToDraw->getMatGroupsPerformance()[j].first) );

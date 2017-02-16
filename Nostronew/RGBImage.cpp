@@ -44,7 +44,7 @@ void RGBImage::setPixelColor(unsigned int x, unsigned int y, const Color& c) {
     this->m_Image[x][y].G = c.G;
     this->m_Image[x][y].B = c.B;
     
-    /*std::cout << "R: " << this->m_Image[x][y].R << " G: " << this->m_Image[x][y].G << " B: " << this->m_Image[x][y].B << std::endl;*/
+    //std::cout << "R: " << this->m_Image[x][y].R << " G: " << this->m_Image[x][y].G << " B: " << this->m_Image[x][y].B << std::endl;
 }
 
 const Color& RGBImage::getPixelColor(unsigned int x, unsigned int y) const {
