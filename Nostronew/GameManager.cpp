@@ -126,10 +126,11 @@ void GameManager::moveEnemy(EnemyShip* p_Enemy) {
         //std::cout << "Enemies Left" << std::endl;
         if (p_Enemy->getPos()->X > (this->m_MaxBoundary->X-10.0f)) {
             p_Enemy->setLeftRight(0.0f);
-            p_Enemy->setMoveEnemiesRight(false);
-            p_Enemy->setMoveEnemiesLeft(false);
-            p_Enemy->setMoveEnemiesDown(true);
-            p_Enemy->setMoveEnemiesUp(false);
+//            p_Enemy->setMoveEnemiesRight(false);
+//            p_Enemy->setMoveEnemiesLeft(false);
+//            p_Enemy->setMoveEnemiesDown(true);
+//            p_Enemy->setMoveEnemiesUp(false);
+            this->calculateRandomEnemyDirection(p_Enemy);
         }
     }
     
@@ -138,10 +139,11 @@ void GameManager::moveEnemy(EnemyShip* p_Enemy) {
         //std::cout << "Enemies Right" << std::endl;
         if (p_Enemy->getPos()->X < (this->m_MinBoundary->X+10.0f)) {
             p_Enemy->setLeftRight(0.0f);
-            p_Enemy->setMoveEnemiesRight(false);
-            p_Enemy->setMoveEnemiesLeft(false);
-            p_Enemy->setMoveEnemiesDown(false);
-            p_Enemy->setMoveEnemiesUp(true);
+//            p_Enemy->setMoveEnemiesRight(false);
+//            p_Enemy->setMoveEnemiesLeft(false);
+//            p_Enemy->setMoveEnemiesDown(false);
+//            p_Enemy->setMoveEnemiesUp(true);
+            this->calculateRandomEnemyDirection(p_Enemy);
         }
     }
     
@@ -150,10 +152,11 @@ void GameManager::moveEnemy(EnemyShip* p_Enemy) {
         //std::cout << "Enemies Down" << std::endl;
         if (p_Enemy->getPos()->Y < (this->m_MinBoundary->Y+10.0f)) {
             p_Enemy->setUpDown(0.0f);
-            p_Enemy->setMoveEnemiesRight(true);
-            p_Enemy->setMoveEnemiesLeft(false);
-            p_Enemy->setMoveEnemiesDown(false);
-            p_Enemy->setMoveEnemiesUp(false);
+//            p_Enemy->setMoveEnemiesRight(true);
+//            p_Enemy->setMoveEnemiesLeft(false);
+//            p_Enemy->setMoveEnemiesDown(false);
+//            p_Enemy->setMoveEnemiesUp(false);
+            this->calculateRandomEnemyDirection(p_Enemy);
         }
     }
     
@@ -162,11 +165,99 @@ void GameManager::moveEnemy(EnemyShip* p_Enemy) {
         //std::cout << "Enemies Up" << std::endl;
         if (p_Enemy->getPos()->Y > (this->m_MaxBoundary->Y-10.0f)) {
             p_Enemy->setUpDown(0.0f);
-            p_Enemy->setMoveEnemiesRight(false);
-            p_Enemy->setMoveEnemiesLeft(true);
-            p_Enemy->setMoveEnemiesDown(false);
-            p_Enemy->setMoveEnemiesUp(false);
+//            p_Enemy->setMoveEnemiesRight(false);
+//            p_Enemy->setMoveEnemiesLeft(true);
+//            p_Enemy->setMoveEnemiesDown(false);
+//            p_Enemy->setMoveEnemiesUp(false);
+            this->calculateRandomEnemyDirection(p_Enemy);
         }
     }
 }
 
+void GameManager::calculateRandomEnemyDirection(EnemyShip *p_Enemy) {
+    
+    //Initialisierung eines echten Zufallsgenerators für Integer Werte zwischen 1 und 3
+    std::random_device randomDev;
+    std::default_random_engine randEng(randomDev());
+    std::uniform_int_distribution<int> uniformDist(1,3);
+    int randomNr;
+
+    
+    if (p_Enemy->getMoveEnemiesDown()) {
+        randomNr = uniformDist(randEng);
+        switch (randomNr) {
+            case 1:
+                p_Enemy->setMoveEnemiesDown(false);
+                p_Enemy->setMoveEnemiesUp(true);
+                break;
+            case 2:
+                p_Enemy->setMoveEnemiesDown(false);
+                p_Enemy->setMoveEnemiesLeft(true);
+                break;
+            case 3:
+                p_Enemy->setMoveEnemiesDown(false);
+                p_Enemy->setMoveEnemiesRight(true);
+                break;
+            default:
+                break;
+        }
+    } else if (p_Enemy->getMoveEnemiesUp()) {
+        randomNr = uniformDist(randEng);
+        switch (randomNr) {
+            case 1:
+                p_Enemy->setMoveEnemiesUp(false);
+                p_Enemy->setMoveEnemiesDown(true);
+                break;
+            case 2:
+                p_Enemy->setMoveEnemiesUp(false);
+                p_Enemy->setMoveEnemiesLeft(true);
+                break;
+            case 3:
+                p_Enemy->setMoveEnemiesUp(false);
+                p_Enemy->setMoveEnemiesRight(true);
+                break;
+            default:
+                break;
+        }
+    } else if (p_Enemy->getMoveEnemiesLeft()) {
+        randomNr = uniformDist(randEng);
+        switch (randomNr) {
+            case 1:
+                p_Enemy->setMoveEnemiesLeft(false);
+                p_Enemy->setMoveEnemiesRight(true);
+                break;
+            case 2:
+                p_Enemy->setMoveEnemiesLeft(false);
+                p_Enemy->setMoveEnemiesUp(true);
+                break;
+            case 3:
+                p_Enemy->setMoveEnemiesLeft(false);
+                p_Enemy->setMoveEnemiesDown(true);
+                break;
+            default:
+                break;
+        }
+    } else if (p_Enemy->getMoveEnemiesRight()) {
+        randomNr = uniformDist(randEng);
+        switch (randomNr) {
+            case 1:
+                p_Enemy->setMoveEnemiesRight(false);
+                p_Enemy->setMoveEnemiesDown(true);
+                break;
+            case 2:
+                p_Enemy->setMoveEnemiesRight(false);
+                p_Enemy->setMoveEnemiesLeft(true);
+                break;
+            case 3:
+                p_Enemy->setMoveEnemiesRight(false);
+                p_Enemy->setMoveEnemiesUp(true);
+                break;
+            default:
+                break;
+        }
+    }
+    
+    
+    
+    
+}

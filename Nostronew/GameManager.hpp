@@ -14,6 +14,7 @@
 #include "PlayerShip.hpp"
 #include "EnemyShip.hpp"
 #include "ResourceManager.hpp"
+#include <random>
 
 class GameManager {
 public:
@@ -26,6 +27,7 @@ public:
     Vector* getMinBoundary();
     Vector* getMaxBoundary();
     void moveEnemy(EnemyShip* p_Enemy);
+    void calculateRandomEnemyDirection(EnemyShip* p_Enemy);
 private:
     ResourceManager* m_ResManager;
     Vector* m_MinBoundary;
