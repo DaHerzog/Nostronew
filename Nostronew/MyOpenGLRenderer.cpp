@@ -76,6 +76,8 @@ void MyOpenGLRenderer::drawModel(Model *p_ModelToDraw) {
             p_ModelToDraw->getModelShader().activate();
             
             p_ModelToDraw->getModelShader().setParameter(p_ModelToDraw->getModelShader().getParameterId("LightPos"), *m_LightPos);
+            p_ModelToDraw->getModelShader().setParameter(p_ModelToDraw->getModelShader().getParameterId("EyePos"), m_Camera->getPosition());
+            //std::cout << "Kamera X: " << m_Camera->getPosition().X << "Kamera Y: " << m_Camera->getPosition().Y << "Kamera Z: " << m_Camera->getPosition().Z << std::endl;
             p_ModelToDraw->getModelShader().setParameter(p_ModelToDraw->getModelShader().getParameterId("LightColor"), Color(1.0, 1.0, 1.0));
             p_ModelToDraw->getModelShader().setParameter(p_ModelToDraw->getModelShader().getParameterId("DiffColor"), Color(p_ModelToDraw->getMatGroupsPerformance()[j].material->getDiffuseColor().R, p_ModelToDraw->getMatGroupsPerformance()[j].material->getDiffuseColor().G, p_ModelToDraw->getMatGroupsPerformance()[j].material->getDiffuseColor().B));
             p_ModelToDraw->getModelShader().setParameter(p_ModelToDraw->getModelShader().getParameterId("SpecColor"), Color(p_ModelToDraw->getMatGroupsPerformance()[j].material->getSpecularColor().R, p_ModelToDraw->getMatGroupsPerformance()[j].material->getSpecularColor().G, p_ModelToDraw->getMatGroupsPerformance()[j].material->getSpecularColor().B));

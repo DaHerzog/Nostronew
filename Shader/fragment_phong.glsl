@@ -2,11 +2,12 @@ uniform vec3 LightColor;
 uniform vec3 DiffColor;
 uniform vec3 SpecColor;
 uniform vec3 AmbientColor;
+uniform vec3 EyePos;
+uniform vec3 LightPos;
 uniform float SpecExp;
 
 uniform sampler2D DiffuseTexture;
 
-varying vec3 LightPosCamRoom;
 varying vec3 Normal;
 varying vec3 Position;
 varying vec2 Texcoord;
@@ -19,8 +20,8 @@ float sat(float a) {
 void main() {
     
     vec3 N = normalize(Normal);
-    vec3 L = normalize(LightPosCamRoom-Position);
-    vec3 E = normalize(-Position);
+    vec3 L = normalize(LightPos-Position);
+    vec3 E = normalize(EyePos-Position);
     vec3 R = reflect(-L, N);
     
     vec3 DiffuseComponent = DiffColor * sat(dot(N,L));
