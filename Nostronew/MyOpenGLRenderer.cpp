@@ -179,9 +179,18 @@ void MyOpenGLRenderer::drawScene() {
     
     drawGroundGrid();
     
+	int delta = glutGet(GLUT_ELAPSED_TIME);
     int deltaTimeInt = glutGet(GLUT_ELAPSED_TIME) - m_LastFrameTime;
     m_LastFrameTime = glutGet(GLUT_ELAPSED_TIME);
     float deltaTime = (float)deltaTimeInt;
+
+
+#ifdef WIN32
+	// Exception um Teilen durch 0 zu verhindern -> führt unter Windows zu unvorhergesehenen Verhalten
+	if (deltaTime == 0.0) {
+		deltaTime = 1.0f;
+	}
+#endif
     
     for (Model* currModel : *(m_ResManager->getModelsToDraw())) {
         //Das C++ Äquivalent zu dem "instanceof" Operator

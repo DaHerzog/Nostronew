@@ -30,7 +30,12 @@ bool ShaderProgram::load(const char* vertexShader, const char* fragmentShader) {
 bool ShaderProgram::loadVertexShader(const char* vertexShader) {
     std::string* error;
     
-    FILE* myFile = fopen(vertexShader, "r");
+
+#ifdef WIN32
+	FILE* myFile = fopen(vertexShader, "rb");
+#else
+	FILE* myFile = fopen(vertexShader, "r");
+#endif // WIN32
     
     if (myFile != NULL) {
         long fileSize;
@@ -76,7 +81,11 @@ bool ShaderProgram::loadVertexShader(const char* vertexShader) {
 bool ShaderProgram::loadFragmentShader(const char* fragmentShader) {
     std::string* error;
 
-    FILE* myFile = fopen(fragmentShader, "r");
+#ifdef WIN32
+    FILE* myFile = fopen(fragmentShader, "rb");
+#else
+	FILE* myFile = fopen(vertexShader, "r");
+#endif
     
     if (myFile != NULL) {
         long fileSize;

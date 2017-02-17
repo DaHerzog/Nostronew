@@ -16,8 +16,18 @@
 #define MyOpenGLRenderer_hpp
 
 #include <stdio.h>
+
+#include <Windows.h>
+#ifdef WIN32
+
+#include <windows.h>
+#include <GL\glew.h>
+#include <gl\glut.h>
+#include <GL\GL.H>
+#else
 #include <OpenGL/OpenGL.h>
 #include <GLUT/GLUT.h>
+#endif
 
 
 #include "PlayerShip.hpp"

@@ -18,7 +18,11 @@
 class ResourceManager {
 
 private:
-    const char* m_PathToShader = "/Users/davidherzog/Documents/XCode/Nostronew/Shader/";
+#ifdef WIN32
+	const char* m_PathToShader = "E:/ComputerGrafik/PraktikumProjekte/Projekt/CG_Nostronew/Shader/";
+#else
+	const char* m_PathToShader = "/Users/davidherzog/Documents/XCode/Nostronew/Shader/";
+#endif
     std::vector<Model*>* modelsToDraw;
     std::vector<Model*>* loadedModels;
     PlayerShip* playerShip;

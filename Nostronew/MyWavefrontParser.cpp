@@ -18,7 +18,12 @@ ImportType MyWavefrontParser::m_UsedProgram = CINEMA;
 //
 //  Hier wird der Hauptpfad angegeben in dem die Models liegen.
 //
+
+#ifdef WIN32 
+const char* MyWavefrontParser::m_MainPath = "E:/ComputerGrafik/PraktikumProjekte/Projekt/CG_Nostronew/Models/";
+#else
 const char* MyWavefrontParser::m_MainPath = "/Users/davidherzog/Documents/XCode/Nostronew/Models/";
+#endif
 
 //
 //  Skalierungsfaktor, falls gewünscht.

@@ -9,6 +9,19 @@
 #ifndef __RealtimeRending__Model__
 #define __RealtimeRending__Model__
 
+
+
+#ifdef WIN32
+	#define M_PI 3.1415926
+	#include <windows.h>
+	#include <GL\glew.h>
+	#include <GL\glut.h>
+	#include <GL\GL.H>
+#else
+	#include <OpenGL/OpenGL.h>
+	#include <GLUT/GLUT.h>
+#endif
+
 #include <iostream>
 #include "Vector.hpp"
 #include "Color.hpp"

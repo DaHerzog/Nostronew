@@ -12,9 +12,18 @@
 #include <stdio.h>
 #include <string>
 #include <vector>
-#include <GLUT/GLUT.h>
 #include "Matrix.h"
 #include "Color.hpp"
+
+#ifdef WIN32
+	#include <windows.h>
+	#include <GL\glew.h>
+	#include <GL\glut.h>
+	#include <GL\GL.H>
+#else
+	#include <OpenGL/OpenGL.h>
+	#include <GLUT/GLUT.h>
+#endif
 
 class ShaderProgram {
 

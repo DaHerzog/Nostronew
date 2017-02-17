@@ -10,16 +10,6 @@
 //  Siehe MyWavefrontParser.hpp
 //
 
-#ifdef WIN32
-	#include <Windows.h>
-	#include <GL/glew.h>
-	#include <GL/GLUT.h>
-	#include <GL/GL.h>
-#else
-	#include <OpenGL/OpenGL.h>
-	#include <GLUT/GLUT.h>
-#endif
-
 #include "Model.h"
 #include <vector>
 #include <assert.h>
