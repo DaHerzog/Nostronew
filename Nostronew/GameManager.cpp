@@ -170,3 +170,7 @@ void GameManager::moveEnemy(EnemyShip* p_Enemy) {
     }
 }
 
+void GameManager::shootEnemyShip() {
+	this->m_ResManager->
+}
+

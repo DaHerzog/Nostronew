@@ -10,29 +10,29 @@
 #define ResourceManager_hpp
 
 #include <stdio.h>
+#include <queue>
 
 #include "PlayerShip.hpp"
 #include "EnemyShip.hpp"
 #include "Terrain.hpp"
+#include "Bullet.hpp"
 #include "MyWavefrontParser.hpp"
 
 class ResourceManager {
 
 private:
-
+ 
 #ifdef WIN32
 	const char* m_PathToShader = "E:/ComputerGrafik/PraktikumProjekte/Projekt/CG_Nostronew/Shader/";
 #else
 	const char* m_PathToShader = "/Users/davidherzog/Documents/XCode/Nostronew/Shader/";
 #endif
-    std::vector<Model*>* modelsToDraw;
-    std::vector<Model*>* loadedModels;
-    PlayerShip* playerShip;
-    const char* m_PathToShader = "/Users/davidherzog/Documents/XCode/Nostronew/Shader/";
     std::vector<Drawable*>* modelsToDraw;
     std::vector<Drawable*>* loadedModels;
     PlayerShip* m_PlayerShip;
     Terrain* m_Terrain;
+	std::vector<EnemyShip*>* m_Enemies;
+	std::queue<Bullet*>* m_Bullets;
 public:
     ResourceManager();
     bool loadModels();
@@ -40,6 +40,9 @@ public:
     std::vector<Drawable*>* getLoadedModels();
     PlayerShip* getPlayerShip();
     Terrain* getTerrain();
+	void createBullet();
+	void deleteBullet();
+
 };
 
 #endif /* ResourceManager_hpp */

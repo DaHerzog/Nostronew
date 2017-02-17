@@ -23,6 +23,7 @@ public:
     void steerPlayerShip(int key, float p_UpDown, float p_LeftRight);
     void stopShip(int key);
     void setBoundary(Vector* p_MinBoundary, Vector* p_MaxBoundary);
+	void shootEnemyShip();
     Vector* getMinBoundary();
     Vector* getMaxBoundary();
     void moveEnemy(EnemyShip* p_Enemy);

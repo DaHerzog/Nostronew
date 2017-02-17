@@ -262,39 +262,45 @@ void MyOpenGLRenderer::mouseCallback(int p_Button, int p_State, int p_X, int p_Y
 
 void MyOpenGLRenderer::keyboardCallback(unsigned char p_Key, int p_X, int p_Y) {
     
-    /*switch (p_Key) {
+    switch (p_Key) {
         case 'a':
             //std::cout << "a pressed" << std::endl;
-            m_ResManager->getPlayerShip()->setForwardBackward(1.0f);
+            //m_ResManager->getPlayerShip()->setForwardBackward(1.0f);
             
             break;
         case 'y':
             //std::cout << "y pressed" << std::endl;
-            m_ResManager->getPlayerShip()->setForwardBackward(-1.0f);
+            //m_ResManager->getPlayerShip()->setForwardBackward(-1.0f);
  
             break;
+		case 'd':
+			std::cout << "d pressed" << std::endl;
+			//TODO schuss aufladen
         default:
             break;
-    }*/
-    
+    }
 }
 
 void MyOpenGLRenderer::keyboardUpCallback(unsigned char p_Key, int p_X, int p_Y) {
     
-    /*switch (p_Key) {
+    switch (p_Key) {
         case 'a':
             //std::cout << "a up" << std::endl;
-            m_ResManager->getPlayerShip()->setForwardBackward(0.0f);
-            m_ResManager->getTerrain()->setForwardBackward(0.0f);
+            //m_ResManager->getPlayerShip()->setForwardBackward(0.0f);
+            //m_ResManager->getTerrain()->setForwardBackward(0.0f);
             break;
         case 'y':
             //std::cout << "y up" << std::endl;
-            m_ResManager->getPlayerShip()->setForwardBackward(0.0f);
-            m_ResManager->getTerrain()->setForwardBackward(0.0f);
+            //m_ResManager->getPlayerShip()->setForwardBackward(0.0f);
+            //am_ResManager->getTerrain()->setForwardBackward(0.0f);
             break;
+		case 'd':
+			std::cout << "d up" << std::endl;
+			m_GameManager->shootEnemyShip();
+			break;
         default:
             break;
-    }*/
+    }
     
 }
 
