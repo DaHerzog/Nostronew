@@ -104,7 +104,8 @@ void ResourceManager::createBullet() {
 	strcpy(fullPathFragmentShader, m_PathToShader);
 	strcat(fullPathFragmentShader, (const char*)"fragment_phong.glsl");
 
-	Bullet* bullet = new Bullet(m_PlayerShip->getPos, new Model());
+	Vector* tmp = this->m_PlayerShip->getPos();
+	Bullet* bullet = new Bullet(tmp, new Model());
 	if (MyWavefrontParser::loadModel(bullet->getModel(), "test/zylinderpoly.obj", true) && bullet->getModel()->getModelShader().load(fullPathVertexShader, fullPathFragmentShader) && bullet->getModel()->getModelShader().compile()) {
 		this->m_Bullets->push(bullet);
 	}
@@ -116,7 +117,7 @@ void ResourceManager::createBullet() {
 void ResourceManager::deleteBullet() {
 
 	//Schuss hat begrenzte Lebenszeit -> erster abgebeuerter Schuss muss zuerst wieder gelöscht werden
-	this->m_Bullets->pop;
-
+	std::queue<Bullet*> *tmp = this->m_Bullets;
+	tmp->pop();
 }
 
