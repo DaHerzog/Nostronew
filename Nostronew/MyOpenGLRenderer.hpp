@@ -30,9 +30,10 @@
 #endif
 
 
-#include "PlayerShip.hpp"
+//#include "PlayerShip.hpp"
 #include "Camera.h"
 #include "ResourceManager.hpp"
+#include "GameManager.hpp"
 
 
 class MyOpenGLRenderer {
@@ -41,6 +42,7 @@ private:
     
     static MyOpenGLRenderer* m_Instance;
     static ResourceManager* m_ResManager;
+    static GameManager* m_GameManager;
     static Vector* m_LightPos;
     static Camera* m_Camera;
     static double m_WindowWidth;
@@ -68,6 +70,7 @@ public:
     static void initialize(int argc, char* argv[]);
     static void startMainLoop();
     static void setResourceManager(ResourceManager* p_ResManager);
+    static void setGameManager(GameManager* p_GameManager);
 };
 
 #endif /* MyOpenGLRenderer_hpp */

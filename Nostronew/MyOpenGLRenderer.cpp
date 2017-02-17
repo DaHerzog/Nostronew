@@ -12,9 +12,10 @@
 
 double MyOpenGLRenderer::m_WindowWidth = 1024;
 double MyOpenGLRenderer::m_WindowHeight = 768;
-Vector* MyOpenGLRenderer::m_LightPos = new Vector(0,10,0);
+Vector* MyOpenGLRenderer::m_LightPos = new Vector(0,110,0);
 Camera* MyOpenGLRenderer::m_Camera = new Camera();
 ResourceManager* MyOpenGLRenderer::m_ResManager = nullptr;
+GameManager* MyOpenGLRenderer::m_GameManager = nullptr;
 int MyOpenGLRenderer::m_MouseState = 0;
 int MyOpenGLRenderer::m_MouseButton = 0;
 int MyOpenGLRenderer::m_LastFrameTime = 0;
@@ -83,6 +84,7 @@ void MyOpenGLRenderer::drawModel(Model *p_ModelToDraw) {
             
             
             p_ModelToDraw->getMatGroupsPerformance()[j].material->getTexture().apply();
+            
             p_ModelToDraw->getModelShader().setParameter(p_ModelToDraw->getModelShader().getParameterId("DiffuseTexture"), 0);
             
             /*std::cout << "DiffColor R: " << p_ModelToDraw->getMatGroupsPerformance()[j].material->getDiffuseColor().R << ", G: " << p_ModelToDraw->getMatGroupsPerformance()[j].material->getDiffuseColor().G << ", B: " << p_ModelToDraw->getMatGroupsPerformance()[j].material->getDiffuseColor().B << std::endl;
@@ -113,8 +115,6 @@ void MyOpenGLRenderer::drawModel(Model *p_ModelToDraw) {
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
             
             p_ModelToDraw->getModelShader().deactivate();
-            
-            p_ModelToDraw->getBoundingBox().drawLines();
             
         }
     } else {
@@ -174,10 +174,20 @@ void MyOpenGLRenderer::startMainLoop() {
 void MyOpenGLRenderer::drawScene() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
+    PlayerShip* pShip = m_ResManager->getPlayerShip();
     glLoadIdentity();
+    
+//    std::cout << "Forward X: " << pShip->getMatrix().forward().X << " Y: " << pShip->getMatrix().forward().Y << " Z: " << pShip->getMatrix().forward().Z << std::endl;
+//    std::cout << "Right X: " << pShip->getMatrix().right().X << " Y: " << pShip->getMatrix().right().Y << " Z: " << pShip->getMatrix().right().Z << std::endl;
+//    std::cout << "Up X: " << pShip->getMatrix().up().X << " Y: " << pShip->getMatrix().up().Y << " Z: " << pShip->getMatrix().up().Z << std::endl;
+//    std::cout << "Translation X: " << pShip->getMatrix().translation().X << " Y: " << pShip->getMatrix().translation().Y << " Z: " << pShip->getMatrix().translation().Z << std::endl;
+    
+    m_Camera->setPosition(*(pShip->getPos()) + pShip->getMatrix().up()*3.0f - *(pShip->getDir())*5.0f);
+    m_Camera->setTarget(*(pShip->getPos()) + *(pShip->getDir()));
     m_Camera->apply();
     
-    drawGroundGrid();
+    
+    //drawGroundGrid();
     
 	int delta = glutGet(GLUT_ELAPSED_TIME);
     int deltaTimeInt = glutGet(GLUT_ELAPSED_TIME) - m_LastFrameTime;
@@ -192,41 +202,48 @@ void MyOpenGLRenderer::drawScene() {
 	}
 #endif
     
-    for (Model* currModel : *(m_ResManager->getModelsToDraw())) {
-        //Das C++ Äquivalent zu dem "instanceof" Operator
-        //Ist das Model keine Instanz vom zu prüfenden Objekt, wird
-        //ein nullptr zurückgegeben.
-        if (PlayerShip* plShip = dynamic_cast<PlayerShip*>(currModel)) {
-            plShip->updatePosition(deltaTime);
-            plShip->applyMatrices();
-        }
-        drawModel(currModel);
-        if (PlayerShip* plShip = dynamic_cast<PlayerShip*>(currModel)) {
-            plShip->discardMatrix();
-            //right, up, forward Vektoren der Transformationsmatrix anzeigen lassen
-            glDisable(GL_LIGHTING);
-            glBegin(GL_LINES);
-            glColor3f(1.0f, 0.0f, 0.0f);
-            glVertex3f(plShip->getPos()->X, plShip->getPos()->Y, plShip->getPos()->Z);
-            glVertex3f(plShip->getPos()->X+plShip->getMatrix().right().X, plShip->getPos()->Y+plShip->getMatrix().right().Y, plShip->getPos()->Z+plShip->getMatrix().right().Z);
-            glColor3f(0.0f, 1.0f, 0.0f);
-            glVertex3f(plShip->getPos()->X, plShip->getPos()->Y, plShip->getPos()->Z);
-            glVertex3f(plShip->getPos()->X+plShip->getMatrix().up().X, plShip->getPos()->Y+plShip->getMatrix().up().Y, plShip->getPos()->Z+plShip->getMatrix().up().Z);
-            glColor3f(0.0f, 0.0f, 1.0f);
-            glVertex3f(plShip->getPos()->X, plShip->getPos()->Y, plShip->getPos()->Z);
-            glVertex3f(plShip->getPos()->X+plShip->getMatrix().forward().X, plShip->getPos()->Y+plShip->getMatrix().forward().Y, plShip->getPos()->Z+plShip->getMatrix().forward().Z);
-            glEnd();
-            glEnable(GL_LIGHTING);
-            
-        }
-    }
     
-    GLfloat lpos[4];
+    
+    
+    for (Drawable* currDrawable : *(m_ResManager->getModelsToDraw())) {
+        
+        if (PlayerShip* pShipCast = dynamic_cast<PlayerShip*>(currDrawable)) {
+            //std::cout << "PlayerShip m_Pos: " << pShip->getPos()->X << ", " << pShip->getPos()->Y << ", " << pShip->getPos()->Z << ", " << std::endl;
+            //std::cout << "PlayerShip m_Dir: " << pShip->getDir()->X << ", " << pShip->getDir()->Y << ", " << pShip->getDir()->Z << ", " << std::endl;
+            //std::cout << "Forward X: " << pShip->getMatrix().forward().X << " Y: " << pShip->getMatrix().forward().Y << " Z: " << pShip->getMatrix().forward().Z << std::endl;
+            //std::cout << "Right X: " << pShip->getMatrix().right().X << " Y: " << pShip->getMatrix().right().Y << " Z: " << pShip->getMatrix().right().Z << std::endl;
+            //std::cout << "Up X: " << pShip->getMatrix().up().X << " Y: " << pShip->getMatrix().up().Y << " Z: " << pShip->getMatrix().up().Z << std::endl;
+            //std::cout << "Translation X: " << pShip->getMatrix().translation().X << " Y: " << pShip->getMatrix().translation().Y << " Z: " << pShip->getMatrix().translation().Z << std::endl;
+            //pShip->updatePosition(deltaTime);
+            //Matrix* inverseViewMatrix = m_Camera->getInverseViewMatrix(pShip->getMatrix().translation() + pShip->getMatrix().forward(), pShip->getMatrix().up(), pShip->getMatrix().translation() + pShip->getMatrix().up()*1.5f - pShip->getMatrix().forward()*1.5f);
+            //currDrawable->applyMatrices(inverseViewMatrix);
+            pShip->updatePosition(deltaTime, m_GameManager->getMinBoundary(), m_GameManager->getMaxBoundary());
+            
+        } else if (Terrain* terrain = dynamic_cast<Terrain*>(currDrawable)) {
+            //std::cout << "Terrain m_Pos: " << currDrawable->getPos()->X << ", " << currDrawable->getPos()->Y << ", " << currDrawable->getPos()->Z << ", " << std::endl;
+            //std::cout << "Terrain m_Dir: " << currDrawable->getDir()->X << ", " << currDrawable->getDir()->Y << ", " << currDrawable->getDir()->Z << ", " << std::endl;
+            //terrain->updateTerrainMovement(deltaTime);
+        } else if (EnemyShip* pEnemy = dynamic_cast<EnemyShip*>(currDrawable)) {
+            
+            //std::cout << "EnemyShip m_Pos: " << pEnemy->getPos()->X << ", " << pEnemy->getPos()->Y << ", " << pEnemy->getPos()->Z << ", " << std::endl;
+            m_GameManager->moveEnemy(pEnemy);
+            pEnemy->updatePosition(deltaTime, m_GameManager->getMinBoundary(), m_GameManager->getMaxBoundary());
+        }
+        
+        
+        currDrawable->applyMatrices();        
+        drawModel(currDrawable->getModel());
+        currDrawable->getModel()->getBoundingBox().drawLines();
+        currDrawable->discardMatrix();
+        currDrawable->drawAxis();
+    }
+
+    /*GLfloat lpos[4];
     lpos[0]=m_LightPos->X;
     lpos[1]=m_LightPos->Y;
     lpos[2]=m_LightPos->Z;
     lpos[3]=1;
-    glLightfv(GL_LIGHT0, GL_POSITION, lpos);
+    glLightfv(GL_LIGHT0, GL_POSITION, lpos);*/
     
     checkForErrors();
     
@@ -245,35 +262,39 @@ void MyOpenGLRenderer::mouseCallback(int p_Button, int p_State, int p_X, int p_Y
 
 void MyOpenGLRenderer::keyboardCallback(unsigned char p_Key, int p_X, int p_Y) {
     
-    switch (p_Key) {
+    /*switch (p_Key) {
         case 'a':
             //std::cout << "a pressed" << std::endl;
-            m_ResManager->getPlayerShip()->setForwardBackward(-1.0f);
+            m_ResManager->getPlayerShip()->setForwardBackward(1.0f);
+            
             break;
         case 'y':
             //std::cout << "y pressed" << std::endl;
-            m_ResManager->getPlayerShip()->setForwardBackward(1.0f);
+            m_ResManager->getPlayerShip()->setForwardBackward(-1.0f);
+ 
             break;
         default:
             break;
-    }
+    }*/
     
 }
 
 void MyOpenGLRenderer::keyboardUpCallback(unsigned char p_Key, int p_X, int p_Y) {
     
-    switch (p_Key) {
+    /*switch (p_Key) {
         case 'a':
             //std::cout << "a up" << std::endl;
             m_ResManager->getPlayerShip()->setForwardBackward(0.0f);
+            m_ResManager->getTerrain()->setForwardBackward(0.0f);
             break;
         case 'y':
             //std::cout << "y up" << std::endl;
             m_ResManager->getPlayerShip()->setForwardBackward(0.0f);
+            m_ResManager->getTerrain()->setForwardBackward(0.0f);
             break;
         default:
             break;
-    }
+    }*/
     
 }
 
@@ -284,22 +305,23 @@ void MyOpenGLRenderer::specialKeyboardCallback(int key, int x, int y)
     switch (key) {
         case GLUT_KEY_UP:
             //std::cout << "Up Key Pressed" << std::endl;
-            m_ResManager->getPlayerShip()->setPitchUpDown(-1.0f);
+            //m_ResManager->getPlayerShip()->setUpDown(1.0f);
+            m_GameManager->steerPlayerShip(GLUT_KEY_UP, 1.0f, 0.0f);
             break;
             
         case GLUT_KEY_DOWN:
             //std::cout << "Down Key Pressed" << std::endl;
-            m_ResManager->getPlayerShip()->setPitchUpDown(1.0f);
+            m_GameManager->steerPlayerShip(GLUT_KEY_DOWN,-1.0f, 0.0f);
             break;
             
         case GLUT_KEY_LEFT:
             //std::cout << "Left Key Pressed" << std::endl;
-            m_ResManager->getPlayerShip()->setRollLeftRight(1.0f);
+            m_GameManager->steerPlayerShip(GLUT_KEY_LEFT,0.0f, 1.0f);
             break;
             
         case GLUT_KEY_RIGHT:
             //std::cout << "Right Key Pressed" << std::endl;
-            m_ResManager->getPlayerShip()->setRollLeftRight(-1.0f);
+            m_GameManager->steerPlayerShip(GLUT_KEY_RIGHT, 0.0f, -1.0f);
             break;
             
         default:
@@ -314,22 +336,27 @@ void MyOpenGLRenderer::specialKeyboardUpCallback(int key, int x, int y)
     switch (key) {
         case GLUT_KEY_UP:
             //std::cout << "Up Key Released" << std::endl;
-            m_ResManager->getPlayerShip()->setPitchUpDown(0.0f);
+            //m_ResManager->getPlayerShip()->setUpDown(0.0f);
+            //m_GameManager->steerPlayerShip(GLUT_KEY_UP, 0.0f, 0.0f);
+            m_GameManager->stopShip(GLUT_KEY_UP);
             break;
             
         case GLUT_KEY_DOWN:
             //std::cout << "Down Key Released" << std::endl;
-            m_ResManager->getPlayerShip()->setPitchUpDown(0.0f);
+            //m_GameManager->steerPlayerShip(GLUT_KEY_DOWN, 0.0f, 0.0f);
+            m_GameManager->stopShip(GLUT_KEY_DOWN);
             break;
             
         case GLUT_KEY_LEFT:
-            //std::cout << "Left Key Released" << std::endl;
-            m_ResManager->getPlayerShip()->setRollLeftRight(0.0f);
+            //m_GameManager->steerPlayerShip(GLUT_KEY_LEFT, 0.0f, 0.0f);
+            m_GameManager->stopShip(GLUT_KEY_LEFT);
             break;
             
         case GLUT_KEY_RIGHT:
             //std::cout << "Right Key Releaed" << std::endl;
-            m_ResManager->getPlayerShip()->setRollLeftRight(0.0f);
+            //m_GameManager->steerPlayerShip(GLUT_KEY_RIGHT, 0.0f, 0.0f);
+            m_GameManager->stopShip(GLUT_KEY_RIGHT);
+            
             break;
             
         default:
@@ -376,10 +403,12 @@ void MyOpenGLRenderer::checkForErrors() {
     } else {
         //std::cout << "Errors were checked, nothing's wrong" << std::endl;
     }
-    
-    
 }
 
 void MyOpenGLRenderer::setResourceManager(ResourceManager* p_ResManager) {
     m_ResManager = p_ResManager;
+}
+
+void MyOpenGLRenderer::setGameManager(GameManager* p_GameManager) {
+    m_GameManager = p_GameManager;
 }

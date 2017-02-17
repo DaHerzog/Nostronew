@@ -30,7 +30,6 @@ public:
     static ImportType m_UsedProgram;
     static const char* m_MainPath;
     static float m_Scale;
-    
     static bool loadModel(Model* p_Model, const char* p_Filename, bool p_Fitsize);
 private:
     static bool loadFromCinema(Model* p_Model, const char* p_Filename, bool p_Fitsize);
