@@ -63,6 +63,7 @@ private:
     static void drawGroundGrid();
     static void setupDefaultOpenGLSettings();
     static void checkForErrors();
+	static void drawCurrDrawable(Drawable* currDrawable);
     
 public:
 

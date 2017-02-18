@@ -27,12 +27,15 @@ private:
 #else
 	const char* m_PathToShader = "/Users/davidherzog/Documents/XCode/Nostronew/Shader/";
 #endif
+	const int m_enemyCount = 5;
+	const int m_bulletCount = 10;
+
     std::vector<Drawable*>* modelsToDraw;
     std::vector<Drawable*>* loadedModels;
     PlayerShip* m_PlayerShip;
     Terrain* m_Terrain;
 	std::vector<EnemyShip*>* m_Enemies;
-	std::queue<Bullet*>* m_Bullets;
+	std::vector<Bullet*>* m_Bullets;
 public:
     ResourceManager();
     bool loadModels();
@@ -40,9 +43,10 @@ public:
     std::vector<Drawable*>* getLoadedModels();
     PlayerShip* getPlayerShip();
     Terrain* getTerrain();
-	void createBullet();
-	void deleteBullet();
-
+	EnemyShip* getEnemy(int index);
+	Bullet* getBullet(int index);
+	int getEnemyCount();
+	int getBulletCount();
 };
 
 #endif /* ResourceManager_hpp */

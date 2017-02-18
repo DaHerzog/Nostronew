@@ -171,6 +171,37 @@ void GameManager::moveEnemy(EnemyShip* p_Enemy) {
 }
 
 void GameManager::shootEnemyShip() {
-	//TODO
+	ResourceManager* res = this->m_ResManager;
+	for (int i = 0; i < res->getBulletCount(); i++) {
+		Bullet* bullet = res->getBullet(i);
+		if (!bullet->getStatus()) {
+			//schiessen wenn status == false -> bullet noch nicht geschossen 
+			bullet->setStatus(true);
+			Vector* vec = new Vector(*res->getPlayerShip()->getPos());
+			bullet->setPos(vec);
+			break;
+		} else if(i == res->getBulletCount()-1) {
+			//alle Shüsse werden gezeichnet  -> spieler muss warten bis schuss zerstört wird
+			std::cout << "Waffe überhitzt" << std::endl;
+		}
+	}
+}
+
+void GameManager::checkForHit() {
+
+	ResourceManager* res = this->m_ResManager;
+	int p_bulletCount = res->getBulletCount();
+	int p_enemyCount = res->getEnemyCount();
+
+	for (int p_bulletIndex = 0; p_bulletIndex < p_bulletCount; p_bulletIndex++) {
+		for (int p_enemyIndex = 0; p_enemyIndex < p_enemyCount; p_enemyIndex++) {
+			Bullet* b = res->getBullet(p_bulletIndex);
+			EnemyShip* e = res->getEnemy(p_enemyIndex);
+
+			b->getModel()->getBoundingBox();
+
+			
+		}
+	}
 }
 

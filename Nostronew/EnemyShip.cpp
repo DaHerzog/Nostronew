@@ -14,6 +14,7 @@ EnemyShip::EnemyShip() {
     this->m_MoveEnemiesRight = false;
     this->m_MoveEnemiesDown = false;;
     this->m_MoveEnemiesUp = false;
+	this->m_status = true;
     
 }
 
@@ -39,6 +40,7 @@ EnemyShip::EnemyShip(Vector* p_StartPos, Model* p_Model): Drawable(p_StartPos, p
     this->m_MoveEnemiesRight = false;
     this->m_MoveEnemiesDown = false;;
     this->m_MoveEnemiesUp = false;
+	this->m_status = true;
 }
 
 EnemyShip::~EnemyShip() {
@@ -195,6 +197,10 @@ void EnemyShip::setMoveEnemiesUp(bool p_Bool) {
     this->m_MoveEnemiesUp = p_Bool;
 }
 
+void EnemyShip::setStatus(bool p_Bool) {
+	this->m_status = p_Bool;
+}
+
 bool EnemyShip::getMoveEnemiesLeft() {
     return this->m_MoveEnemiesLeft;
 }
@@ -209,4 +215,8 @@ bool EnemyShip::getMoveEnemiesDown() {
 
 bool EnemyShip::getMoveEnemiesUp() {
     return this->m_MoveEnemiesUp;
+}
+
+bool EnemyShip::getStatus() {
+	return this->m_status;
 }

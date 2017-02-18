@@ -11,6 +11,8 @@
 ResourceManager::ResourceManager() {
     this->modelsToDraw = new std::vector<Drawable*>();
     this->loadedModels = new std::vector<Drawable*>();
+	this->m_Enemies = new std::vector<EnemyShip*>();
+	this->m_Bullets = new std::vector<Bullet*>();
 }
 
 /*
@@ -55,30 +57,32 @@ bool ResourceManager::loadModels() {
      }
     
     
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < this->m_enemyCount; i++) {
     
         EnemyShip* enemy = new EnemyShip(new Vector(((float)3*i), 90.0f+((float)2*i), 50.0f), new Model());
         if (MyWavefrontParser::loadModel(enemy->getModel(), "test/zylinderpoly.obj", true) && enemy->getModel()->getModelShader().load(fullPathVertexShader, fullPathFragmentShader) && enemy->getModel()->getModelShader().compile()) {
+			this->modelsToDraw->push_back(enemy);
 			this->m_Enemies->push_back(enemy);
         } else {
             std::cout << "Error in loadModels() while loading..." << std::endl;
         }
     }
-    
-    
+
+	for (int i = 0; i < this->m_bulletCount; i++) {
+
+		Bullet* bullet = new Bullet(new Vector(((float)3 * i), 90.0f + ((float)2 * i), 50.0f), new Model());
+		if (MyWavefrontParser::loadModel(bullet->getModel(), "test/zylinderpoly.obj", true) && bullet->getModel()->getModelShader().load(fullPathVertexShader, fullPathFragmentShader) && bullet->getModel()->getModelShader().compile()) {
+			this->modelsToDraw->push_back(bullet);
+			this->m_Bullets->push_back(bullet);
+		}
+		else {
+			std::cout << "Error in loadModels() while loading..." << std::endl;
+		}
+	}
     return true;
 }
 
 std::vector<Drawable*>* ResourceManager::getModelsToDraw() {
-
-	//erlaubt es später Gegner zu töten und neue zu spawnen
-	for (int i = 0; i < this->m_Enemies->size(); i++) {
-		this->modelsToDraw->push_back(this->m_Enemies->at(i));
-	}
-	//erlaubt es Kugeln zu erstellen und zu entfernen TODO
-	for (int i = 0; i < this->m_Bullets->size(); i++) {
-		this->modelsToDraw->push_back(this->m_Bullets->back());
-	}
     return this->modelsToDraw;
 }
 
@@ -94,30 +98,30 @@ Terrain* ResourceManager::getTerrain() {
     return this->m_Terrain;
 }
 
-void ResourceManager::createBullet() {
-
-	//temporär ein spezieller Shader muss noch ergänzt werden
-	char fullPathVertexShader[256];
-	strcpy(fullPathVertexShader, m_PathToShader);
-	strcat(fullPathVertexShader, (const char*)"vertex_phong.glsl");
-	char fullPathFragmentShader[256];
-	strcpy(fullPathFragmentShader, m_PathToShader);
-	strcat(fullPathFragmentShader, (const char*)"fragment_phong.glsl");
-
-	Vector* tmp = this->m_PlayerShip->getPos();
-	Bullet* bullet = new Bullet(tmp, new Model());
-	if (MyWavefrontParser::loadModel(bullet->getModel(), "test/zylinderpoly.obj", true) && bullet->getModel()->getModelShader().load(fullPathVertexShader, fullPathFragmentShader) && bullet->getModel()->getModelShader().compile()) {
-		this->m_Bullets->push(bullet);
-	}
-	else {
-		std::cout << "Error in loadModels() while loading..." << std::endl;
+EnemyShip * ResourceManager::getEnemy(int index) {
+	if (index < this->m_enemyCount) {
+		return this->m_Enemies->at(index);
+	} else {
+		std::cout << "Error in getEnemy" << std::endl;
+		return NULL;
 	}
 }
 
-void ResourceManager::deleteBullet() {
-
-	//Schuss hat begrenzte Lebenszeit -> erster abgebeuerter Schuss muss zuerst wieder gelöscht werden
-	std::queue<Bullet*> *tmp = this->m_Bullets;
-	tmp->pop();
+Bullet * ResourceManager::getBullet(int index) {
+	if (index < this->m_bulletCount) {
+		return this->m_Bullets->at(index);
+	} else {
+		std::cout << "Error in getBullet" << std::endl;
+		return NULL;
+	}
 }
+
+int ResourceManager::getEnemyCount() {
+	return this->m_enemyCount;
+}
+
+int ResourceManager::getBulletCount() {
+	return this->m_bulletCount;
+}
+
 

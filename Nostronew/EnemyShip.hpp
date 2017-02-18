@@ -24,15 +24,19 @@ public:
     void setMoveEnemiesRight(bool p_Bool);
     void setMoveEnemiesDown(bool p_Bool);
     void setMoveEnemiesUp(bool p_Bool);
+	void setStatus(bool p_Bool);
     bool getMoveEnemiesLeft();
     bool getMoveEnemiesRight();
     bool getMoveEnemiesDown();
     bool getMoveEnemiesUp();
+	bool getStatus();
+
 protected:
     bool m_MoveEnemiesLeft;
     bool m_MoveEnemiesRight;
     bool m_MoveEnemiesDown;
     bool m_MoveEnemiesUp;
+	bool m_status;
 };
 
 #endif /* EnemyShip_hpp */

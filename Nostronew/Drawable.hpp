@@ -1,4 +1,4 @@
-//
+ //
 //  Drawable.hpp
 //  Nostronew
 //
@@ -14,6 +14,7 @@
 
 class Drawable {
 public:
+
     Drawable();
     Drawable(Model* pModel);
     Drawable(Vector* pStartPos, Model* pModel);

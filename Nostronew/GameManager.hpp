@@ -24,6 +24,7 @@ public:
     void stopShip(int key);
     void setBoundary(Vector* p_MinBoundary, Vector* p_MaxBoundary);
 	void shootEnemyShip();
+	void checkForHit();
     Vector* getMinBoundary();
     Vector* getMaxBoundary();
     void moveEnemy(EnemyShip* p_Enemy);

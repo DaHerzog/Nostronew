@@ -197,9 +197,9 @@ void MyOpenGLRenderer::drawScene() {
 
 #ifdef WIN32
 	// Exception um Teilen durch 0 zu verhindern -> führt unter Windows zu unvorhergesehenen Verhalten
-	if (deltaTime == 0.0) {
-		deltaTime = 1.0f;
-	}
+	//if (deltaTime == 0.0) {
+		//deltaTime = 1.0f;
+	//}
 #endif
     
     
@@ -217,27 +217,34 @@ void MyOpenGLRenderer::drawScene() {
             //pShip->updatePosition(deltaTime);
             //Matrix* inverseViewMatrix = m_Camera->getInverseViewMatrix(pShip->getMatrix().translation() + pShip->getMatrix().forward(), pShip->getMatrix().up(), pShip->getMatrix().translation() + pShip->getMatrix().up()*1.5f - pShip->getMatrix().forward()*1.5f);
             //currDrawable->applyMatrices(inverseViewMatrix);
-            pShip->updatePosition(deltaTime, m_GameManager->getMinBoundary(), m_GameManager->getMaxBoundary());
+            pShip->updatePosition(deltaTime * 1000.0f, m_GameManager->getMinBoundary(), m_GameManager->getMaxBoundary());
+			drawCurrDrawable(currDrawable);
             
         } else if (Terrain* terrain = dynamic_cast<Terrain*>(currDrawable)) {
             //std::cout << "Terrain m_Pos: " << currDrawable->getPos()->X << ", " << currDrawable->getPos()->Y << ", " << currDrawable->getPos()->Z << ", " << std::endl;
             //std::cout << "Terrain m_Dir: " << currDrawable->getDir()->X << ", " << currDrawable->getDir()->Y << ", " << currDrawable->getDir()->Z << ", " << std::endl;
             //terrain->updateTerrainMovement(deltaTime);
+			drawCurrDrawable(currDrawable);
         } else if (EnemyShip* pEnemy = dynamic_cast<EnemyShip*>(currDrawable)) {
             
             //std::cout << "EnemyShip m_Pos: " << pEnemy->getPos()->X << ", " << pEnemy->getPos()->Y << ", " << pEnemy->getPos()->Z << ", " << std::endl;
-            m_GameManager->moveEnemy(pEnemy);
-            pEnemy->updatePosition(deltaTime, m_GameManager->getMinBoundary(), m_GameManager->getMaxBoundary());
-        }
-        
-        
-        currDrawable->applyMatrices();        
-        drawModel(currDrawable->getModel());
-        currDrawable->getModel()->getBoundingBox().drawLines();
-        currDrawable->discardMatrix();
-        currDrawable->drawAxis();
+			if (pEnemy->getStatus()) {
+				m_GameManager->moveEnemy(pEnemy);
+				pEnemy->updatePosition(deltaTime * 1000.0f, m_GameManager->getMinBoundary(), m_GameManager->getMaxBoundary());
+				drawCurrDrawable(currDrawable);
+			}
+		}
+		else if (Bullet* pBullet = dynamic_cast<Bullet*>(currDrawable)) {
+			if (pBullet->getStatus()) {
+				pBullet->updatePosition(deltaTime * 1000.0f, m_GameManager->getMinBoundary(), m_GameManager->getMaxBoundary(), pShip->getPos());
+				drawCurrDrawable(currDrawable);
+			}
+			
+		}
     }
 
+
+	m_GameManager->checkForHit();
     /*GLfloat lpos[4];
     lpos[0]=m_LightPos->X;
     lpos[1]=m_LightPos->Y;
@@ -417,4 +424,13 @@ void MyOpenGLRenderer::setResourceManager(ResourceManager* p_ResManager) {
 
 void MyOpenGLRenderer::setGameManager(GameManager* p_GameManager) {
     m_GameManager = p_GameManager;
+}
+
+
+void MyOpenGLRenderer::drawCurrDrawable(Drawable* currDrawable) {
+	currDrawable->applyMatrices();
+	drawModel(currDrawable->getModel());
+	currDrawable->getModel()->getBoundingBox().drawLines();
+	currDrawable->discardMatrix();
+	currDrawable->drawAxis();
 }
