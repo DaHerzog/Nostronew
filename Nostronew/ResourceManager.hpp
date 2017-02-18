@@ -15,15 +15,18 @@
 #include "EnemyShip.hpp"
 #include "Terrain.hpp"
 #include "MyWavefrontParser.hpp"
+#include "CubeMap.hpp"
 
 class ResourceManager {
 
 private:
     const char* m_PathToShader = "/Users/davidherzog/Documents/XCode/Nostronew/Shader/";
+    const char* m_PathToCubeMap = "/Users/davidherzog/Documents/XCode/Nostronew/Models/cubemap/";
     std::vector<Drawable*>* modelsToDraw;
     std::vector<Drawable*>* loadedModels;
     PlayerShip* m_PlayerShip;
     Terrain* m_Terrain;
+    CubeMap* m_CubeMap;
 public:
     ResourceManager();
     bool loadModels();
@@ -31,6 +34,7 @@ public:
     std::vector<Drawable*>* getLoadedModels();
     PlayerShip* getPlayerShip();
     Terrain* getTerrain();
+    CubeMap* getCubeMap();
 };
 
 #endif /* ResourceManager_hpp */

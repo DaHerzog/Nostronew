@@ -142,6 +142,33 @@ void MyOpenGLRenderer::drawModel(Model *p_ModelToDraw) {
     
 }
 
+void MyOpenGLRenderer::drawCubeMap() {
+    CubeMap* cubeMap = m_ResManager->getCubeMap();
+    
+    cubeMap->getShader()->activate();
+    
+    cubeMap->applyCubeMapTextures();
+    cubeMap->getShader()->setParameter(cubeMap->getShader()->getParameterId("cubeMap"), 0);
+    
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, cubeMap->getIndexBuffer());
+    glBindBuffer(GL_ARRAY_BUFFER, cubeMap->getVertexBuffer());
+    
+    glEnableClientState(GL_VERTEX_ARRAY);
+    
+    glVertexPointer( 3, GL_FLOAT, sizeof(Vertex), BUFFER_OFFSET(0));
+    
+    glDrawElements( GL_TRIANGLES, cubeMap->getVertexCount(), GL_UNSIGNED_INT, BUFFER_OFFSET(0) );
+    
+    glDisableClientState(GL_VERTEX_ARRAY);
+    
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    
+    
+    
+    m_ResManager->getCubeMap()->getShader()->deactivate();
+}
+
 void MyOpenGLRenderer::initialize(int argc, char* argv[]) {
     
     // initialize the glut system and create a window
@@ -230,6 +257,7 @@ void MyOpenGLRenderer::drawScene() {
         currDrawable->drawAxis();
     }
 
+    drawCubeMap();
     /*GLfloat lpos[4];
     lpos[0]=m_LightPos->X;
     lpos[1]=m_LightPos->Y;

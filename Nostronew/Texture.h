@@ -28,10 +28,13 @@ public:
     Texture();
     ~Texture();
     bool LoadFromBMP( const char* Filename );
+    bool LoadFromBMPForCubeMap(const char* p_Filename);
     void apply() const;
     bool isValid() const;
     const RGBImage* getRGBImage() const;
+    unsigned char* getData();
 protected:
+    unsigned char* m_Data;
     unsigned char* LoadBMP( const char* Filename, unsigned int& width, unsigned int& height );
     RGBImage* createImage( unsigned char* Data, unsigned int width, unsigned int height );
     GLuint m_TextureID;

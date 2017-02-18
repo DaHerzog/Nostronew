@@ -44,6 +44,8 @@ public:
     bool saveToDisk(const char* Filename);
     unsigned int width() const;
     unsigned int height() const;
+    unsigned int getWidth();
+    unsigned int getHeight();
     
     static unsigned char convertColorChannel(float f);
 

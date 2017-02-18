@@ -86,6 +86,31 @@ bool Texture::LoadFromBMP( const char* Filename )
     return true;
 }
 
+bool Texture::LoadFromBMPForCubeMap(const char* p_Filename) {
+    
+    unsigned int width, height;
+    
+//    unsigned char* data = LoadBMP(p_Filename, width, height);
+//    if(data==NULL)
+//        return false;
+    
+    this->m_Data = LoadBMP(p_Filename, width, height);
+    if (this->m_Data == NULL)
+        return false;
+    
+    if( m_pImage )
+        delete m_pImage;
+    
+    m_pImage = createImage(m_Data, width, height);
+    
+    return true;
+    
+}
+
+unsigned char* Texture::getData() {
+    return this->m_Data;
+}
+
 RGBImage* Texture::createImage( unsigned char* Data, unsigned int width, unsigned int height )
 {
     // create CPU accessible image

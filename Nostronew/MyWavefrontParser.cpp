@@ -354,25 +354,7 @@ bool MyWavefrontParser::loadFromCinema(Model *p_Model, const char* p_Filename, b
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, p_Model->getIndexBuffer());
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int)*p_Model->getVertexCount(), p_Model->getIndices(), GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    
-    
-    
-    
-    //neu, spezielle APPLE Funktionen?
-//    glGenVertexArraysAPPLE(1, &p_Model->getVertexAttributeBuffer());
-//    glBindVertexArrayAPPLE(p_Model->getVertexAttributeBuffer());
-//    glEnableVertexAttribArray(0);
-//    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), BUFFER_OFFSET(0)); //Position
-//    glEnableVertexAttribArray(1);
-//    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), BUFFER_OFFSET(12)); //Normale
-//    glEnableVertexAttribArray(2);
-//    glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(float), BUFFER_OFFSET(24)); //Textur (s)
-//    glEnableVertexAttribArray(3);
-//    glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(float), BUFFER_OFFSET(28)); //Textur (t)
-//    glBindVertexArrayAPPLE(0);
-//    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    
-    
+
     
     delete positionsFromFile;
     delete texcoordFromFile;

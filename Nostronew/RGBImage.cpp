@@ -173,6 +173,14 @@ unsigned int RGBImage::height() const {
     return this->m_Height;
 }
 
+unsigned int RGBImage::getWidth() {
+    return this->m_Width;
+}
+
+unsigned int RGBImage::getHeight() {
+    return this->m_Height;
+}
+
 unsigned char RGBImage::convertColorChannel(float f) {
     /*std::cout << "Übergabe foat: " << f << std::endl;*/
     unsigned char colorChannel = 255;

@@ -44,6 +44,7 @@ private:
     MyOpenGLRenderer();
     MyOpenGLRenderer(const MyOpenGLRenderer&);
     static void drawScene();
+    static void drawCubeMap();
     static void mouseCallback(int p_Button, int p_State, int p_X, int p_Y);
     static void keyboardCallback(unsigned char p_Key, int p_X, int p_Y);
     static void keyboardUpCallback(unsigned char p_Key, int p_X, int p_Y);

@@ -26,6 +26,13 @@ bool ResourceManager::loadModels() {
     strcpy(fullPathFragmentShader, m_PathToShader);
     strcat(fullPathFragmentShader, (const char*)"fragment_phong.glsl");
     
+    char fullPathVertexShaderCubeMap[256];
+    strcpy(fullPathVertexShaderCubeMap, m_PathToShader);
+    strcat(fullPathVertexShaderCubeMap, (const char*)"cubemap_vertex.glsl");
+    char fullPathFragmentShaderCubeMap[256];
+    strcpy(fullPathFragmentShaderCubeMap, m_PathToShader);
+    strcat(fullPathFragmentShaderCubeMap, (const char*)"cubemap_fragment.glsl");
+    
     /*if (MyWavefrontParser::loadModel(tmp, "sibenik/sibenik.obj", false) && tmp->getModelShader().load(fullPathVertexShader, fullPathFragmentShader) && tmp->getModelShader().compile()) {
         this->modelsToDraw->push_back(tmp);
     } else {
@@ -65,6 +72,9 @@ bool ResourceManager::loadModels() {
         }
     }
     
+    this->m_CubeMap = new CubeMap();
+    this->m_CubeMap->init(m_PathToCubeMap, fullPathVertexShaderCubeMap, fullPathFragmentShaderCubeMap);
+    
     
     return true;
 }
@@ -83,4 +93,8 @@ PlayerShip* ResourceManager::getPlayerShip() {
 
 Terrain* ResourceManager::getTerrain() {
     return this->m_Terrain;
+}
+
+CubeMap* ResourceManager::getCubeMap() {
+    return this->m_CubeMap;
 }
