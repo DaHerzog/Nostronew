@@ -261,7 +261,7 @@ void MyOpenGLRenderer::drawScene() {
         //currDrawable->updatePosition(deltaTime, m_GameManager->getMinBoundary(), m_GameManager->getMaxBoundary());
         currDrawable->applyMatrices();
         drawModel(currDrawable->getModel());
-        currDrawable->getModel()->getBoundingBox().drawLines();
+        //currDrawable->getModel()->getBoundingBox().drawLines();
         currDrawable->discardMatrix();
         currDrawable->drawAxis();
     }
@@ -301,6 +301,11 @@ void MyOpenGLRenderer::keyboardCallback(unsigned char p_Key, int p_X, int p_Y) {
             break;
         case 'o':
             m_GameManager->setGameIsRunning(false);
+            break;
+        case 'r':
+            if (!m_GameManager->getGameIsRunning()) {
+                m_GameManager->restartGame();
+            }
             break;
         default:
             break;

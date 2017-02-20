@@ -49,7 +49,7 @@ EnemyShip::~EnemyShip() {
 }
 
 void EnemyShip::updatePosition(float deltaTime, Vector* p_MinBoundary, Vector* p_MaxBoundary) {
-    Matrix TM, RMz, RMx;
+    Matrix TM, RMz, RMx, RMy;
     Matrix RMDir;
     
     //std::cout << "Funktion des EnemyShips" << std::endl;
@@ -181,6 +181,9 @@ void EnemyShip::updatePosition(float deltaTime, Vector* p_MinBoundary, Vector* p
     RMz.rotationZ(this->m_RollAngle);
     RMx.rotationX(this->m_PitchAngle);
     
+    //Rotation um 180 Grad um die Y-Achse. Damit die Gegner uns auch anschauen.
+    RMy.rotationY(M_PI);
+    
     
     RMDir = RMz * RMx;
     this->m_Dir->X = RMDir.forward().X;
@@ -193,7 +196,7 @@ void EnemyShip::updatePosition(float deltaTime, Vector* p_MinBoundary, Vector* p
     //R = Rz * Ry * Rx (Rotation um die y-Achse haben wir nicht aktuell)
     TM.translation(this->m_Pos->X, this->m_Pos->Y, this->m_Pos->Z);
     
-    this->m_Matrix = TM * RMz * RMx;
+    this->m_Matrix = TM * RMz * RMy * RMx;
 }
 
 void EnemyShip::setMoveEnemiesLeft(bool p_Bool) {

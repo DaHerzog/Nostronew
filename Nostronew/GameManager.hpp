@@ -33,6 +33,7 @@ public:
     void shootEnemyShip();
     void checkForHit();
     void updateHud();
+    void restartGame();
 private:
     ResourceManager* m_ResManager;
     Vector* m_MinBoundary;

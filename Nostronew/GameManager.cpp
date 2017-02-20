@@ -317,6 +317,11 @@ void GameManager::updateHud() {
         m_ResManager->getHud()->drawText(50, 50, "Das ist ein Test!");
     } else {
         m_ResManager->getHud()->drawText((m_ResManager->getHud()->getDisplayWidth()/2)-10, m_ResManager->getHud()->getDisplayHeight()/2, "Game Over!");
+        m_ResManager->getHud()->drawText((m_ResManager->getHud()->getDisplayWidth()/2)-40, (m_ResManager->getHud()->getDisplayHeight()/2)-40, "Press R for Restart!");
     }
     m_ResManager->getHud()->setupFor3DRendering();
+}
+
+void GameManager::restartGame() {
+    this->m_GameIsRunning = true;
 }
