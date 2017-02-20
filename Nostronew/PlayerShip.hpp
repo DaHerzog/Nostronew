@@ -22,7 +22,7 @@ public:
     PlayerShip(Model* pModel);
     PlayerShip(Vector* pStartPos, Model* pModel);
     virtual ~PlayerShip();
-    
+    virtual void updatePosition(float deltaTime, Vector* p_MinBoundary, Vector* p_MaxBoundary);
     
 protected:
     

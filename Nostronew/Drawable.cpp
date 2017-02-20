@@ -122,7 +122,7 @@ void Drawable::updatePosition(float deltaTime, Vector* p_MinBoundary, Vector* p_
     
     //std::cout << "m_LeftRight " << this->m_LeftRight << std::endl;
     //std::cout << "m_UpDown " << this->m_UpDown << std::endl;
-    //std::cout << "m_Acc: X: " << this->m_Acceleration->X << " Y: " << this->m_Acceleration->Y << " Z: " << this->m_Acceleration->Z << std::endl;
+    std::cout << "m_Acc: X: " << this->m_Acceleration->X << " Y: " << this->m_Acceleration->Y << " Z: " << this->m_Acceleration->Z << std::endl;
     //std::cout << this->m_RollAngle << std::endl;
     //std::cout << deltaTime << std::endl;
     //std::cout << "m_Pos: " << this->m_Pos->X << ", " << this->m_Pos->Y << ", " << this->m_Pos->Z << ", " << std::endl;

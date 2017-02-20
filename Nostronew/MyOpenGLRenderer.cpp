@@ -117,6 +117,8 @@ void MyOpenGLRenderer::drawModel(Model *p_ModelToDraw) {
             
             p_ModelToDraw->getModelShader().deactivate();
             
+            glBindTexture(GL_TEXTURE_2D, 0);
+            
         }
     } else {
         // draw via Array Buffer
@@ -164,9 +166,9 @@ void MyOpenGLRenderer::drawCubeMap() {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     
-    
-    
     m_ResManager->getCubeMap()->getShader()->deactivate();
+    
+    glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 }
 
 void MyOpenGLRenderer::initialize(int argc, char* argv[]) {
@@ -233,9 +235,7 @@ void MyOpenGLRenderer::drawScene() {
             //std::cout << "Right X: " << pShip->getMatrix().right().X << " Y: " << pShip->getMatrix().right().Y << " Z: " << pShip->getMatrix().right().Z << std::endl;
             //std::cout << "Up X: " << pShip->getMatrix().up().X << " Y: " << pShip->getMatrix().up().Y << " Z: " << pShip->getMatrix().up().Z << std::endl;
             //std::cout << "Translation X: " << pShip->getMatrix().translation().X << " Y: " << pShip->getMatrix().translation().Y << " Z: " << pShip->getMatrix().translation().Z << std::endl;
-            //pShip->updatePosition(deltaTime);
-            //Matrix* inverseViewMatrix = m_Camera->getInverseViewMatrix(pShip->getMatrix().translation() + pShip->getMatrix().forward(), pShip->getMatrix().up(), pShip->getMatrix().translation() + pShip->getMatrix().up()*1.5f - pShip->getMatrix().forward()*1.5f);
-            //currDrawable->applyMatrices(inverseViewMatrix);
+            
             pShip->updatePosition(deltaTime, m_GameManager->getMinBoundary(), m_GameManager->getMaxBoundary());
             
         } else if (Terrain* terrain = dynamic_cast<Terrain*>(currDrawable)) {
@@ -245,25 +245,38 @@ void MyOpenGLRenderer::drawScene() {
         } else if (EnemyShip* pEnemy = dynamic_cast<EnemyShip*>(currDrawable)) {
             
             //std::cout << "EnemyShip m_Pos: " << pEnemy->getPos()->X << ", " << pEnemy->getPos()->Y << ", " << pEnemy->getPos()->Z << ", " << std::endl;
-            m_GameManager->moveEnemy(pEnemy);
-            pEnemy->updatePosition(deltaTime, m_GameManager->getMinBoundary(), m_GameManager->getMaxBoundary());
+            if (pEnemy->getStatus()) {
+                m_GameManager->moveEnemy(pEnemy);
+                pEnemy->updatePosition(deltaTime, m_GameManager->getMinBoundary(), m_GameManager->getMaxBoundary());
+                //drawCurrDrawable(currDrawable);
+            }
+        } else if (Bullet* pBullet = dynamic_cast<Bullet*>(currDrawable)) {
+            if (pBullet->getStatus()) {
+                pBullet->updatePosition(deltaTime * 10.0f, m_GameManager->getMinBoundary(), m_GameManager->getMaxBoundary(), pShip->getPos());
+                //drawCurrDrawable(currDrawable);
+            }
+            
         }
         
-        
-        currDrawable->applyMatrices();        
+        //currDrawable->updatePosition(deltaTime, m_GameManager->getMinBoundary(), m_GameManager->getMaxBoundary());
+        currDrawable->applyMatrices();
         drawModel(currDrawable->getModel());
         currDrawable->getModel()->getBoundingBox().drawLines();
         currDrawable->discardMatrix();
         currDrawable->drawAxis();
     }
-
+    
     drawCubeMap();
-    /*GLfloat lpos[4];
+    
+    m_GameManager->updateHud();
+    
+    
+    GLfloat lpos[4];
     lpos[0]=m_LightPos->X;
     lpos[1]=m_LightPos->Y;
     lpos[2]=m_LightPos->Z;
     lpos[3]=1;
-    glLightfv(GL_LIGHT0, GL_POSITION, lpos);*/
+    glLightfv(GL_LIGHT0, GL_POSITION, lpos);
     
     checkForErrors();
     
@@ -282,39 +295,29 @@ void MyOpenGLRenderer::mouseCallback(int p_Button, int p_State, int p_X, int p_Y
 
 void MyOpenGLRenderer::keyboardCallback(unsigned char p_Key, int p_X, int p_Y) {
     
-    /*switch (p_Key) {
-        case 'a':
-            //std::cout << "a pressed" << std::endl;
-            m_ResManager->getPlayerShip()->setForwardBackward(1.0f);
-            
+    switch (p_Key) {
+        case 'd':
+            m_GameManager->shootEnemyShip();
             break;
-        case 'y':
-            //std::cout << "y pressed" << std::endl;
-            m_ResManager->getPlayerShip()->setForwardBackward(-1.0f);
- 
+        case 'o':
+            m_GameManager->setGameIsRunning(false);
             break;
         default:
             break;
-    }*/
+    }
     
 }
 
 void MyOpenGLRenderer::keyboardUpCallback(unsigned char p_Key, int p_X, int p_Y) {
     
-    /*switch (p_Key) {
-        case 'a':
-            //std::cout << "a up" << std::endl;
-            m_ResManager->getPlayerShip()->setForwardBackward(0.0f);
-            m_ResManager->getTerrain()->setForwardBackward(0.0f);
-            break;
-        case 'y':
-            //std::cout << "y up" << std::endl;
-            m_ResManager->getPlayerShip()->setForwardBackward(0.0f);
-            m_ResManager->getTerrain()->setForwardBackward(0.0f);
+    switch (p_Key) {
+        case 'd':
+            //std::cout << "d up" << std::endl;
+            //TODO schuss aufladen
             break;
         default:
             break;
-    }*/
+    }
     
 }
 

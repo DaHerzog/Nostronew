@@ -24,10 +24,15 @@ public:
     void steerPlayerShip(int key, float p_UpDown, float p_LeftRight);
     void stopShip(int key);
     void setBoundary(Vector* p_MinBoundary, Vector* p_MaxBoundary);
+    void setGameIsRunning(bool p_Bool);
     Vector* getMinBoundary();
     Vector* getMaxBoundary();
+    bool getGameIsRunning();
     void moveEnemy(EnemyShip* p_Enemy);
     void calculateRandomEnemyDirection(EnemyShip* p_Enemy);
+    void shootEnemyShip();
+    void checkForHit();
+    void updateHud();
 private:
     ResourceManager* m_ResManager;
     Vector* m_MinBoundary;
@@ -36,6 +41,7 @@ private:
     bool m_MoveEnemiesRight;
     bool m_MoveEnemiesUp;
     bool m_MoveEnemiesDown;
+    bool m_GameIsRunning;
     
 };
 

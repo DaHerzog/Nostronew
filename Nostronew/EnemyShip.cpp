@@ -14,6 +14,7 @@ EnemyShip::EnemyShip() {
     this->m_MoveEnemiesRight = false;
     this->m_MoveEnemiesDown = false;;
     this->m_MoveEnemiesUp = false;
+    this->m_Status = true;
     
 }
 
@@ -23,6 +24,7 @@ EnemyShip::EnemyShip(Model* p_Model) : Drawable(p_Model){
     this->m_MoveEnemiesRight = false;
     this->m_MoveEnemiesDown = false;;
     this->m_MoveEnemiesUp = false;
+    this->m_Status = true;
     
 }
 
@@ -39,6 +41,7 @@ EnemyShip::EnemyShip(Vector* p_StartPos, Model* p_Model): Drawable(p_StartPos, p
     this->m_MoveEnemiesRight = false;
     this->m_MoveEnemiesDown = false;;
     this->m_MoveEnemiesUp = false;
+    this->m_Status = true;
 }
 
 EnemyShip::~EnemyShip() {
@@ -48,7 +51,8 @@ EnemyShip::~EnemyShip() {
 void EnemyShip::updatePosition(float deltaTime, Vector* p_MinBoundary, Vector* p_MaxBoundary) {
     Matrix TM, RMz, RMx;
     Matrix RMDir;
-    //std::cout << "FUnktion des EnemyShips" << std::endl;
+    
+    //std::cout << "Funktion des EnemyShips" << std::endl;
     //*(this->m_Pos) = *(this->m_Pos) + ((*(this->m_Dir) * (float)(1/deltaTime)) * (this->m_ForwardBackward));
     
     if (this->getLeftRight() < -0.2f) {
@@ -98,6 +102,19 @@ void EnemyShip::updatePosition(float deltaTime, Vector* p_MinBoundary, Vector* p
         if (this->m_Acceleration->X < 0.0f) {
             this->m_Acceleration->X += 0.01f;
         }
+    }
+    
+    //Bei einer sehr geringen Beschleunigung wird der Vektor wieder auf 0.0f gesetzt.
+    if (this->m_Acceleration->X > 0.0f && this->m_Acceleration->X < 0.01f) {
+        this->m_Acceleration->X = 0.0f;
+    } else if (this->m_Acceleration->X < 0.0f && this->m_Acceleration->X > -0.01f) {
+        this->m_Acceleration->X = 0.0f;
+    }
+    
+    if (this->m_Acceleration->Y > 0.0f && this->m_Acceleration->Y < 0.01f) {
+        this->m_Acceleration->Y = 0.0f;
+    } else if (this->m_Acceleration->Y < 0.0f && this->m_Acceleration->Y > -0.01f) {
+        this->m_Acceleration->Y = 0.0f;
     }
     
     if (this->m_Pos->X > p_MinBoundary->X && this->m_Pos->X < p_MaxBoundary->X && this->m_Pos->Y > p_MinBoundary->Y && this->m_Pos->Y < p_MaxBoundary->Y) {
@@ -195,6 +212,10 @@ void EnemyShip::setMoveEnemiesUp(bool p_Bool) {
     this->m_MoveEnemiesUp = p_Bool;
 }
 
+void EnemyShip::setStatus(bool p_Bool) {
+    this->m_Status = p_Bool;
+}
+
 bool EnemyShip::getMoveEnemiesLeft() {
     return this->m_MoveEnemiesLeft;
 }
@@ -209,4 +230,8 @@ bool EnemyShip::getMoveEnemiesDown() {
 
 bool EnemyShip::getMoveEnemiesUp() {
     return this->m_MoveEnemiesUp;
+}
+
+bool EnemyShip::getStatus() {
+    return this->m_Status;
 }

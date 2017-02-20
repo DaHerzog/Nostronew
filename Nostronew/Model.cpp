@@ -232,7 +232,9 @@ void BoundingBox::createBox() {
 
 void BoundingBox::drawLines() const {
     
+    glDisable(GL_LIGHTING);
     glBegin(GL_LINES);
+    glColor3f(1.0f, 1.0f, 1.0f);
     for (int i = 0; i < m_VertexCount; i++) {
         
         glVertex3f(m_pVertices[i].Position.X, m_pVertices[i].Position.Y, m_pVertices[i].Position.Z);
@@ -247,6 +249,7 @@ void BoundingBox::drawLines() const {
         i= i+2;
     }
     glEnd();
+    glEnable(GL_LIGHTING);
 }
 
 const BoundingBox& Model::boundingBox() const

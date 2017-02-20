@@ -11,6 +11,8 @@
 ResourceManager::ResourceManager() {
     this->modelsToDraw = new std::vector<Drawable*>();
     this->loadedModels = new std::vector<Drawable*>();
+    this->m_Enemies = new std::vector<EnemyShip*>();
+    this->m_Bullets = new std::vector<Bullet*>();
 }
 
 /*
@@ -18,7 +20,7 @@ ResourceManager::ResourceManager() {
  *
  */
 bool ResourceManager::loadModels() {
-    Model* tmp = new Model();
+    
     char fullPathVertexShader[256];
     strcpy(fullPathVertexShader, m_PathToShader);
     strcat(fullPathVertexShader, (const char*)"vertex_phong.glsl");
@@ -32,20 +34,6 @@ bool ResourceManager::loadModels() {
     char fullPathFragmentShaderCubeMap[256];
     strcpy(fullPathFragmentShaderCubeMap, m_PathToShader);
     strcat(fullPathFragmentShaderCubeMap, (const char*)"cubemap_fragment.glsl");
-    
-    /*if (MyWavefrontParser::loadModel(tmp, "sibenik/sibenik.obj", false) && tmp->getModelShader().load(fullPathVertexShader, fullPathFragmentShader) && tmp->getModelShader().compile()) {
-        this->modelsToDraw->push_back(tmp);
-    } else {
-        std::cout << "Fehler in loadModels() beim Laden der Sibenik" << std::endl;
-    }*/
-    
-    /*Model* sphere = new Model();
-    if (MyWavefrontParser::loadModel(sphere, "coonball/coonball.obj", true) && sphere->getModelShader().load(fullPathVertexShader, fullPathFragmentShader) && sphere->getModelShader().compile()) {
-        this->modelsToDraw->push_back(sphere);
-    } else {
-        std::cout << "Error in loadModels() while loading..." << std::endl;
-    }*/
-    
     
     this->m_PlayerShip = new PlayerShip(new Vector(0.0f, 100.0f, 0.0f), new Model());
     if (MyWavefrontParser::loadModel(this->m_PlayerShip->getModel(), "test/zylinderpoly.obj", true) && m_PlayerShip->getModel()->getModelShader().load(fullPathVertexShader, fullPathFragmentShader) && this->m_PlayerShip->getModel()->getModelShader().compile()) {
@@ -62,7 +50,7 @@ bool ResourceManager::loadModels() {
      }
     
     
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < this->m_enemyCount; i++) {
     
         EnemyShip* enemy = new EnemyShip(new Vector(((float)3*i), 90.0f+((float)2*i), 50.0f), new Model());
         if (MyWavefrontParser::loadModel(enemy->getModel(), "test/zylinderpoly.obj", true) && enemy->getModel()->getModelShader().load(fullPathVertexShader, fullPathFragmentShader) && enemy->getModel()->getModelShader().compile()) {
@@ -72,7 +60,19 @@ bool ResourceManager::loadModels() {
         }
     }
     
-    this->m_CubeMap = new CubeMap();
+    for (int i = 0; i < this->m_bulletCount; i++) {
+        
+        Bullet* bullet = new Bullet(new Model());
+        if (MyWavefrontParser::loadModel(bullet->getModel(), "test/zylinderpoly.obj", true) && bullet->getModel()->getModelShader().load(fullPathVertexShader, fullPathFragmentShader) && bullet->getModel()->getModelShader().compile()) {
+            //this->modelsToDraw->push_back(bullet);
+            this->m_Bullets->push_back(bullet);
+        }
+        else {
+            std::cout << "Error in loadModels() while loading..." << std::endl;
+        }
+    }
+    
+    this->m_CubeMap = new CubeMap(300.0f);
     this->m_CubeMap->init(m_PathToCubeMap, fullPathVertexShaderCubeMap, fullPathFragmentShaderCubeMap);
     
     
@@ -98,3 +98,43 @@ Terrain* ResourceManager::getTerrain() {
 CubeMap* ResourceManager::getCubeMap() {
     return this->m_CubeMap;
 }
+
+EnemyShip * ResourceManager::getEnemy(int index) {
+    if (index < this->m_enemyCount) {
+        return this->m_Enemies->at(index);
+    } else {
+        std::cout << "Error in getEnemy" << std::endl;
+        return NULL;
+    }
+}
+
+Bullet * ResourceManager::getBullet(int index) {
+    if (index < this->m_bulletCount) {
+        return this->m_Bullets->at(index);
+    } else {
+        std::cout << "Error in getBullet" << std::endl;
+        return NULL;
+    }
+}
+
+int ResourceManager::getEnemyCount() {
+    return this->m_enemyCount;
+}
+
+int ResourceManager::getBulletCount() {
+    return this->m_bulletCount;
+}
+
+std::vector<Bullet*>* ResourceManager::getBullets() {
+    return this->m_Bullets;
+}
+
+void ResourceManager::setHud(Hud *p_Hud) {
+    this->m_Hud = p_Hud;
+}
+
+Hud* ResourceManager::getHud() {
+    return this->m_Hud;
+}
+
+

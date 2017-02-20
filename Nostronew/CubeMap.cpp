@@ -17,6 +17,16 @@ CubeMap::CubeMap() {
     this->m_TextureBottom = new Texture();
 }
 
+CubeMap::CubeMap(float p_Scale) {
+    this->m_TextureFront = new Texture();
+    this->m_TextureBack = new Texture();
+    this->m_TextureLeft = new Texture();
+    this->m_TextureRight = new Texture();
+    this->m_TextureTop = new Texture();
+    this->m_TextureBottom = new Texture();
+    this->m_Scale = p_Scale;
+}
+
 
 
 CubeMap::~CubeMap() {
@@ -175,7 +185,7 @@ void CubeMap::initVertices() {
     
     
     for (int k = 0; k < 36; k++) {
-        Positions[k] = Positions[k]*500.0f;
+        Positions[k] = Positions[k]*this->m_Scale;
     }
     
     
@@ -216,8 +226,6 @@ void CubeMap::applyCubeMapTextures() {
         return;
     }
     
-//    glEnable(GL_TEXTURE_2D);
-//    glBindTexture(GL_TEXTURE_2D, this->m_TextureID);
     glEnable(GL_TEXTURE_CUBE_MAP);
     glBindTexture(GL_TEXTURE_CUBE_MAP, this->m_TextureID);
 
@@ -233,4 +241,8 @@ GLuint CubeMap::getIndexBuffer() {
 
 unsigned int CubeMap::getVertexCount() {
     return this->m_VertexCount;
+}
+
+GLuint CubeMap::getTextureID() {
+    return this->m_TextureID;
 }

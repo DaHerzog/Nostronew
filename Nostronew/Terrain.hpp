@@ -17,7 +17,7 @@ public:
     Terrain();
     Terrain(Model* pModel);
     virtual ~Terrain();
-    void updateTerrainMovement(float pDeltaTime);
+    virtual void updatePosition(float deltaTime, Vector* p_MinBoundary, Vector* p_MaxBoundary);
 };
 
 #endif /* Terrain_hpp */

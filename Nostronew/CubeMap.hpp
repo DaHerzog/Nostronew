@@ -18,12 +18,14 @@
 class CubeMap {
 public:
     CubeMap();
+    CubeMap(float p_Scale);
     ~CubeMap();
     void init(const char* p_PathForTextures, const char* p_PathForVertex, const char* p_PathForFragment);
     ShaderProgram* getShader();
     void applyCubeMapTextures();
     GLuint getVertexBuffer();
     GLuint getIndexBuffer();
+    GLuint getTextureID();
     unsigned int getVertexCount();
 protected:
     void setOpenGLParameters();
@@ -41,6 +43,7 @@ protected:
     GLuint m_TextureID;
     GLuint m_VertexBuffer;
     GLuint m_IndexBuffer;
+    float m_Scale;
 };
 
 #endif /* CubeMap_hpp */
