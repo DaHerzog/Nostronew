@@ -229,7 +229,7 @@ void MyOpenGLRenderer::drawScene() {
             
             //std::cout << "EnemyShip m_Pos: " << pEnemy->getPos()->X << ", " << pEnemy->getPos()->Y << ", " << pEnemy->getPos()->Z << ", " << std::endl;
 			if (pEnemy->getStatus()) {
-				m_GameManager->moveEnemy(pEnemy);
+				//m_GameManager->moveEnemy(pEnemy);
 				pEnemy->updatePosition(deltaTime * 1000.0f, m_GameManager->getMinBoundary(), m_GameManager->getMaxBoundary());
 				drawCurrDrawable(currDrawable);
 			}
@@ -238,13 +238,12 @@ void MyOpenGLRenderer::drawScene() {
 			if (pBullet->getStatus()) {
 				pBullet->updatePosition(deltaTime * 1000.0f, m_GameManager->getMinBoundary(), m_GameManager->getMaxBoundary(), pShip->getPos());
 				drawCurrDrawable(currDrawable);
+				m_GameManager->checkForHit(pBullet);
 			}
 			
 		}
     }
 
-
-	m_GameManager->checkForHit();
     /*GLfloat lpos[4];
     lpos[0]=m_LightPos->X;
     lpos[1]=m_LightPos->Y;

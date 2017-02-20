@@ -187,20 +187,32 @@ void GameManager::shootEnemyShip() {
 	}
 }
 
-void GameManager::checkForHit() {
+void GameManager::checkForHit(Bullet* p_Bullet) {
 
 	ResourceManager* res = this->m_ResManager;
-	int p_bulletCount = res->getBulletCount();
 	int p_enemyCount = res->getEnemyCount();
 
-	for (int p_bulletIndex = 0; p_bulletIndex < p_bulletCount; p_bulletIndex++) {
-		for (int p_enemyIndex = 0; p_enemyIndex < p_enemyCount; p_enemyIndex++) {
-			Bullet* b = res->getBullet(p_bulletIndex);
-			EnemyShip* e = res->getEnemy(p_enemyIndex);
+	for (int p_enemyIndex = 0; p_enemyIndex < p_enemyCount; p_enemyIndex++) {
+		EnemyShip* e = res->getEnemy(p_enemyIndex);
+		BoundingBox enemy_bounds = e->getModel()->getBoundingBox();
 
-			b->getModel()->getBoundingBox();
+		BoundingBox bullet_bounds = p_Bullet->getModel()->getBoundingBox();
 
-			
+		Vector bullet_max = p_Bullet->getModel()->getBoundingBox().Max + *p_Bullet->getPos();
+		Vector bullet_min = p_Bullet->getModel()->getBoundingBox().Min + *p_Bullet->getPos();
+		Vector enemy_max = e->getModel()->getBoundingBox().Max + *e->getPos();
+		Vector enemy_min = e->getModel()->getBoundingBox().Min + *e->getPos();
+
+		//prüfung ob wert infrage kommt
+		if (bullet_max.Z > enemy_min.Z) {
+			if ((bullet_min.Y <= enemy_max.Y) && (bullet_max.Y >= enemy_min.Y)) {
+				//std::cout << "HIT Y" << p_Bullet->getModel()->getBoundingBox().Max.X + p_Bullet->getPos()->X << " | " << enemy_bounds.Min.X + e->getPos()->X << std::endl;
+				if((bullet_max.X >= enemy_min.X) && (bullet_min.X <= enemy_max.X)) {
+					//std::cout << "HIT X" << p_Bullet->getModel()->getBoundingBox().Max.Z + p_Bullet->getPos()->Z <<" | "<< enemy_bounds.Min.Z + e->getPos()->Z << std::endl;
+					e->setStatus(false);
+					p_Bullet->setStatus(false);
+				}
+			}
 		}
 	}
 }
