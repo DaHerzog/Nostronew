@@ -31,13 +31,15 @@ public:
     void moveEnemy(EnemyShip* p_Enemy);
     void calculateRandomEnemyDirection(EnemyShip* p_Enemy);
     void shootEnemyShip();
-    void checkForHit();
+    void checkForHit(Bullet* p_Bullet, int p_BulletIdx);
+    bool checkBulletsLifecylce(Bullet* p_Bullet, int p_BulletIdx);
     void updateHud();
     void restartGame();
 private:
     ResourceManager* m_ResManager;
     Vector* m_MinBoundary;
     Vector* m_MaxBoundary;
+    unsigned int m_ShipsDestroyedCounter;
     bool m_MoveEnemiesLeft;
     bool m_MoveEnemiesRight;
     bool m_MoveEnemiesUp;

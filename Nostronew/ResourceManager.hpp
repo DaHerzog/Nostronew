@@ -24,13 +24,15 @@ class ResourceManager {
 private:
     const char* m_PathToShader = "/Users/davidherzog/Documents/XCode/Nostronew/Shader/";
     const char* m_PathToCubeMap = "/Users/davidherzog/Documents/XCode/Nostronew/Models/cubemap/";
-    const int m_enemyCount = 5;
-    const int m_bulletCount = 10;
+    int m_EnemyCount = 5;
+    const int m_BulletCount = 10;
     std::vector<Drawable*>* modelsToDraw;
     std::vector<Drawable*>* loadedModels;
     PlayerShip* m_PlayerShip;
     Terrain* m_Terrain;
     CubeMap* m_CubeMap;
+    Bullet* m_BulletBluePrint;
+    EnemyShip* m_EnemyShipBluePrint;
     std::vector<EnemyShip*>* m_Enemies;
     std::vector<Bullet*>* m_Bullets;
     Hud* m_Hud;
@@ -49,6 +51,9 @@ public:
     void setHud(Hud* p_Hud);
     int getEnemyCount();
     int getBulletCount();
+    void setEnemyCount(int p_NewValue);
+    Bullet* getBulletBluePrint();
+    EnemyShip* getEnemyShipBluePrint();
 };
 
 #endif /* ResourceManager_hpp */

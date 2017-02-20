@@ -225,7 +225,7 @@ void MyOpenGLRenderer::drawScene() {
     
     
     
-    
+    int i = 0;
     for (Drawable* currDrawable : *(m_ResManager->getModelsToDraw())) {
         
         if (PlayerShip* pShipCast = dynamic_cast<PlayerShip*>(currDrawable)) {
@@ -245,25 +245,25 @@ void MyOpenGLRenderer::drawScene() {
         } else if (EnemyShip* pEnemy = dynamic_cast<EnemyShip*>(currDrawable)) {
             
             //std::cout << "EnemyShip m_Pos: " << pEnemy->getPos()->X << ", " << pEnemy->getPos()->Y << ", " << pEnemy->getPos()->Z << ", " << std::endl;
-            if (pEnemy->getStatus()) {
-                m_GameManager->moveEnemy(pEnemy);
-                pEnemy->updatePosition(deltaTime, m_GameManager->getMinBoundary(), m_GameManager->getMaxBoundary());
-                //drawCurrDrawable(currDrawable);
-            }
+            m_GameManager->moveEnemy(pEnemy);
+            pEnemy->updatePosition(deltaTime, m_GameManager->getMinBoundary(), m_GameManager->getMaxBoundary());
+            
         } else if (Bullet* pBullet = dynamic_cast<Bullet*>(currDrawable)) {
-            if (pBullet->getStatus()) {
-                pBullet->updatePosition(deltaTime * 10.0f, m_GameManager->getMinBoundary(), m_GameManager->getMaxBoundary(), pShip->getPos());
-                //drawCurrDrawable(currDrawable);
+            pBullet->updatePosition(deltaTime * 10.0f, m_GameManager->getMinBoundary(), m_GameManager->getMaxBoundary(), pShip->getPos());
+            if (m_GameManager->checkBulletsLifecylce(pBullet, i)) {
+                m_GameManager->checkForHit(pBullet, i);
             }
+            
             
         }
         
-        //currDrawable->updatePosition(deltaTime, m_GameManager->getMinBoundary(), m_GameManager->getMaxBoundary());
         currDrawable->applyMatrices();
         drawModel(currDrawable->getModel());
         //currDrawable->getModel()->getBoundingBox().drawLines();
         currDrawable->discardMatrix();
-        currDrawable->drawAxis();
+        //currDrawable->drawAxis();
+        
+        i++;
     }
     
     drawCubeMap();

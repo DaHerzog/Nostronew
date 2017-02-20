@@ -275,46 +275,79 @@ void GameManager::calculateRandomEnemyDirection(EnemyShip *p_Enemy) {
     
 }
 
+/*
+ * Löst einen Schuss aus
+ *
+ */
 void GameManager::shootEnemyShip() {
     ResourceManager* res = this->m_ResManager;
-    for (int i = 0; i < res->getBulletCount(); i++) {
-        Bullet* bullet = res->getBullet(i);
-        if (!bullet->getStatus()) {
-            //schiessen wenn status == false -> bullet noch nicht geschossen
-            bullet->setStatus(true);
-            Vector* vec = new Vector(*res->getPlayerShip()->getPos());
-            bullet->setPos(vec);
-            res->getModelsToDraw()->push_back(bullet);
-            break;
-        } else if(i == res->getBulletCount()-1) {
-            //alle Shüsse werden gezeichnet  -> spieler muss warten bis schuss zerstört wird
-            std::cout << "Waffe überhitzt" << std::endl;
-        }
-    }
+    Vector* vec = new Vector(*res->getPlayerShip()->getPos());
+    Bullet* newBullet = new Bullet(vec, res->getBulletBluePrint()->getModel());
+    res->getModelsToDraw()->push_back(newBullet);
 }
 
-void GameManager::checkForHit() {
+/*
+ * Prüft, wie lange eine "Bullet" schon in der Luft war und loescht sie aus dem
+ * modelsToDraw Array wenn sie ihren Lebenszyklus durchlaufen hat.
+ */
+bool GameManager::checkBulletsLifecylce(Bullet *p_Bullet, int p_BulletIdx) {
+    if (!p_Bullet->getStatus()) {
+        m_ResManager->getModelsToDraw()->erase(m_ResManager->getModelsToDraw()->begin()+p_BulletIdx);
+        delete p_Bullet;
+        return false;
+    }
+    return true;
+}
+
+/*
+ * Kolllisionsabfrage für die übergebene "Bullet"
+ *
+ */
+void GameManager::checkForHit(Bullet *p_Bullet, int p_BulletIdx) {
     
     ResourceManager* res = this->m_ResManager;
-    int p_bulletCount = res->getBulletCount();
     int p_enemyCount = res->getEnemyCount();
     
-    for (int p_bulletIndex = 0; p_bulletIndex < p_bulletCount; p_bulletIndex++) {
-        for (int p_enemyIndex = 0; p_enemyIndex < p_enemyCount; p_enemyIndex++) {
-            Bullet* b = res->getBullet(p_bulletIndex);
-            EnemyShip* e = res->getEnemy(p_enemyIndex);
+    for (int i = 0; i < res->getModelsToDraw()->size(); i++) {
+        
+        if (EnemyShip* e = dynamic_cast<EnemyShip*>(res->getModelsToDraw()->at(i))) {
+        
+            Vector bullet_max = p_Bullet->getModel()->getBoundingBox().Max + *p_Bullet->getPos();
+            Vector bullet_min = p_Bullet->getModel()->getBoundingBox().Min + *p_Bullet->getPos();
+            Vector enemy_max = e->getModel()->getBoundingBox().Max + *e->getPos();
+            Vector enemy_min = e->getModel()->getBoundingBox().Min + *e->getPos();
             
-            b->getModel()->getBoundingBox();
-            
-            
+            //prüfung ob wert infrage kommt
+            if (bullet_max.Z > enemy_min.Z) {
+                if ((bullet_min.Y <= enemy_max.Y) && (bullet_max.Y >= enemy_min.Y)) {
+                    if((bullet_max.X >= enemy_min.X) && (bullet_min.X <= enemy_max.X)) {
+                        res->getModelsToDraw()->erase(res->getModelsToDraw()->begin()+i);
+                        res->setEnemyCount(res->getEnemyCount()-1);
+                        delete e;
+                        res->getModelsToDraw()->erase(res->getModelsToDraw()->begin()+p_BulletIdx-1);
+                        delete p_Bullet;
+                        this->m_ShipsDestroyedCounter++;
+                        if(res->getEnemyCount() == 0) {
+                            this->m_GameIsRunning = false;
+                        }
+                    }
+                }
+            }
         }
     }
 }
-
+/*
+ * Aktualisiert das HUD
+ *
+ */
 void GameManager::updateHud() {
     m_ResManager->getHud()->setupFor2DRendering();
     if (m_GameIsRunning) {
-        m_ResManager->getHud()->drawText(50, 50, "Das ist ein Test!");
+        std::string s = std::to_string(this->m_ShipsDestroyedCounter);
+        char const *counterChar = s.c_str();
+        char text[256] = "Insgesamt zerstoerte Schiffe: ";
+        strcat(text, counterChar);
+        m_ResManager->getHud()->drawText(50, 50, text);
     } else {
         m_ResManager->getHud()->drawText((m_ResManager->getHud()->getDisplayWidth()/2)-10, m_ResManager->getHud()->getDisplayHeight()/2, "Game Over!");
         m_ResManager->getHud()->drawText((m_ResManager->getHud()->getDisplayWidth()/2)-40, (m_ResManager->getHud()->getDisplayHeight()/2)-40, "Press R for Restart!");
@@ -322,6 +355,18 @@ void GameManager::updateHud() {
     m_ResManager->getHud()->setupFor3DRendering();
 }
 
+
+/*
+ * Startet das Spiel neu, sobald alle Gegner erledigt wurden
+ *
+ */
 void GameManager::restartGame() {
+    
+    m_ResManager->setEnemyCount(5);
+    for (int i = 0; i < m_ResManager->getEnemyCount(); i++) {
+        EnemyShip* tmpEnemy = new EnemyShip(new Vector((float)(i * 4.0f), (float)(90+i), 50.0f), m_ResManager->getEnemyShipBluePrint()->getModel());
+        m_ResManager->getModelsToDraw()->push_back(tmpEnemy);
+    }
+    
     this->m_GameIsRunning = true;
 }

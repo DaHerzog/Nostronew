@@ -50,26 +50,26 @@ bool ResourceManager::loadModels() {
      }
     
     
-    for (int i = 0; i < this->m_enemyCount; i++) {
+
     
-        EnemyShip* enemy = new EnemyShip(new Vector(((float)3*i), 90.0f+((float)2*i), 50.0f), new Model());
-        if (MyWavefrontParser::loadModel(enemy->getModel(), "test/zylinderpoly.obj", true) && enemy->getModel()->getModelShader().load(fullPathVertexShader, fullPathFragmentShader) && enemy->getModel()->getModelShader().compile()) {
-            this->modelsToDraw->push_back(enemy);
-        } else {
-            std::cout << "Error in loadModels() while loading..." << std::endl;
-        }
+    this->m_EnemyShipBluePrint = new EnemyShip(new Model());
+    if (MyWavefrontParser::loadModel(this->m_EnemyShipBluePrint->getModel(), "test/zylinderpoly.obj", true) && this->m_EnemyShipBluePrint->getModel()->getModelShader().load(fullPathVertexShader, fullPathFragmentShader) && this->m_EnemyShipBluePrint->getModel()->getModelShader().compile()) {
+    } else {
+        std::cout << "Error in loadModels() while loading..." << std::endl;
     }
     
-    for (int i = 0; i < this->m_bulletCount; i++) {
-        
-        Bullet* bullet = new Bullet(new Model());
-        if (MyWavefrontParser::loadModel(bullet->getModel(), "test/zylinderpoly.obj", true) && bullet->getModel()->getModelShader().load(fullPathVertexShader, fullPathFragmentShader) && bullet->getModel()->getModelShader().compile()) {
-            //this->modelsToDraw->push_back(bullet);
-            this->m_Bullets->push_back(bullet);
-        }
-        else {
-            std::cout << "Error in loadModels() while loading..." << std::endl;
-        }
+    for (int i = 0; i < this->m_EnemyCount; i++) {
+        EnemyShip* tmpEnemy = new EnemyShip(new Vector((float)(i * 4.0f), (float)(90+i), 50.0f), this->m_EnemyShipBluePrint->getModel());
+        this->modelsToDraw->push_back(tmpEnemy);
+    }
+    
+    
+    
+    this->m_BulletBluePrint = new Bullet(new Model());
+    if (MyWavefrontParser::loadModel(this->m_BulletBluePrint->getModel(), "test/zylinderpoly.obj", true) && this->m_BulletBluePrint->getModel()->getModelShader().load(fullPathVertexShader, fullPathFragmentShader) && this->m_BulletBluePrint->getModel()->getModelShader().compile()) {
+    }
+    else {
+        std::cout << "Error in loadModels() while loading..." << std::endl;
     }
     
     this->m_CubeMap = new CubeMap(300.0f);
@@ -100,7 +100,7 @@ CubeMap* ResourceManager::getCubeMap() {
 }
 
 EnemyShip * ResourceManager::getEnemy(int index) {
-    if (index < this->m_enemyCount) {
+    if (index < this->m_EnemyCount) {
         return this->m_Enemies->at(index);
     } else {
         std::cout << "Error in getEnemy" << std::endl;
@@ -109,7 +109,7 @@ EnemyShip * ResourceManager::getEnemy(int index) {
 }
 
 Bullet * ResourceManager::getBullet(int index) {
-    if (index < this->m_bulletCount) {
+    if (index < this->m_BulletCount) {
         return this->m_Bullets->at(index);
     } else {
         std::cout << "Error in getBullet" << std::endl;
@@ -118,11 +118,11 @@ Bullet * ResourceManager::getBullet(int index) {
 }
 
 int ResourceManager::getEnemyCount() {
-    return this->m_enemyCount;
+    return this->m_EnemyCount;
 }
 
 int ResourceManager::getBulletCount() {
-    return this->m_bulletCount;
+    return this->m_BulletCount;
 }
 
 std::vector<Bullet*>* ResourceManager::getBullets() {
@@ -137,4 +137,15 @@ Hud* ResourceManager::getHud() {
     return this->m_Hud;
 }
 
+void ResourceManager::setEnemyCount(int p_NewValue) {
+    this->m_EnemyCount = p_NewValue;
+}
+
+Bullet* ResourceManager::getBulletBluePrint() {
+    return this->m_BulletBluePrint;
+}
+
+EnemyShip* ResourceManager::getEnemyShipBluePrint() {
+    return this->m_EnemyShipBluePrint;
+}
 

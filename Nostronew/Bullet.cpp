@@ -14,9 +14,13 @@ Bullet::Bullet() {
 }
 
 Bullet::Bullet(Model * p_Model) : Drawable(p_Model) {
+    this->m_status = true;
+    this->m_lifetime = 0.0f;
 }
 
 Bullet::Bullet(Vector * p_StartPos, Model * p_Model): Drawable(p_StartPos, p_Model) {
+    this->m_status = true;
+    this->m_lifetime = 0.0f;
 }
 
 
