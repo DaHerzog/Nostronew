@@ -15,6 +15,7 @@ GameManager::GameManager() {
     this->m_MoveEnemiesUp = false;
     this->m_MoveEnemiesDown = false;
     this->m_GameIsRunning = true;
+    this->m_ShipsDestroyedCounter = 0;
 }
 
 GameManager::GameManager(Vector* p_MinBoundary, Vector* p_MaxBoundary) {
@@ -25,6 +26,7 @@ GameManager::GameManager(Vector* p_MinBoundary, Vector* p_MaxBoundary) {
     this->m_MoveEnemiesUp = false;
     this->m_MoveEnemiesDown = false;
     this->m_GameIsRunning = true;
+    this->m_ShipsDestroyedCounter = 0;
 }
 
 GameManager::GameManager(ResourceManager* p_ResManager) {
@@ -34,6 +36,7 @@ GameManager::GameManager(ResourceManager* p_ResManager) {
     this->m_MoveEnemiesUp = false;
     this->m_MoveEnemiesDown = false;
     this->m_GameIsRunning = true;
+    this->m_ShipsDestroyedCounter = 0;
 }
 
 /*
@@ -292,6 +295,8 @@ void GameManager::shootEnemyShip() {
  */
 bool GameManager::checkBulletsLifecylce(Bullet *p_Bullet, int p_BulletIdx) {
     if (!p_Bullet->getStatus()) {
+        std::cout << "Size: " << m_ResManager->getModelsToDraw()->size() << std::endl;
+        std::cout << "bulletidx: " << p_BulletIdx << std::endl;
         m_ResManager->getModelsToDraw()->erase(m_ResManager->getModelsToDraw()->begin()+p_BulletIdx);
         delete p_Bullet;
         return false;
@@ -350,7 +355,7 @@ void GameManager::updateHud() {
         m_ResManager->getHud()->drawText(50, 50, text);
     } else {
         m_ResManager->getHud()->drawText((m_ResManager->getHud()->getDisplayWidth()/2)-10, m_ResManager->getHud()->getDisplayHeight()/2, "Game Over!");
-        m_ResManager->getHud()->drawText((m_ResManager->getHud()->getDisplayWidth()/2)-40, (m_ResManager->getHud()->getDisplayHeight()/2)-40, "Press R for Restart!");
+        m_ResManager->getHud()->drawText((m_ResManager->getHud()->getDisplayWidth()/2)-55, (m_ResManager->getHud()->getDisplayHeight()/2)-40, "Druecke R fuer Neustart!");
     }
     m_ResManager->getHud()->setupFor3DRendering();
 }

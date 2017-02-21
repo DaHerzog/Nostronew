@@ -18,7 +18,7 @@ ImportType MyWavefrontParser::m_UsedProgram = CINEMA;
 //
 //  Hier wird der Hauptpfad angegeben in dem die Models liegen.
 //
-const char* MyWavefrontParser::m_MainPath = "/Users/davidherzog/Documents/XCode/Nostronew/Models/";
+char* MyWavefrontParser::m_MainPath = "";
 
 //
 //  Skalierungsfaktor, falls gewünscht.
@@ -671,4 +671,8 @@ void MyWavefrontParser::checkForErrors() {
     }
     
     
+}
+
+void MyWavefrontParser::setMainPath(char *p_MainPath) {
+    m_MainPath = p_MainPath;
 }

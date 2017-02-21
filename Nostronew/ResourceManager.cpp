@@ -15,6 +15,21 @@ ResourceManager::ResourceManager() {
     this->m_Bullets = new std::vector<Bullet*>();
 }
 
+ResourceManager::ResourceManager(char* p_PathToShader, char* p_MainPath, int p_EnemyCount) {
+    this->modelsToDraw = new std::vector<Drawable*>();
+    this->loadedModels = new std::vector<Drawable*>();
+    this->m_Enemies = new std::vector<EnemyShip*>();
+    this->m_Bullets = new std::vector<Bullet*>();
+    this->m_PathToShader = p_PathToShader;
+    this->m_EnemyCount = p_EnemyCount;
+    
+    char* tmpPathToCubeMap = new char[256];
+    strcpy(tmpPathToCubeMap, p_MainPath);
+    strcat(tmpPathToCubeMap, "cubemap/");
+    std::cout << tmpPathToCubeMap << std::endl;
+    this->m_PathToCubeMap = (char*)tmpPathToCubeMap;
+}
+
 /*
  * Diese Methode is für das Laden aller gewünschten Modelle zuständig.
  *
@@ -108,22 +123,11 @@ EnemyShip * ResourceManager::getEnemy(int index) {
     }
 }
 
-Bullet * ResourceManager::getBullet(int index) {
-    if (index < this->m_BulletCount) {
-        return this->m_Bullets->at(index);
-    } else {
-        std::cout << "Error in getBullet" << std::endl;
-        return NULL;
-    }
-}
 
 int ResourceManager::getEnemyCount() {
     return this->m_EnemyCount;
 }
 
-int ResourceManager::getBulletCount() {
-    return this->m_BulletCount;
-}
 
 std::vector<Bullet*>* ResourceManager::getBullets() {
     return this->m_Bullets;

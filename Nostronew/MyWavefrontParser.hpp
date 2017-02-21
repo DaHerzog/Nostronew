@@ -28,9 +28,10 @@ enum ImportType {
 class MyWavefrontParser {
 public:
     static ImportType m_UsedProgram;
-    static const char* m_MainPath;
+    static char* m_MainPath;
     static float m_Scale;
     static bool loadModel(Model* p_Model, const char* p_Filename, bool p_Fitsize);
+    static void setMainPath(char* p_MainPath);
 private:
     static bool loadFromCinema(Model* p_Model, const char* p_Filename, bool p_Fitsize);
     static bool loadFromPraktikum(Model* p_Model, const char* p_Filename, bool p_Fitsize);

@@ -297,7 +297,9 @@ void MyOpenGLRenderer::keyboardCallback(unsigned char p_Key, int p_X, int p_Y) {
     
     switch (p_Key) {
         case 'd':
-            m_GameManager->shootEnemyShip();
+            if(m_GameManager->getGameIsRunning()) {
+                m_GameManager->shootEnemyShip();
+            }
             break;
         case 'o':
             m_GameManager->setGameIsRunning(false);

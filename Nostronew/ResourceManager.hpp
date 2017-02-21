@@ -22,10 +22,9 @@
 class ResourceManager {
 
 private:
-    const char* m_PathToShader = "/Users/davidherzog/Documents/XCode/Nostronew/Shader/";
-    const char* m_PathToCubeMap = "/Users/davidherzog/Documents/XCode/Nostronew/Models/cubemap/";
-    int m_EnemyCount = 5;
-    const int m_BulletCount = 10;
+    char* m_PathToShader;
+    char* m_PathToCubeMap;
+    int m_EnemyCount;
     std::vector<Drawable*>* modelsToDraw;
     std::vector<Drawable*>* loadedModels;
     PlayerShip* m_PlayerShip;
@@ -38,6 +37,7 @@ private:
     Hud* m_Hud;
 public:
     ResourceManager();
+    ResourceManager(char* p_PathToShader, char* p_PathToCubeMap, int p_EnemyCount);
     bool loadModels();
     std::vector<Drawable*>* getModelsToDraw();
     std::vector<Drawable*>* getLoadedModels();
@@ -46,11 +46,9 @@ public:
     Terrain* getTerrain();
     CubeMap* getCubeMap();
     EnemyShip* getEnemy(int index);
-    Bullet* getBullet(int index);
     Hud* getHud();
     void setHud(Hud* p_Hud);
     int getEnemyCount();
-    int getBulletCount();
     void setEnemyCount(int p_NewValue);
     Bullet* getBulletBluePrint();
     EnemyShip* getEnemyShipBluePrint();
