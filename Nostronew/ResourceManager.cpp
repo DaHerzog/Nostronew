@@ -22,6 +22,7 @@ ResourceManager::ResourceManager(char* p_PathToShader, char* p_MainPath, int p_E
     this->m_Bullets = new std::vector<Bullet*>();
     this->m_PathToShader = p_PathToShader;
     this->m_EnemyCount = p_EnemyCount;
+    this->m_InitialEnemyCount = p_EnemyCount;
     
     char* tmpPathToCubeMap = new char[256];
     strcpy(tmpPathToCubeMap, p_MainPath);
@@ -51,7 +52,7 @@ bool ResourceManager::loadModels() {
     strcat(fullPathFragmentShaderCubeMap, (const char*)"cubemap_fragment.glsl");
     
     this->m_PlayerShip = new PlayerShip(new Vector(0.0f, 100.0f, 0.0f), new Model());
-    if (MyWavefrontParser::loadModel(this->m_PlayerShip->getModel(), "test/zylinderpoly.obj", true) && m_PlayerShip->getModel()->getModelShader().load(fullPathVertexShader, fullPathFragmentShader) && this->m_PlayerShip->getModel()->getModelShader().compile()) {
+    if (MyWavefrontParser::loadModel(this->m_PlayerShip->getModel(), "spaceship/spaceship.obj", true) && m_PlayerShip->getModel()->getModelShader().load(fullPathVertexShader, fullPathFragmentShader) && this->m_PlayerShip->getModel()->getModelShader().compile()) {
         this->modelsToDraw->push_back(this->m_PlayerShip);
     } else {
         std::cout << "Error in loadModels() while loading..." << std::endl;
@@ -65,29 +66,27 @@ bool ResourceManager::loadModels() {
      }
     
     
-
-    
     this->m_EnemyShipBluePrint = new EnemyShip(new Model());
-    if (MyWavefrontParser::loadModel(this->m_EnemyShipBluePrint->getModel(), "test/zylinderpoly.obj", true) && this->m_EnemyShipBluePrint->getModel()->getModelShader().load(fullPathVertexShader, fullPathFragmentShader) && this->m_EnemyShipBluePrint->getModel()->getModelShader().compile()) {
+    if (MyWavefrontParser::loadModel(this->m_EnemyShipBluePrint->getModel(), "enemy/enemy.obj", true) && this->m_EnemyShipBluePrint->getModel()->getModelShader().load(fullPathVertexShader, fullPathFragmentShader) && this->m_EnemyShipBluePrint->getModel()->getModelShader().compile()) {
     } else {
         std::cout << "Error in loadModels() while loading..." << std::endl;
     }
     
     for (int i = 0; i < this->m_EnemyCount; i++) {
-        EnemyShip* tmpEnemy = new EnemyShip(new Vector((float)(i * 4.0f), (float)(90+i), 50.0f), this->m_EnemyShipBluePrint->getModel());
+        EnemyShip* tmpEnemy = new EnemyShip(new Vector((float)(i * 4.0f), (float)(90+i), 30.0f), this->m_EnemyShipBluePrint->getModel());
         this->modelsToDraw->push_back(tmpEnemy);
     }
     
     
     
     this->m_BulletBluePrint = new Bullet(new Model());
-    if (MyWavefrontParser::loadModel(this->m_BulletBluePrint->getModel(), "test/zylinderpoly.obj", true) && this->m_BulletBluePrint->getModel()->getModelShader().load(fullPathVertexShader, fullPathFragmentShader) && this->m_BulletBluePrint->getModel()->getModelShader().compile()) {
+    if (MyWavefrontParser::loadModel(this->m_BulletBluePrint->getModel(), "bullet/rocket.obj", true) && this->m_BulletBluePrint->getModel()->getModelShader().load(fullPathVertexShader, fullPathFragmentShader) && this->m_BulletBluePrint->getModel()->getModelShader().compile()) {
     }
     else {
         std::cout << "Error in loadModels() while loading..." << std::endl;
     }
     
-    this->m_CubeMap = new CubeMap(300.0f);
+    this->m_CubeMap = new CubeMap(400.0f);
     this->m_CubeMap->init(m_PathToCubeMap, fullPathVertexShaderCubeMap, fullPathFragmentShaderCubeMap);
     
     
@@ -151,5 +150,9 @@ Bullet* ResourceManager::getBulletBluePrint() {
 
 EnemyShip* ResourceManager::getEnemyShipBluePrint() {
     return this->m_EnemyShipBluePrint;
+}
+
+int ResourceManager::getInitialEnemyCount() {
+    return this->m_InitialEnemyCount;
 }
 

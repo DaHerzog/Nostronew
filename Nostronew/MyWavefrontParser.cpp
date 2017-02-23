@@ -15,10 +15,8 @@
 //
 ImportType MyWavefrontParser::m_UsedProgram = CINEMA;
 
-//
-//  Hier wird der Hauptpfad angegeben in dem die Models liegen.
-//
-char* MyWavefrontParser::m_MainPath = "";
+
+char* MyWavefrontParser::m_MainPath;
 
 //
 //  Skalierungsfaktor, falls gewünscht.

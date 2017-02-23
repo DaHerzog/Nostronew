@@ -284,7 +284,7 @@ void GameManager::calculateRandomEnemyDirection(EnemyShip *p_Enemy) {
  */
 void GameManager::shootEnemyShip() {
     ResourceManager* res = this->m_ResManager;
-    Vector* vec = new Vector(*res->getPlayerShip()->getPos());
+    Vector* vec = new Vector(*res->getPlayerShip()->getPos() + Vector(0.0f, -2.0f, 3.0f));
     Bullet* newBullet = new Bullet(vec, res->getBulletBluePrint()->getModel());
     res->getModelsToDraw()->push_back(newBullet);
 }
@@ -293,54 +293,75 @@ void GameManager::shootEnemyShip() {
  * Prüft, wie lange eine "Bullet" schon in der Luft war und loescht sie aus dem
  * modelsToDraw Array wenn sie ihren Lebenszyklus durchlaufen hat.
  */
-bool GameManager::checkBulletsLifecylce(Bullet *p_Bullet, int p_BulletIdx) {
-    if (!p_Bullet->getStatus()) {
-        std::cout << "Size: " << m_ResManager->getModelsToDraw()->size() << std::endl;
-        std::cout << "bulletidx: " << p_BulletIdx << std::endl;
-        m_ResManager->getModelsToDraw()->erase(m_ResManager->getModelsToDraw()->begin()+p_BulletIdx);
-        delete p_Bullet;
-        return false;
-    }
-    return true;
-}
-
-/*
- * Kolllisionsabfrage für die übergebene "Bullet"
- *
- */
-void GameManager::checkForHit(Bullet *p_Bullet, int p_BulletIdx) {
+void GameManager::checkBulletsLifecylce() {
     
-    ResourceManager* res = this->m_ResManager;
-    int p_enemyCount = res->getEnemyCount();
-    
-    for (int i = 0; i < res->getModelsToDraw()->size(); i++) {
-        
-        if (EnemyShip* e = dynamic_cast<EnemyShip*>(res->getModelsToDraw()->at(i))) {
-        
-            Vector bullet_max = p_Bullet->getModel()->getBoundingBox().Max + *p_Bullet->getPos();
-            Vector bullet_min = p_Bullet->getModel()->getBoundingBox().Min + *p_Bullet->getPos();
-            Vector enemy_max = e->getModel()->getBoundingBox().Max + *e->getPos();
-            Vector enemy_min = e->getModel()->getBoundingBox().Min + *e->getPos();
-            
-            //prüfung ob wert infrage kommt
-            if (bullet_max.Z > enemy_min.Z) {
-                if ((bullet_min.Y <= enemy_max.Y) && (bullet_max.Y >= enemy_min.Y)) {
-                    if((bullet_max.X >= enemy_min.X) && (bullet_min.X <= enemy_max.X)) {
-                        res->getModelsToDraw()->erase(res->getModelsToDraw()->begin()+i);
-                        res->setEnemyCount(res->getEnemyCount()-1);
-                        delete e;
-                        res->getModelsToDraw()->erase(res->getModelsToDraw()->begin()+p_BulletIdx-1);
-                        delete p_Bullet;
-                        this->m_ShipsDestroyedCounter++;
-                        if(res->getEnemyCount() == 0) {
-                            this->m_GameIsRunning = false;
-                        }
-                    }
-                }
+    for (int i = 0; i < m_ResManager->getModelsToDraw()->size(); i++) {
+        if (Bullet* p_Bullet = dynamic_cast<Bullet*>(m_ResManager->getModelsToDraw()->at(i))) {
+            if (!p_Bullet->getStatus()) {
+                m_ResManager->getModelsToDraw()->erase(m_ResManager->getModelsToDraw()->begin()+i);
+                if (p_Bullet)
+                    delete p_Bullet;
             }
         }
     }
+
 }
+    
+
+/*
+ * Kolllisionsabfrage für die übergebene "Bullet" mit Hilfe der BoundingBox. Löscht zudem die getroffenen
+ * Objekte aus dem modelsToDraw Array
+ */
+bool GameManager::checkForHit() {
+    
+    ResourceManager* res = this->m_ResManager;
+    bool hitDetected = false;
+    
+    for (int j = 0; j < res->getModelsToDraw()->size(); j++) {
+        
+        if (Bullet* p_Bullet = dynamic_cast<Bullet*>(res->getModelsToDraw()->at(j))) {
+        
+            for (int i = 0; i < res->getModelsToDraw()->size(); i++) {
+                
+                if (EnemyShip* e = dynamic_cast<EnemyShip*>(res->getModelsToDraw()->at(i))) {
+                    
+                    Vector bullet_max = p_Bullet->getModel()->getBoundingBox().Max + *p_Bullet->getPos();
+                    Vector bullet_min = p_Bullet->getModel()->getBoundingBox().Min + *p_Bullet->getPos();
+                    Vector enemy_max = e->getModel()->getBoundingBox().Max + *e->getPos();
+                    Vector enemy_min = e->getModel()->getBoundingBox().Min + *e->getPos();
+                    
+                    //prüfung ob wert infrage kommt
+                    if (bullet_max.Z > enemy_min.Z) {
+                        if ((bullet_min.Y <= enemy_max.Y) && (bullet_max.Y >= enemy_min.Y)) {
+                            if((bullet_max.X >= enemy_min.X) && (bullet_min.X <= enemy_max.X)) {
+                                res->getModelsToDraw()->erase(res->getModelsToDraw()->begin()+i);
+                                res->setEnemyCount(res->getEnemyCount()-1);
+                                if (e)
+                                    delete e;
+                                this->m_ShipsDestroyedCounter++;
+                                if(res->getEnemyCount() == 0) {
+                                    this->m_GameIsRunning = false;
+                                }
+                                hitDetected = true;
+                                
+                                
+                                
+                            }
+                        }
+                    }
+                }
+                
+            }
+            if (hitDetected) {
+                p_Bullet->setStatus(false);
+                return true;
+            }
+        }
+
+    }
+    return false;
+}
+
 /*
  * Aktualisiert das HUD
  *
@@ -348,14 +369,20 @@ void GameManager::checkForHit(Bullet *p_Bullet, int p_BulletIdx) {
 void GameManager::updateHud() {
     m_ResManager->getHud()->setupFor2DRendering();
     if (m_GameIsRunning) {
-        std::string s = std::to_string(this->m_ShipsDestroyedCounter);
-        char const *counterChar = s.c_str();
-        char text[256] = "Insgesamt zerstoerte Schiffe: ";
-        strcat(text, counterChar);
-        m_ResManager->getHud()->drawText(50, 50, text);
+        std::string shipsDestroyedString = std::to_string(this->m_ShipsDestroyedCounter);
+        char const *counterChar = shipsDestroyedString.c_str();
+        char text1[256] = "Insgesamt zerstoerte Schiffe: ";
+        strcat(text1, counterChar);
+        m_ResManager->getHud()->drawText(50, 50, text1);
+        
+        std::string shipsLeftString = std::to_string(m_ResManager->getEnemyCount());
+        char const *shipsLeftChar = shipsLeftString.c_str();
+        char text2[256] = "Verbleibende Schiffe: ";
+        strcat(text2, shipsLeftChar);
+        m_ResManager->getHud()->drawText(760, 50, text2);
     } else {
-        m_ResManager->getHud()->drawText((m_ResManager->getHud()->getDisplayWidth()/2)-10, m_ResManager->getHud()->getDisplayHeight()/2, "Game Over!");
-        m_ResManager->getHud()->drawText((m_ResManager->getHud()->getDisplayWidth()/2)-55, (m_ResManager->getHud()->getDisplayHeight()/2)-40, "Druecke R fuer Neustart!");
+        m_ResManager->getHud()->drawText((m_ResManager->getHud()->getDisplayWidth()/2)-10, m_ResManager->getHud()->getDisplayHeight()/2+40, "Game Over!");
+        m_ResManager->getHud()->drawText((m_ResManager->getHud()->getDisplayWidth()/2)-55, (m_ResManager->getHud()->getDisplayHeight()/2), "Druecke R fuer Neustart!");
     }
     m_ResManager->getHud()->setupFor3DRendering();
 }
@@ -367,9 +394,10 @@ void GameManager::updateHud() {
  */
 void GameManager::restartGame() {
     
-    m_ResManager->setEnemyCount(5);
-    for (int i = 0; i < m_ResManager->getEnemyCount(); i++) {
-        EnemyShip* tmpEnemy = new EnemyShip(new Vector((float)(i * 4.0f), (float)(90+i), 50.0f), m_ResManager->getEnemyShipBluePrint()->getModel());
+    m_ResManager->setEnemyCount(m_ResManager->getInitialEnemyCount());
+    
+    for (int i = 0; i < m_ResManager->getInitialEnemyCount(); i++) {
+        EnemyShip* tmpEnemy = new EnemyShip(new Vector((float)(i * 4.0f), (float)(90+i), 30.0f), m_ResManager->getEnemyShipBluePrint()->getModel());
         m_ResManager->getModelsToDraw()->push_back(tmpEnemy);
     }
     

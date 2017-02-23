@@ -25,6 +25,10 @@ Hud::~Hud() {
     
 }
 
+/*
+ * Bereitet OpenGL auf das Zeichnen von 2D vor
+ *
+ */
 void Hud::setupFor2DRendering() {
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
@@ -36,6 +40,10 @@ void Hud::setupFor2DRendering() {
     
 }
 
+/*
+ * Löscht die zuvor erstellten Matrizen vom OpenGL Matrix-Stack, damit
+ * wieder 3D gezeichnet werden kann.
+ */
 void Hud::setupFor3DRendering() {
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
@@ -44,7 +52,10 @@ void Hud::setupFor3DRendering() {
     
 }
 
-
+/*
+ * Zeichnet den gewünschten Text an die Stelle der X- und Y-Koordinaten
+ * (im Fensterraum)
+ */
 void Hud::drawText(unsigned int p_PosX, unsigned int p_PoxY, char *p_Text) {
     
     glColor3f(0.0f, 1.0f, 1.0f);

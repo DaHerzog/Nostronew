@@ -200,12 +200,6 @@ void Drawable::updatePosition(float deltaTime, Vector* p_MinBoundary, Vector* p_
         }
     }
     
-    
-    
-    //this->m_RollAngle += this->m_RollLeftRight * (2*M_PI)/90;
-    //this->m_PitchAngle += this->m_PitchUpDown * (2*M_PI)/90;
-
-    
     RMz.rotationZ(this->m_RollAngle);
     RMx.rotationX(this->m_PitchAngle);
     
@@ -217,10 +211,10 @@ void Drawable::updatePosition(float deltaTime, Vector* p_MinBoundary, Vector* p_
     
     this->m_Dir->normalize();
     
-    //Multiplikationsreihenfolge einheiltlich beachten!
-    //R = Rz * Ry * Rx (Rotation um die y-Achse haben wir nicht aktuell)
     TM.translation(this->m_Pos->X, this->m_Pos->Y, this->m_Pos->Z);
     
+    //Multiplikationsreihenfolge einheiltlich beachten!
+    //R = Rz * Ry * Rx
     this->m_Matrix = TM * RMz * RMx;
 }
 

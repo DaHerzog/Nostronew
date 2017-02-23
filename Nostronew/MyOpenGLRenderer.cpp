@@ -12,7 +12,7 @@
 
 double MyOpenGLRenderer::m_WindowWidth = 1024;
 double MyOpenGLRenderer::m_WindowHeight = 768;
-Vector* MyOpenGLRenderer::m_LightPos = new Vector(0.0f ,105.0f ,0.0f);
+Vector* MyOpenGLRenderer::m_LightPos = new Vector(-10.0f ,100.0f ,20.0f);
 Camera* MyOpenGLRenderer::m_Camera = new Camera();
 ResourceManager* MyOpenGLRenderer::m_ResManager = nullptr;
 GameManager* MyOpenGLRenderer::m_GameManager = nullptr;
@@ -212,6 +212,10 @@ void MyOpenGLRenderer::drawScene() {
 //    std::cout << "Up X: " << pShip->getMatrix().up().X << " Y: " << pShip->getMatrix().up().Y << " Z: " << pShip->getMatrix().up().Z << std::endl;
 //    std::cout << "Translation X: " << pShip->getMatrix().translation().X << " Y: " << pShip->getMatrix().translation().Y << " Z: " << pShip->getMatrix().translation().Z << std::endl;
     
+    if (!m_GameManager->checkForHit()) {
+        m_GameManager->checkBulletsLifecylce();
+    }
+    
     m_Camera->setPosition(*(pShip->getPos()) + pShip->getMatrix().up()*3.0f - *(pShip->getDir())*5.0f);
     m_Camera->setTarget(*(pShip->getPos()) + *(pShip->getDir()));
     m_Camera->apply();
@@ -225,7 +229,7 @@ void MyOpenGLRenderer::drawScene() {
     
     
     
-    int i = 0;
+    
     for (Drawable* currDrawable : *(m_ResManager->getModelsToDraw())) {
         
         if (PlayerShip* pShipCast = dynamic_cast<PlayerShip*>(currDrawable)) {
@@ -250,11 +254,6 @@ void MyOpenGLRenderer::drawScene() {
             
         } else if (Bullet* pBullet = dynamic_cast<Bullet*>(currDrawable)) {
             pBullet->updatePosition(deltaTime * 10.0f, m_GameManager->getMinBoundary(), m_GameManager->getMaxBoundary(), pShip->getPos());
-            if (m_GameManager->checkBulletsLifecylce(pBullet, i)) {
-                m_GameManager->checkForHit(pBullet, i);
-            }
-            
-            
         }
         
         currDrawable->applyMatrices();
@@ -262,9 +261,9 @@ void MyOpenGLRenderer::drawScene() {
         //currDrawable->getModel()->getBoundingBox().drawLines();
         currDrawable->discardMatrix();
         //currDrawable->drawAxis();
-        
-        i++;
     }
+    
+    
     
     drawCubeMap();
     
@@ -296,17 +295,17 @@ void MyOpenGLRenderer::mouseCallback(int p_Button, int p_State, int p_X, int p_Y
 void MyOpenGLRenderer::keyboardCallback(unsigned char p_Key, int p_X, int p_Y) {
     
     switch (p_Key) {
-        case 'd':
-            if(m_GameManager->getGameIsRunning()) {
-                m_GameManager->shootEnemyShip();
-            }
-            break;
         case 'o':
             m_GameManager->setGameIsRunning(false);
             break;
         case 'r':
             if (!m_GameManager->getGameIsRunning()) {
                 m_GameManager->restartGame();
+            }
+            break;
+        case ' ':
+            if(m_GameManager->getGameIsRunning()) {
+                m_GameManager->shootEnemyShip();
             }
             break;
         default:
@@ -320,7 +319,6 @@ void MyOpenGLRenderer::keyboardUpCallback(unsigned char p_Key, int p_X, int p_Y)
     switch (p_Key) {
         case 'd':
             //std::cout << "d up" << std::endl;
-            //TODO schuss aufladen
             break;
         default:
             break;

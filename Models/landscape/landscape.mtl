@@ -2,7 +2,7 @@
 
 newmtl Mat
 Ka 1 1 1
-Kd 0 0 0
+Kd 0.40000000596046 0.40000000596046 0.40000000596046
 map_Kd steintexturneu.bmp
 illum 7
 

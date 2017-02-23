@@ -33,6 +33,10 @@ CubeMap::~CubeMap() {
     
 }
 
+/*
+ * Diese Methode läd die entsprechenden Texturen für die Skybox. Zudem ruft sie die restlichen Methoen dieser Klasse
+ * auf.
+*/
 void CubeMap::init(const char* p_PathForTextures, const char* p_PathForVertex, const char* p_PathForFragment) {
     
     char pathForFrontTex[256];
@@ -100,6 +104,10 @@ void CubeMap::init(const char* p_PathForTextures, const char* p_PathForVertex, c
     
 }
 
+/*
+ * Die Skybox benötigt, anders als andere 2D Texturen, besondere OpenGL Parameter. Diese werden hier gesetzt.
+ *
+ */
 void CubeMap::setOpenGLParameters() {
     
     glGenTextures(1, &this->m_TextureID);
@@ -134,6 +142,10 @@ void CubeMap::setOpenGLParameters() {
     
 }
 
+/*
+ * Erstellung eines Würfels mit anschließender Skalierung. Zudem werden die Buffer für
+ * die Grafikkarte erstellt.
+ */
 void CubeMap::initVertices() {
     
     this->m_VertexCount = 36;
@@ -220,6 +232,10 @@ ShaderProgram* CubeMap::getShader() {
     return this->m_Shader;
 }
 
+/*
+ * Diese Methode übergibt die vorher erstellte CubeMap Textur zur Anwendung an OpenGL
+ *
+ */
 void CubeMap::applyCubeMapTextures() {
     if(this->m_TextureID==0) {
         std::cout << "Textur ID ist 0" << std::endl;

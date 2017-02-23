@@ -25,6 +25,7 @@ private:
     char* m_PathToShader;
     char* m_PathToCubeMap;
     int m_EnemyCount;
+    int m_InitialEnemyCount;
     std::vector<Drawable*>* modelsToDraw;
     std::vector<Drawable*>* loadedModels;
     PlayerShip* m_PlayerShip;
@@ -52,6 +53,7 @@ public:
     void setEnemyCount(int p_NewValue);
     Bullet* getBulletBluePrint();
     EnemyShip* getEnemyShipBluePrint();
+    int getInitialEnemyCount();
 };
 
 #endif /* ResourceManager_hpp */

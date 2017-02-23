@@ -27,6 +27,10 @@ Bullet::Bullet(Vector * p_StartPos, Model * p_Model): Drawable(p_StartPos, p_Mod
 Bullet::~Bullet() {
 }
 
+/*
+ * Berechnet die aktuelle Position und setzt den m_Status auf false, sobald die Kugel ihre Lebensdauer
+ * überschritten hat.
+ */
 void Bullet::updatePosition(float deltaTime, Vector* p_MinBoundary, Vector* p_MaxBoundary, Vector* p_shipPosition) {
     Matrix TM;
     

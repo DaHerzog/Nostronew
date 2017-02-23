@@ -31,8 +31,8 @@ public:
     void moveEnemy(EnemyShip* p_Enemy);
     void calculateRandomEnemyDirection(EnemyShip* p_Enemy);
     void shootEnemyShip();
-    void checkForHit(Bullet* p_Bullet, int p_BulletIdx);
-    bool checkBulletsLifecylce(Bullet* p_Bullet, int p_BulletIdx);
+    bool checkForHit();
+    void checkBulletsLifecylce();
     void updateHud();
     void restartGame();
 private:

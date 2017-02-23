@@ -29,13 +29,6 @@ EnemyShip::EnemyShip(Model* p_Model) : Drawable(p_Model){
 }
 
 EnemyShip::EnemyShip(Vector* p_StartPos, Model* p_Model): Drawable(p_StartPos, p_Model) {
-    //Ausrichtung der gegnerischen Schiffe wird in Z-Richtung umgedreht.
-    Matrix RMz;
-    RMz.identity();
-    Matrix newMat = this->getMatrix();
-    RMz.rotationY(M_PI);
-    newMat = newMat * RMz;
-    this->setMatrix(newMat);
     
     this->m_MoveEnemiesLeft = true;
     this->m_MoveEnemiesRight = false;
@@ -48,6 +41,11 @@ EnemyShip::~EnemyShip() {
     
 }
 
+/*
+ * Diese Methode aktualisiert die Position der gegnerischen Schiffe. Sie ist quasi baugleich
+ * mit den anderen updatePositions() Methoden. Einziger Unterschied ist die zusätzliche
+ * 180° Rotation um die Y-Achse damit die Gegner uns auch anschauen.
+ */
 void EnemyShip::updatePosition(float deltaTime, Vector* p_MinBoundary, Vector* p_MaxBoundary) {
     Matrix TM, RMz, RMx, RMy;
     Matrix RMDir;
@@ -172,12 +170,6 @@ void EnemyShip::updatePosition(float deltaTime, Vector* p_MinBoundary, Vector* p
         }
     }
     
-    
-    
-    //this->m_RollAngle += this->m_RollLeftRight * (2*M_PI)/90;
-    //this->m_PitchAngle += this->m_PitchUpDown * (2*M_PI)/90;
-    
-    
     RMz.rotationZ(this->m_RollAngle);
     RMx.rotationX(this->m_PitchAngle);
     
@@ -192,10 +184,10 @@ void EnemyShip::updatePosition(float deltaTime, Vector* p_MinBoundary, Vector* p
     
     this->m_Dir->normalize();
     
-    //Multiplikationsreihenfolge einheiltlich beachten!
-    //R = Rz * Ry * Rx (Rotation um die y-Achse haben wir nicht aktuell)
     TM.translation(this->m_Pos->X, this->m_Pos->Y, this->m_Pos->Z);
     
+    //Multiplikationsreihenfolge einheiltlich beachten!
+    //R = Rz * Ry * Rx
     this->m_Matrix = TM * RMz * RMy * RMx;
 }
 
